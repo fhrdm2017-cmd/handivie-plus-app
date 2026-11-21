@@ -1,1 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f4c81" />
+  <title>HandiVie+ — Accessibilité & Urgence ICE</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #102033;
+      --muted: #4a607a;
+      --primary: #0f4c81;
+      --emergency: #b91c1c;
+      --emergency-bg: #fef2f2;
+      --accent: #0f766e;
+      --border: #d5e0ec;
+      --font-size: 18px;
+    }
+
+    body.large-text {
+      --font-size: 22px;
+    }
+
+    body.high-contrast {
+      --bg: #000000;
+      --card: #121212;
+      --text: #ffffff;
+      --muted: #e5e7eb;
+      --primary: #38bdf8;
+      --emergency: #ef4444;
+      --emergency-bg: #2a0808;
+      --accent: #34d399;
+      --border: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: var(--font-size);
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.6em;
+      color: var(--primary);
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95em;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 12px;
+      border: 2px solid var(--primary);
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.95em;
+      font-weight: 600;
+      padding: 12px 16px;
+      min-height: 48px;
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .ice-card {
+      background: var(--emergency-bg);
+      border-color: var(--emergency);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8em;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .badge.free {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge.plus {
+      background: #e0f2fe;
+      color: #075985;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 1.25em;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.92em;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1em;
+      font-family: inherit;
+    }
+
+    .ice-summary {
+      background: var(--card);
+      border: 2px solid var(--emergency);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .ice-call-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: var(--emergency);
+      color: #ffffff;
+      font-weight: 700;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+
+    .price {
+      font-size: 1.4em;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 8px 0;
+    }
+
+    .status-msg {
+      margin-top: 10px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>HandiVie+</h1>
+      <p class="subtitle">Application web universelle d'accessibilité et d'assistance au quotidien</p>
+      <div class="toolbar">
+        <button type="button" class="secondary" onclick="toggleTextSize()">Texte agrandi</button>
+        <button type="button" class="secondary" onclick="toggleContrast()">Contraste élevé</button>
+      </div>
+    </header>
+
+    <section class="card ice-card" aria-labelledby="ice-title">
+      <span class="badge free">GRATUIT — ACCÈS RAPIDE</span>
+      <h2 id="ice-title">Urgence ICE (In Case of Emergency)</h2>
+      <p class="subtitle">Vos informations essentielles restent disponibles gratuitement pour les secours ou un proche.</p>
+
+      <div class="field">
+        <label for="ice-contact">Contact d'urgence (nom et lien)</label>
+        <input id="ice-contact" type="text" placeholder="Ex. : Marie Dupont (Sœur)" />
+      </div>
+
+      <div class="field">
+        <label for="ice-phone">Numéro de téléphone d'urgence</label>
+        <input id="ice-phone" type="tel" placeholder="Ex. : 0612345678" />
+      </div>
+
+      <div class="field">
+        <label for="ice-notes">Allergies, traitement ou consignes importantes</label>
+        <textarea id="ice-notes" rows="3" placeholder="Ex. : Allergie pénicilline, appareil auditif côté droit..."></textarea>
+      </div>
+
+      <button type="button" onclick="saveIceData()">Enregistrer ma fiche ICE</button>
+      <div id="ice-saved" class="status-msg" role="status" aria-live="polite"></div>
+
+      <div id="ice-preview" class="ice-summary">
+        <strong>Aperçu de la fiche ICE :</strong>
+        <div id="ice-preview-content">Aucune fiche enregistrée pour le moment.</div>
+        <a id="ice-call-link" class="ice-call-btn" href="tel:112" style="display:none;">Appeler le contact ICE</a>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="plus-title">
+      <span class="badge plus">OPTION CONFORT</span>
+      <h2 id="plus-title">HandiVie+ Essentiel</h2>
+      <div class="price">3,00 € / mois</div>
+      <p class="subtitle">
+        Soutient l'évolution de l'application et débloque les profils personnalisés, rappels de routine et fiches d'accompagnement supplémentaires. L'accès Urgence ICE reste toujours gratuit.
+      </p>
+      <div class="toolbar">
+        <button type="button" onclick="activateDemoPlus()">Activer l'aperçu 3,00 €/mois</button>
+      </div>
+      <div id="plus-status" class="status-msg" role="status" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "handivie_plus_data_v1";
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+
+        if (data.largeText) document.body.classList.add("large-text");
+        if (data.highContrast) document.body.classList.add("high-contrast");
+
+        if (data.ice) {
+          document.getElementById("ice-contact").value = data.ice.contact || "";
+          document.getElementById("ice-phone").value = data.ice.phone || "";
+          document.getElementById("ice-notes").value = data.ice.notes || "";
+          renderIcePreview(data.ice);
+        }
+
+        if (data.plusActive) {
+          document.getElementById("plus-status").textContent = "Aperçu HandiVie+ (3,00 €/mois) activé sur cet appareil.";
+        }
+      } catch (e) {
+        // Ignore storage errors in restricted browsing modes
+      }
+    }
+
+    function updateStore(mutator) {
+      let current = {};
+      try {
+        current = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      } catch (e) {
+        current = {};
+      }
+      mutator(current);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+      } catch (e) {
+        // Ignore storage errors
+      }
+    }
+
+    function toggleTextSize() {
+      document.body.classList.toggle("large-text");
+      updateStore((s) => {
+        s.largeText = document.body.classList.contains("large-text");
+      });
+    }
+
+    function toggleContrast() {
+      document.body.classList.toggle("high-contrast");
+      updateStore((s) => {
+        s.highContrast = document.body.classList.contains("high-contrast");
+      });
+    }
+
+    function saveIceData() {
+      const ice = {
+        contact: document.getElementById("ice-contact").value.trim(),
+        phone: document.getElementById("ice-phone").value.trim(),
+        notes: document.getElementById("ice-notes").value.trim()
+      };
+
+      updateStore((s) => {
+        s.ice = ice;
+      });
+
+      renderIcePreview(ice);
+      document.getElementById("ice-saved").textContent = "Fiche Urgence ICE enregistrée sur l'appareil.";
+    }
+
+    function renderIcePreview(ice) {
+      const box = document.getElementById("ice-preview-content");
+      const callBtn = document.getElementById("ice-call-link");
+
+      if (!ice.contact && !ice.phone && !ice.notes) {
+        box.textContent = "Aucune fiche enregistrée pour le moment.";
+        callBtn.style.display = "none";
+        return;
+      }
+
+      const cleanPhone = (ice.phone || "").replace(/[^+\d]/g, "");
+      box.innerHTML =
+        "<p><strong>Contact :</strong> " + escapeHtml(ice.contact || "Non renseigné") + "</p>" +
+        "<p><strong>Téléphone :</strong> " + escapeHtml(ice.phone || "Non renseigné") + "</p>" +
+        "<p><strong>Infos médicales / consignes :</strong> " + escapeHtml(ice.notes || "Aucune") + "</p>";
+
+      if (cleanPhone) {
+        callBtn.href = "tel:" + cleanPhone;
+        callBtn.textContent = "Appeler " + (ice.contact || ice.phone);
+        callBtn.style.display = "inline-block";
+      } else {
+        callBtn.style.display = "none";
+      }
+    }
+
+    function activateDemoPlus() {
+      updateStore((s) => {
+        s.plusActive = true;
+      });
+      document.getElementById("plus-status").textContent = "Aperçu HandiVie+ (3,00 €/mois) activé sur cet appareil.";
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
 
