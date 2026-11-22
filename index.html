@@ -747,7 +747,7 @@
     <!-- 6. GPS & LIEUX PMR -->
     <section class="module-panel" id="panel-places">
       <h2 class="panel-title" id="placesHead">Recherche GPS d'Endroits & Lieux Accessibles PMR</h2>
-      <p class="panel-sub" id="placesLead">Utilisez votre position GPS et la connexion internet pour rechercher des endroits autour de vous ou enregistrer vos lieux.</p>
+      <p class="panel-sub" id="placesLead">La recherche utilise votre position GPS pour trouver uniquement les lieux proches autour de vous.</p>
 
       <div class="row-flex">
         <button type="button" class="btn-blue" id="btnGpsHere">Ma position GPS</button>
@@ -756,23 +756,24 @@
       </div>
 
       <div class="row-flex">
-        <input type="text" id="gpsSearchInput" placeholder="Rechercher un endroit (ex. pharmacie, hôpital, gare, parking PMR)..." />
-        <button type="button" class="btn-blue" id="btnDoGpsSearch">Rechercher</button>
+        <input type="text" id="gpsSearchInput" placeholder="Rechercher autour de moi (ex. pharmacie, hôpital, gare, parking)..." />
+        <button type="button" class="btn-blue" id="btnDoGpsSearch">Rechercher autour de moi</button>
       </div>
 
       <div class="row-flex">
         <button type="button" class="btn-soft gps-quick" data-q="pharmacie">Pharmacie</button>
         <button type="button" class="btn-soft gps-quick" data-q="hopital">Hôpital</button>
-        <button type="button" class="btn-soft gps-quick" data-q="parking PMR">Parking PMR</button>
-        <button type="button" class="btn-soft gps-quick" data-q="toilettes publiques PMR">Toilettes PMR</button>
+        <button type="button" class="btn-soft gps-quick" data-q="parking">Parking</button>
+        <button type="button" class="btn-soft gps-quick" data-q="toilettes publiques">Toilettes</button>
+        <button type="button" class="btn-soft gps-quick" data-q="mairie">Mairie</button>
       </div>
 
       <div class="box-card" id="gpsResultsBox">
-        Appuyez sur <strong>Ma position GPS</strong> ou saisissez un endroit puis <strong>Rechercher</strong>.
+        Appuyez sur <strong>Ma position GPS</strong> ou directement sur un bouton de recherche pour trouver les lieux proches de vous.
       </div>
 
       <div class="row-flex">
-        <a class="ext-link btn-blue" id="gpsMapLink" href="https://www.google.com/maps" target="_blank" rel="noopener">Ouvrir sur la carte</a>
+        <a class="ext-link btn-blue" id="gpsMapLink" href="https://www.google.com/maps" target="_blank" rel="noopener">Ouvrir sur Google Maps</a>
         <a class="ext-link btn-soft" href="https://wheelmap.org/" target="_blank" rel="noopener">Carte Wheelmap</a>
       </div>
 
@@ -840,7 +841,7 @@
         <li>Communication CAA multilingue (6 langues dont l'arabe RTL) + sous-titrage vocal</li>
         <li>Pass Prioritaire CMI visuel et sonore</li>
         <li>Pilulier horodaté, hydratation & bilan + Lecteur FALC / DYS</li>
-        <li>Recherche GPS d'endroits avec distance, carnet PMR, minuteur et respiration</li>
+        <li>Recherche GPS d'endroits proches, carnet PMR, minuteur et respiration</li>
       </ul>
       <div class="row-flex" style="margin-bottom:0;">
         <button type="button" class="btn-blue" id="btnActivateSub">Activer l'essai / 2,00 €/mois</button>
@@ -1227,14 +1228,33 @@
         showToast('Langue : ' + store.lang.toUpperCase());
       }
 
-      function distanceKm(lat1, lon1, lat2, lon2) {
+      function distanceKmNum(lat1, lon1, lat2, lon2) {
         const R = 6371;
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
           Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
           Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        return (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))).toFixed(1);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      }
+
+      function requestGpsPromise() {
+        return new Promise(function (resolve, reject) {
+          if (!navigator.geolocation) {
+            reject(new Error('GPS non disponible'));
+            return;
+          }
+          navigator.geolocation.getCurrentPosition(
+            function (pos) {
+              store.coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+              resolve(store.coords);
+            },
+            function (err) {
+              reject(err);
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+          );
+        });
       }
 
       async function runPlaceSearch(queryOverride) {
@@ -1243,47 +1263,69 @@
         const mapLink = document.getElementById('gpsMapLink');
 
         if (!q) {
-          box.textContent = 'Saisissez un endroit à rechercher (ex. : pharmacie, hôpital, parking PMR).';
+          box.textContent = 'Saisissez un endroit à rechercher (ex. : pharmacie, hôpital, parking, mairie).';
           return;
         }
-
-        mapLink.href = store.coords
-          ? 'https://www.google.com/maps/search/' + encodeURIComponent(q) + '/@' + store.coords.lat + ',' + store.coords.lon + ',15z'
-          : 'https://www.google.com/maps/search/' + encodeURIComponent(q) + '/';
 
         if (!navigator.onLine) {
           box.innerHTML = '<span style="color:var(--danger);font-weight:700;">Hors ligne.</span> Activez le Wi-Fi ou les données mobiles pour rechercher des endroits.';
           return;
         }
 
-        box.textContent = 'Recherche en cours : ' + q + '...';
+        if (!store.coords) {
+          box.textContent = 'Localisation GPS en cours pour chercher autour de vous...';
+          try {
+            await requestGpsPromise();
+          } catch (_) {
+            box.innerHTML = 'Autorisez la localisation GPS sur votre téléphone pour trouver uniquement les lieux près de chez vous, ou touchez <strong>Ouvrir sur Google Maps</strong>.';
+            mapLink.href = 'https://www.google.com/maps/search/' + encodeURIComponent(q + ' près de moi') + '/';
+            return;
+          }
+        }
+
+        const lat0 = store.coords.lat;
+        const lon0 = store.coords.lon;
+        mapLink.href = 'https://www.google.com/maps/search/' + encodeURIComponent(q) + '/@' + lat0 + ',' + lon0 + ',15z';
+
+        box.textContent = 'Recherche autour de votre position (' + lat0.toFixed(4) + ', ' + lon0.toFixed(4) + ') : ' + q + '...';
 
         try {
-          let url = 'https://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + encodeURIComponent(q);
-          if (store.coords) {
-            url += '&viewbox=' + (store.coords.lon - 0.08) + ',' + (store.coords.lat + 0.08) + ',' +
-                   (store.coords.lon + 0.08) + ',' + (store.coords.lat - 0.08) + '&bounded=0';
-          }
-          const resp = await fetch(url, { headers: { Accept: 'application/json' } });
-          const list = await resp.json();
+          // Zone stricte de ~15 km autour de votre position GPS (bounded=1)
+          const dLat = 0.14;
+          const dLon = 0.18;
+          const viewbox = (lon0 - dLon) + ',' + (lat0 + dLat) + ',' + (lon0 + dLon) + ',' + (lat0 - dLat);
+          const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=10&bounded=1&viewbox=' +
+                      encodeURIComponent(viewbox) + '&q=' + encodeURIComponent(q);
 
-          if (!Array.isArray(list) || list.length === 0) {
-            box.innerHTML = 'Aucun résultat direct pour « ' + escapeHtml(q) + ' ». Touchez <strong>Ouvrir sur la carte</strong>.';
+          const resp = await fetch(url, { headers: { Accept: 'application/json' } });
+          const rawList = await resp.json();
+
+          if (!Array.isArray(rawList) || rawList.length === 0) {
+            box.innerHTML = 'Aucun résultat direct dans un rayon de 15 km pour « ' + escapeHtml(q) + ' ». Touchez <strong>Ouvrir sur Google Maps</strong> pour voir tous les lieux autour de vous.';
             return;
           }
 
-          box.innerHTML = list.map(function (place) {
-            const lat = Number(place.lat);
-            const lon = Number(place.lon);
-            const distText = store.coords ? ' • ~' + distanceKm(store.coords.lat, store.coords.lon, lat, lon) + ' km' : '';
-            const urlPlace = 'https://www.google.com/maps/search/?api=1&query=' + lat.toFixed(5) + ',' + lon.toFixed(5);
+          // Tri du plus proche au plus éloigné
+          const sorted = rawList.map(function (place) {
+            const pLat = Number(place.lat);
+            const pLon = Number(place.lon);
+            return {
+              name: place.display_name,
+              lat: pLat,
+              lon: pLon,
+              dist: distanceKmNum(lat0, lon0, pLat, pLon)
+            };
+          }).sort(function (a, b) { return a.dist - b.dist; }).slice(0, 5);
+
+          box.innerHTML = sorted.map(function (place) {
+            const urlPlace = 'https://www.google.com/maps/dir/?api=1&destination=' + place.lat.toFixed(5) + ',' + place.lon.toFixed(5);
             return '<div style="padding:8px 0;border-bottom:1px solid var(--border);">' +
-              '<div><strong>' + escapeHtml(place.display_name) + '</strong><span style="color:var(--muted);font-size:0.9em;">' + escapeHtml(distText) + '</span></div>' +
-              '<div style="margin-top:6px;"><a class="ext-link btn-blue" href="' + urlPlace + '" target="_blank" rel="noopener">Voir sur la carte</a></div>' +
+              '<div><strong>' + escapeHtml(place.name) + '</strong> <span style="color:var(--primary);font-weight:700;">(' + place.dist.toFixed(1) + ' km)</span></div>' +
+              '<div style="margin-top:6px;"><a class="ext-link btn-blue" href="' + urlPlace + '" target="_blank" rel="noopener">Itinéraire GPS</a></div>' +
               '</div>';
           }).join('');
         } catch (_) {
-          box.innerHTML = 'Recherche directe indisponible. Touchez <strong>Ouvrir sur la carte</strong> pour chercher « ' + escapeHtml(q) + ' ».';
+          box.innerHTML = 'Touchez <strong>Ouvrir sur Google Maps</strong> pour afficher « ' + escapeHtml(q) + ' » autour de votre position GPS.';
         }
       }
 
@@ -1594,26 +1636,19 @@
         showToast(info.text);
       });
 
-      document.getElementById('btnGpsHere').addEventListener('click', function () {
+      document.getElementById('btnGpsHere').addEventListener('click', async function () {
         const box = document.getElementById('gpsResultsBox');
-        if (!navigator.geolocation) {
-          box.textContent = 'GPS non disponible sur cet appareil.';
-          return;
+        box.textContent = 'Recherche de votre position GPS...';
+        try {
+          const c = await requestGpsPromise();
+          document.getElementById('gpsMapLink').href =
+            'https://www.google.com/maps/search/?api=1&query=' + c.lat + ',' + c.lon;
+          box.innerHTML = '<strong>Position GPS trouvée :</strong> ' + c.lat.toFixed(5) + ', ' + c.lon.toFixed(5) +
+            ' — Vous pouvez maintenant rechercher un lieu autour de vous.';
+          showToast('Position GPS trouvée');
+        } catch (err) {
+          box.textContent = 'GPS indisponible ou refusé (' + (err && err.message ? err.message : 'autorisation requise') + ').';
         }
-        box.textContent = 'Recherche de la position GPS...';
-        navigator.geolocation.getCurrentPosition(
-          function (pos) {
-            store.coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-            document.getElementById('gpsMapLink').href =
-              'https://www.google.com/maps/search/?api=1&query=' + store.coords.lat + ',' + store.coords.lon;
-            box.innerHTML = '<strong>Position GPS :</strong> ' + store.coords.lat.toFixed(5) + ', ' + store.coords.lon.toFixed(5);
-            showToast('Position GPS trouvée');
-          },
-          function (err) {
-            box.textContent = 'GPS indisponible ou refusé (' + (err.message || 'autorisation nécessaire') + ').';
-          },
-          { enableHighAccuracy: true, timeout: 10000 }
-        );
       });
 
       document.getElementById('btnCopyCoords').addEventListener('click', function () {
