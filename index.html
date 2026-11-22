@@ -1910,4 +1910,312 @@
 
       // Parler & Écouter
       document.getElementById('btnSpeakNow').addEventListener('click', function () {
-        speak(document.getElementById('phraseDisplay').textContent
+        speak(document.getElementById('phraseDisplay').textContent);
+      });
+      document.getElementById('btnCopyPhrase').addEventListener('click', function () {
+        copyText(document.getElementById('phraseDisplay').textContent, 'Phrase copiée');
+      });
+      document.getElementById('btnClearText').addEventListener('click', function () {
+        document.getElementById('phraseDisplay').textContent = '';
+        showToast('Message effacé');
+      });
+      document.getElementById('btnAddSpeak').addEventListener('click', function () {
+        const inp = document.getElementById('customInput');
+        if (!inp.value.trim()) return;
+        speak(inp.value.trim());
+        inp.value = '';
+      });
+      document.getElementById('btnFullscreenText').addEventListener('click', function () {
+        document.getElementById('fullModalContent').textContent = document.getElementById('phraseDisplay').textContent || LANGS[store.lang].defaultMsg;
+        document.getElementById('fullModal').classList.add('open');
+      });
+      document.getElementById('btnCloseFull').addEventListener('click', function () {
+        document.getElementById('fullModal').classList.remove('open');
+      });
+
+      document.getElementById('btnLiveCaptions').addEventListener('click', function () {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) {
+          showToast('Sous-titrage micro non disponible sur ce navigateur');
+          return;
+        }
+        try {
+          const rec = new SR();
+          rec.lang = LANGS[store.lang].voice;
+          rec.onresult = function (ev) {
+            document.getElementById('phraseDisplay').textContent = ev.results[0][0].transcript;
+          };
+          rec.start();
+          showToast('Écoute active...');
+        } catch (_) {
+          showToast('Micro indisponible');
+        }
+      });
+
+      // Pass Prioritaire
+      document.getElementById('prioPresetSelect').addEventListener('change', function (e) {
+        document.getElementById('prioCardBody').textContent = e.target.value;
+      });
+      document.getElementById('btnTriggerSignal').addEventListener('click', function () {
+        flashScreen();
+        speak(document.getElementById('prioCardBody').textContent);
+      });
+      document.getElementById('btnQuickAlarm').addEventListener('click', function () {
+        flashScreen();
+        showToast('Signal visuel déclenché');
+      });
+      document.getElementById('btnShowPrioFull').addEventListener('click', function () {
+        document.getElementById('fullModalContent').textContent = document.getElementById('prioCardBody').textContent;
+        document.getElementById('fullModal').classList.add('open');
+      });
+
+      // Pilulier & Hydratation
+      document.getElementById('btnAddWater').addEventListener('click', function () {
+        store.water++;
+        safeSet('hv5_water', store.water);
+        renderWater();
+        showToast('Hydratation : ' + store.water + ' verre(s)');
+      });
+      document.getElementById('btnResetWater').addEventListener('click', function () {
+        store.water = 0;
+        safeSet('hv5_water', store.water);
+        renderWater();
+        showToast('Hydratation réinitialisée');
+      });
+
+      document.getElementById('btnAddMed').addEventListener('click', function () {
+        const time = document.getElementById('medTime').value || '09:00';
+        const name = document.getElementById('medName').value.trim();
+        if (!name) return;
+        store.meds.push({ time: time, name: name, takenAt: '' });
+        document.getElementById('medName').value = '';
+        saveMeds();
+        showToast('Élément ajouté');
+      });
+      document.getElementById('btnShareLog').addEventListener('click', function () {
+        const summary = 'Bilan HandiVie+ (Hydratation : ' + store.water + ' verre(s)) :\n' +
+          store.meds.map(function (m) {
+            return '- ' + m.time + ' : ' + m.name + (m.takenAt ? ' (Validé à ' + m.takenAt + ')' : ' (À faire)');
+          }).join('\n');
+        copyText(summary, 'Bilan copié');
+      });
+
+      // Lecteur FALC
+      function updateFalcStats(text) {
+        const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+        const st = document.getElementById('falcStats');
+        if (st) st.textContent = 'Mots : ' + words;
+      }
+
+      document.getElementById('btnProcessFalc').addEventListener('click', function () {
+        const raw = document.getElementById('falcInput').value.trim();
+        if (!raw) return;
+        updateFalcStats(raw);
+        const syll = raw.split(/\s+/).map(function (w) {
+          return w.replace(/([aeiouyàâéèêëîïôùûü])([^aeiouyàâéèêëîïôùûü\s])/gi, '$1·$2');
+        }).join('   ');
+        document.getElementById('falcOutput').textContent = syll;
+        speak(raw);
+      });
+      document.getElementById('btnReadFalcOnly').addEventListener('click', function () {
+        const raw = document.getElementById('falcInput').value.trim();
+        if (!raw) return;
+        updateFalcStats(raw);
+        document.getElementById('falcOutput').textContent = raw;
+        speak(raw);
+      });
+      document.getElementById('btnClearFalc').addEventListener('click', function () {
+        document.getElementById('falcInput').value = '';
+        document.getElementById('falcOutput').textContent = '';
+        updateFalcStats('');
+      });
+
+      // Calme & Temps
+      function updateClockUI() {
+        const m = String(Math.floor(store.timerLeft / 60)).padStart(2, '0');
+        const s = String(store.timerLeft % 60).padStart(2, '0');
+        document.getElementById('timerText').textContent = m + ':' + s;
+        document.getElementById('timerBar').style.width = Math.max(0, (store.timerLeft / store.timerTotal) * 100) + '%';
+      }
+      document.querySelectorAll('[data-min]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          clearInterval(store.timerId);
+          store.timerId = null;
+          store.timerTotal = Number(b.dataset.min) * 60;
+          store.timerLeft = store.timerTotal;
+          updateClockUI();
+          showToast('Minuteur : ' + b.dataset.min + ' min');
+        });
+      });
+      document.getElementById('btnTimerRun').addEventListener('click', function () {
+        if (store.timerId) {
+          clearInterval(store.timerId);
+          store.timerId = null;
+          showToast('Minuteur en pause');
+          return;
+        }
+        showToast('Minuteur démarré');
+        store.timerId = setInterval(function () {
+          if (store.timerLeft > 0) {
+            store.timerLeft--;
+            updateClockUI();
+          } else {
+            clearInterval(store.timerId);
+            store.timerId = null;
+            store.timerLeft = store.timerTotal;
+            updateClockUI();
+            flashScreen();
+            speak('Le temps est écoulé');
+          }
+        }, 1000);
+      });
+      document.getElementById('btnTimerZero').addEventListener('click', function () {
+        clearInterval(store.timerId);
+        store.timerId = null;
+        store.timerLeft = store.timerTotal;
+        updateClockUI();
+        showToast('Minuteur réinitialisé');
+      });
+
+      document.getElementById('btnBreathStart').addEventListener('click', function () {
+        const orb = document.getElementById('breathCircle');
+        if (store.breathId) {
+          clearInterval(store.breathId);
+          store.breathId = null;
+          orb.style.transform = 'scale(1)';
+          orb.textContent = 'Repos';
+          showToast('Respiration arrêtée');
+          return;
+        }
+        let step = 0;
+        const tick = function () {
+          const inhale = step % 2 === 0;
+          orb.textContent = inhale ? 'Inspirez' : 'Expirez';
+          orb.style.transform = inhale ? 'scale(1.22)' : 'scale(0.92)';
+          if (!inhale) {
+            store.breathCycles++;
+            document.getElementById('breathCycles').textContent = 'Cycles complétés : ' + store.breathCycles;
+          }
+          step++;
+        };
+        tick();
+        store.breathId = setInterval(tick, 4000);
+        showToast('Respiration démarrée');
+      });
+
+      // GPS & Lieux
+      document.getElementById('btnCheckConn').addEventListener('click', function () {
+        refreshConnectionUI();
+        const info = readConnectionInfo();
+        document.getElementById('gpsResultsBox').innerHTML = '<strong>' + escapeHtml(info.text) + '</strong>';
+        showToast(info.text);
+      });
+
+      document.getElementById('btnGpsHere').addEventListener('click', async function () {
+        const box = document.getElementById('gpsResultsBox');
+        box.textContent = 'Recherche de votre position GPS...';
+        try {
+          const c = await requestGpsPromise();
+          document.getElementById('gpsMapLink').href =
+            'https://www.google.com/maps/search/?api=1&query=' + c.lat + ',' + c.lon;
+          box.innerHTML = '<strong>Position GPS trouvée :</strong> ' + c.lat.toFixed(5) + ', ' + c.lon.toFixed(5) +
+            ' — Vous pouvez maintenant rechercher un lieu autour de vous.';
+          showToast('Position GPS trouvée');
+        } catch (err) {
+          box.textContent = 'GPS indisponible ou refusé (' + (err && err.message ? err.message : 'autorisation requise') + ').';
+        }
+      });
+
+      document.getElementById('btnCopyCoords').addEventListener('click', function () {
+        if (!store.coords) {
+          showToast('Appuyez d’abord sur Ma position GPS');
+          return;
+        }
+        copyText(store.coords.lat.toFixed(5) + ', ' + store.coords.lon.toFixed(5), 'Coordonnées copiées');
+      });
+
+      document.getElementById('btnDoGpsSearch').addEventListener('click', function () { runPlaceSearch(); });
+      document.getElementById('gpsSearchInput').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') runPlaceSearch();
+      });
+      document.querySelectorAll('.gps-quick').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.getElementById('gpsSearchInput').value = b.dataset.q;
+          runPlaceSearch(b.dataset.q);
+        });
+      });
+
+      document.getElementById('btnAddPlace').addEventListener('click', function () {
+        const name = document.getElementById('placeName').value.trim();
+        const note = document.getElementById('placeNote').value.trim();
+        if (!name) return;
+        store.places.push({ name: name, note: note || 'Accessible PMR' });
+        safeSet('hv5_places', store.places);
+        document.getElementById('placeName').value = '';
+        document.getElementById('placeNote').value = '';
+        renderPlaces();
+        showToast('Lieu enregistré');
+      });
+
+      // Urgence ICE
+      document.getElementById('btnTopIce').addEventListener('click', function () { openTab('ice'); });
+      document.getElementById('btnIceSpeak').addEventListener('click', function () {
+        flashScreen();
+        speak(LANGS[store.lang].iceVoice);
+      });
+      document.getElementById('btnCopyIce').addEventListener('click', function () {
+        copyText(buildIceSummary(), 'Fiche ICE copiée');
+      });
+      document.getElementById('btnSaveIce').addEventListener('click', function () {
+        store.ice = {
+          name: document.getElementById('iceName').value.trim(),
+          contact: document.getElementById('iceContact').value.trim(),
+          phone: document.getElementById('icePhone').value.trim() || '114',
+          blood: document.getElementById('iceBlood').value.trim(),
+          needs: document.getElementById('iceNeeds').value.trim()
+        };
+        safeSet('hv5_ice', store.ice);
+        renderIce();
+        showToast('Fiche ICE enregistrée');
+      });
+
+      // Abonnement 2,00 EUR / mois
+      document.getElementById('btnOpenSub').addEventListener('click', function () {
+        document.getElementById('subModal').classList.add('open');
+      });
+      document.getElementById('btnCloseSub').addEventListener('click', function () {
+        document.getElementById('subModal').classList.remove('open');
+      });
+      document.getElementById('btnActivateSub').addEventListener('click', function () {
+        store.subscribed = true;
+        safeSet('hv5_sub', true);
+        document.getElementById('uiSubStatus').textContent = LANGS[store.lang].subOn;
+        document.getElementById('subModal').classList.remove('open');
+        showToast('Option 2,00 €/mois activée');
+      });
+
+      window.addEventListener('online', refreshConnectionUI);
+      window.addEventListener('offline', refreshConnectionUI);
+
+      document.getElementById('iceName').value = store.ice.name || '';
+      document.getElementById('iceContact').value = store.ice.contact || '';
+      document.getElementById('icePhone').value = store.ice.phone || '114';
+      document.getElementById('iceBlood').value = store.ice.blood || '';
+      document.getElementById('iceNeeds').value = store.ice.needs || '';
+
+      refreshConnectionUI();
+      setLanguage('fr');
+      renderWater();
+      renderShop();
+      renderMeds();
+      renderPlaces();
+      renderIce();
+      renderOddGame();
+      initPairsGame();
+      renderTf();
+      updateClockUI();
+      updateFalcStats(document.getElementById('falcInput').value);
+    })();
+  </script>
+</body>
+</html>
