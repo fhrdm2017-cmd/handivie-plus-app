@@ -3,78 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HandiVie+ — Assistant Quotidien Universel</title>
-  <link rel="manifest" href="manifest.json" />
+  <title>HandiVie+ — Assistant Quotidien Professionnel</title>
   <meta name="theme-color" content="#1d4ed8" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f3f6fb;
+      --bg: #f1f5f9;
       --surface: #ffffff;
-      --surface-2: #eef2f9;
+      --surface-2: #e2e8f0;
       --text: #0f172a;
       --muted: #475569;
       --primary: #1d4ed8;
-      --primary-hover: #1e40af;
       --primary-soft: #dbeafe;
       --accent: #0f766e;
       --accent-soft: #ccfbf1;
       --danger: #b91c1c;
       --danger-soft: #fee2e2;
-      --warn: #b45309;
-      --warn-soft: #fef3c7;
       --border: #cbd5e1;
       --radius: 18px;
       --font-size: 18px;
       --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      --word-spacing: normal;
-      --letter-spacing: normal;
-      --line-height: 1.55;
-      --shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     }
 
-    body.contrast-high {
+    body.high-contrast {
       --bg: #000000;
-      --surface: #0a0a0a;
-      --surface-2: #1a1a1a;
+      --surface: #111111;
+      --surface-2: #222222;
       --text: #ffffff;
       --muted: #fde047;
       --primary: #facc15;
-      --primary-hover: #fde047;
       --primary-soft: #27272a;
       --accent: #4ade80;
       --accent-soft: #14532d;
       --danger: #ff4d4d;
       --danger-soft: #3b0707;
-      --warn: #facc15;
-      --warn-soft: #292507;
       --border: #facc15;
-      --shadow: none;
     }
 
-    body.dyslexia-mode {
-      --font-family: 'Atkinson Hyperlegible', 'Plus Jakarta Sans', sans-serif;
-      --word-spacing: 0.14em;
-      --letter-spacing: 0.03em;
-      --line-height: 1.85;
+    body.dys-mode {
+      --font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+      letter-spacing: 0.03em;
+      word-spacing: 0.14em;
+      line-height: 1.8;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
       background: var(--bg);
       color: var(--text);
       font-family: var(--font-family);
       font-size: var(--font-size);
-      word-spacing: var(--word-spacing);
-      letter-spacing: var(--letter-spacing);
-      line-height: var(--line-height);
     }
 
     button, input, select, textarea {
@@ -87,1160 +71,605 @@
       cursor: pointer;
       border: 2px solid transparent;
       border-radius: 14px;
-      transition: transform 0.12s ease, background-color 0.15s ease, border-color 0.15s ease;
+      font-weight: 700;
+      padding: 12px 16px;
+      min-height: 48px;
     }
 
-    button:active {
-      transform: scale(0.98);
-    }
-
-    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-      outline: 4px solid var(--primary);
-      outline-offset: 2px;
-    }
-
-    .scan-highlight {
-      outline: 5px solid #facc15 !important;
-      outline-offset: 3px !important;
-      box-shadow: 0 0 0 6px rgba(250, 204, 21, 0.35) !important;
-    }
-
-    .reading-ruler {
-      position: fixed;
-      left: 0;
-      right: 0;
-      height: 54px;
-      background: rgba(250, 204, 21, 0.18);
-      border-top: 2px solid #eab308;
-      border-bottom: 2px solid #eab308;
-      pointer-events: none;
-      z-index: 900;
-      display: none;
-    }
-    body.reading-ruler-on .reading-ruler {
-      display: block;
-    }
-
-    .flash-overlay {
-      position: fixed;
-      inset: 0;
-      background: #ffffff;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 1200;
-      transition: opacity 0.15s ease;
-    }
-    .flash-overlay.active {
-      opacity: 0.92;
-    }
-
-    .a11y-bar {
-      background: var(--surface);
-      border-bottom: 2px solid var(--border);
-      padding: 10px 16px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+    .topbar {
       position: sticky;
       top: 0;
-      z-index: 500;
-    }
-
-    .a11y-group {
+      z-index: 20;
+      background: var(--surface);
+      border-bottom: 2px solid var(--border);
+      padding: 10px 14px;
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
       gap: 8px;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .btn-chip {
+    .group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chip {
       background: var(--surface-2);
       border: 2px solid var(--border);
       padding: 8px 12px;
-      font-weight: 700;
-      font-size: 0.88em;
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      min-height: 42px;
+      font-size: 0.9em;
     }
 
-    .btn-chip.active {
+    .chip.active {
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary);
     }
-    body.contrast-high .btn-chip.active {
+    body.high-contrast .chip.active {
       color: #000000;
     }
 
-    .btn-ice-top {
+    .btn-ice {
       background: var(--danger);
       color: #ffffff;
-      font-weight: 800;
-      padding: 8px 16px;
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
     }
 
-    .btn-pro-top {
-      background: #0f766e;
+    .btn-pro {
+      background: var(--accent);
       color: #ffffff;
-      font-weight: 800;
-      padding: 8px 14px;
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    .app-container {
-      max-width: 1120px;
+    .container {
+      max-width: 1040px;
       margin: 0 auto;
-      padding: 18px 16px 80px;
+      padding: 18px 14px 80px;
     }
 
-    .hero-header {
+    .card {
       background: var(--surface);
       border: 2px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px 22px;
-      box-shadow: var(--shadow);
-      margin-bottom: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .brand-title {
-      margin: 0;
-      font-size: 1.55em;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-sub {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 0.95em;
-    }
-
-    .profile-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      padding: 20px;
       margin-bottom: 16px;
     }
 
-    .profile-btn {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      padding: 10px 14px;
-      font-weight: 700;
-      font-size: 0.9em;
-      min-height: 48px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .profile-btn.active {
-      background: var(--accent-soft);
-      border-color: var(--accent);
-      color: var(--text);
-    }
-
-    .nav-tabs {
+    .tabs {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    .nav-tab {
+    .tab {
       background: var(--surface);
       border: 2px solid var(--border);
-      padding: 14px 12px;
-      font-weight: 800;
-      font-size: 0.95em;
-      min-height: 64px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
+      padding: 14px 10px;
       text-align: center;
     }
 
-    .nav-tab.active {
+    .tab.active {
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary);
     }
-    body.contrast-high .nav-tab.active {
+    body.high-contrast .tab.active {
       color: #000000;
     }
 
     .panel {
       display: none;
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: var(--shadow);
     }
 
     .panel.active {
       display: block;
     }
 
-    .section-title {
-      margin: 0 0 8px;
-      font-size: 1.35em;
-      font-weight: 800;
-    }
-
-    .section-desc {
-      margin: 0 0 18px;
-      color: var(--muted);
-    }
-
     .btn-primary {
       background: var(--primary);
       color: #ffffff;
-      font-weight: 700;
-      padding: 12px 18px;
-      min-height: 50px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
     }
-    body.contrast-high .btn-primary {
+    body.high-contrast .btn-primary {
       color: #000000;
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-hover);
     }
 
     .btn-secondary {
       background: var(--surface-2);
       border: 2px solid var(--border);
-      font-weight: 700;
-      padding: 12px 16px;
-      min-height: 50px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .caa-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .caa-card {
-      background: var(--surface-2);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 16px 12px;
-      min-height: 112px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 800;
-      text-align: center;
-    }
-
-    .caa-card .emoji {
-      font-size: 2.1em;
-      line-height: 1;
     }
 
     .phrase-box {
       background: var(--primary-soft);
       border: 2px solid var(--primary);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 16px;
       margin-bottom: 14px;
     }
 
-    .phrase-text {
-      font-size: 1.35em;
+    .phrase-output {
+      font-size: 1.3em;
       font-weight: 800;
-      min-height: 40px;
       margin-bottom: 12px;
+      min-height: 36px;
     }
 
-    .grid-2 {
+    .caa-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
     }
 
-    .card-item {
+    .caa-btn {
       background: var(--surface-2);
       border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 12px;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-height: 100px;
     }
 
-    .form-row {
+    .caa-emoji {
+      font-size: 1.9em;
+    }
+
+    .row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
-    input[type="text"], input[type="time"], input[type="tel"], select, textarea {
+    input, textarea, select {
       background: var(--surface);
       border: 2px solid var(--border);
       border-radius: 12px;
-      padding: 12px 14px;
-      min-height: 48px;
-      flex: 1 1 180px;
-    }
-
-    .timer-ring {
-      width: 170px;
-      height: 170px;
-      border-radius: 50%;
-      margin: 14px auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2em;
-      font-weight: 800;
-      border: 10px solid var(--primary);
-      background: var(--surface-2);
-    }
-
-    .breath-circle {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      margin: 14px auto;
-      background: var(--accent);
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      text-align: center;
       padding: 12px;
-      transition: transform 4s ease-in-out;
-    }
-    body.contrast-high .breath-circle {
-      color: #000000;
+      flex: 1 1 180px;
+      min-height: 48px;
     }
 
-    .ice-banner {
+    .item {
+      background: var(--surface-2);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .ice-box {
       background: var(--danger);
       color: #ffffff;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 18px;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 14px;
     }
 
-    .ice-call-btn {
+    .ice-call {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 12px 18px;
       background: #ffffff;
       color: var(--danger);
-      font-weight: 900;
-      font-size: 1.1em;
-      padding: 14px 20px;
-      border-radius: 14px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.72);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 1000;
-    }
-    .modal-backdrop.open {
-      display: flex;
-    }
-    .modal-card {
-      background: var(--surface);
-      border: 3px solid var(--border);
-      border-radius: 20px;
-      max-width: 580px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 22px;
-      box-shadow: var(--shadow);
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.8em;
       font-weight: 800;
-      background: var(--primary-soft);
-      color: var(--primary);
-    }
-    body.contrast-high .badge {
-      background: #27272a;
-      color: #facc15;
+      border-radius: 12px;
+      text-decoration: none;
     }
 
-    .toast {
+    .feedback {
       position: fixed;
-      bottom: 20px;
+      bottom: 18px;
       left: 50%;
       transform: translateX(-50%);
       background: #0f172a;
       color: #ffffff;
-      padding: 12px 20px;
+      padding: 10px 18px;
       border-radius: 999px;
       font-weight: 700;
-      z-index: 1500;
+      z-index: 50;
       display: none;
     }
-    .toast.show {
+
+    .feedback.show {
       display: block;
     }
   </style>
 </head>
 <body>
-  <div class="reading-ruler" id="readingRuler"></div>
-  <div class="flash-overlay" id="flashOverlay"></div>
-  <div class="toast" id="toast"></div>
+  <div class="feedback" id="feedback"></div>
 
-  <header class="a11y-bar" role="region" aria-label="Réglages d'accessibilité">
-    <div class="a11y-group">
-      <button type="button" class="btn-chip" id="fontDecBtn" title="Réduire le texte">A-</button>
-      <button type="button" class="btn-chip" id="fontIncBtn" title="Agrandir le texte">A+</button>
-      <button type="button" class="btn-chip" id="contrastBtn">🌗 Contraste</button>
-      <button type="button" class="btn-chip" id="dysBtn">🔤 DYS</button>
-      <button type="button" class="btn-chip" id="rulerBtn">📏 Guide</button>
-      <button type="button" class="btn-chip" id="scanBtn">🎛️ Balayage</button>
-      <button type="button" class="btn-chip" id="readPageBtn">🔊 Lire</button>
+  <div class="topbar">
+    <div class="group">
+      <button type="button" class="chip" id="btnFontDec">A-</button>
+      <button type="button" class="chip" id="btnFontInc">A+</button>
+      <button type="button" class="chip" id="btnContrast">🌗 Contraste</button>
+      <button type="button" class="chip" id="btnDys">🔤 DYS</button>
+      <button type="button" class="chip" id="btnSpeakPage">🔊 Lire</button>
     </div>
 
-    <div class="a11y-group">
-      <select id="langSelect" aria-label="Langue" class="btn-chip">
+    <div class="group">
+      <select id="langSelect" class="chip" aria-label="Langue">
         <option value="fr">🇫🇷 Français</option>
+        <option value="ar">🇸🇦 العربية</option>
         <option value="en">🇬🇧 English</option>
         <option value="es">🇪🇸 Español</option>
-        <option value="ar">🇸🇦 العربية</option>
-        <option value="de">🇩🇪 Deutsch</option>
-        <option value="it">🇮🇹 Italiano</option>
       </select>
-      <button type="button" class="btn-pro-top" id="openSubBtn">⭐ 3 €/mois</button>
-      <button type="button" class="btn-ice-top" id="topIceBtn">🚨 ICE</button>
-    </div>
-  </header>
-
-  <main class="app-container">
-    <section class="hero-header">
-      <div>
-        <h1 class="brand-title" id="appTitle">♿ HandiVie+</h1>
-        <p class="brand-sub" id="appSubtitle">Application universelle pour faciliter la vie quotidienne de tous les handicaps</p>
-      </div>
-      <div>
-        <span class="badge" id="subStatusBadge">Essai / Gratuit ICE</span>
-      </div>
-    </section>
-
-    <section class="profile-row" aria-label="Profils d'accessibilité">
-      <button type="button" class="profile-btn" data-profile="vision">👁️ Handicap Visuel</button>
-      <button type="button" class="profile-btn" data-profile="motor">🦾 Handicap Moteur</button>
-      <button type="button" class="profile-btn" data-profile="hearing">👂 Handicap Auditif</button>
-      <button type="button" class="profile-btn" data-profile="cognitive">🧠 Cognitif / DYS / FALC</button>
-      <button type="button" class="profile-btn" data-profile="reset">↺ Standard</button>
-    </section>
-
-    <nav class="nav-tabs" role="tablist" aria-label="Modules principaux">
-      <button type="button" class="nav-tab active" data-tab="speak">🗣️ <span id="tabSpeak">Parler & Écouter</span></button>
-      <button type="button" class="nav-tab" data-tab="day">⏰ <span id="tabDay">Ma Journée</span></button>
-      <button type="button" class="nav-tab" data-tab="tools">🧘 <span id="tabTools">Outils & Calme</span></button>
-      <button type="button" class="nav-tab" data-tab="places">🗺️ <span id="tabPlaces">Lieux PMR</span></button>
-      <button type="button" class="nav-tab" data-tab="falc">📘 <span id="tabFalc">Droits FALC</span></button>
-      <button type="button" class="nav-tab" data-tab="emergency">🚨 <span id="tabEmergency">Urgence ICE</span></button>
-    </nav>
-
-    <section class="panel active" id="panel-speak">
-      <h2 class="section-title" id="speakHeading">Communication Parlée & Sous-titrage</h2>
-      <p class="section-desc" id="speakDesc">Écrivez, dictez ou choisissez un pictogramme pour parler à voix haute ou afficher un texte géant.</p>
-
-      <div class="phrase-box">
-        <div class="phrase-text" id="phraseOutput" aria-live="polite">Bonjour, j'ai besoin d'aide s'il vous plaît.</div>
-        <div class="form-row" style="margin-bottom:0">
-          <button type="button" class="btn-primary" id="speakNowBtn">🔊 Parler</button>
-          <button type="button" class="btn-secondary" id="dictateBtn">🎤 Dicter / Sous-titrer</button>
-          <button type="button" class="btn-secondary" id="bigScreenBtn">🖥️ Plein Écran</button>
-          <button type="button" class="btn-secondary" id="clearPhraseBtn">🗑️ Effacer</button>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <input type="text" id="customPhraseInput" placeholder="Écrire une phrase..." />
-        <button type="button" class="btn-primary" id="addCustomPhraseBtn">➕ Dire & Ajouter</button>
-      </div>
-
-      <div class="caa-grid" id="caaGrid"></div>
-    </section>
-
-    <section class="panel" id="panel-day">
-      <h2 class="section-title" id="dayHeading">Rappels & Routine Quotidienne</h2>
-      <p class="section-desc" id="dayDesc">Ajoutez vos médicaments, rendez-vous et tâches avec alerte vocale et flash visuel.</p>
-
-      <div class="form-row">
-        <input type="time" id="reminderTime" value="09:00" />
-        <input type="text" id="reminderLabel" placeholder="Ex. Traitement matin, Kiné..." />
-        <button type="button" class="btn-primary" id="addReminderBtn">➕ Ajouter</button>
-      </div>
-
-      <div id="remindersList"></div>
-    </section>
-
-    <section class="panel" id="panel-tools">
-      <h2 class="section-title" id="toolsHeading">Outils Sensoriels, DYS & Calme</h2>
-      <p class="section-desc" id="toolsDesc">Minuteur visuel, respiration guidée anti-stress et découpage syllabique pour la lecture.</p>
-
-      <div class="grid-2">
-        <div class="card-item" style="text-align:center">
-          <h3>⏳ Minuteur Visuel</h3>
-          <div class="timer-ring" id="timerDisplay">05:00</div>
-          <div class="form-row" style="justify-content:center">
-            <button type="button" class="btn-primary" id="timerStartBtn">▶️ Démarrer</button>
-            <button type="button" class="btn-secondary" id="timerResetBtn">↺ Réinitialiser</button>
-          </div>
-        </div>
-
-        <div class="card-item" style="text-align:center">
-          <h3>🌬️ Respiration Calme</h3>
-          <div class="breath-circle" id="breathCircle">Inspirez</div>
-          <div class="form-row" style="justify-content:center">
-            <button type="button" class="btn-primary" id="breathToggleBtn">▶️ Lancer / Arrêter</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-item">
-        <h3>🔤 Loupe & Découpage Syllabique (DYS)</h3>
-        <div class="form-row">
-          <input type="text" id="syllableInput" value="accessibilité quotidienne" />
-          <button type="button" class="btn-primary" id="syllableBtn">✂️ Découper & Lire</button>
-        </div>
-        <div id="syllableResult" style="font-size:1.3em;font-weight:800;margin-top:8px;"></div>
-      </div>
-    </section>
-
-    <section class="panel" id="panel-places">
-      <h2 class="section-title" id="placesHeading">Lieux & Services Accessibles</h2>
-      <p class="section-desc" id="placesDesc">Filtrez les lieux selon vos besoins d'accessibilité.</p>
-
-      <div class="form-row">
-        <select id="placeFilter">
-          <option value="all">Tous les aménagements</option>
-          <option value="rampe">♿ Rampe / Fauteuil</option>
-          <option value="toilettes">🚻 Toilettes PMR</option>
-          <option value="auditif">🦻 Boucle magnétique / LSF</option>
-          <option value="calme">🌿 Espace calme</option>
-        </select>
-        <button type="button" class="btn-secondary" id="openPlayGuideBtn">📦 Guide Play Store (.aab)</button>
-      </div>
-
-      <div id="placesList"></div>
-    </section>
-
-    <section class="panel" id="panel-falc">
-      <h2 class="section-title" id="falcHeading">Fiches Simples (FALC) & Numéros Utiles</h2>
-      <p class="section-desc" id="falcDesc">Informations claires et numéros d'urgence accessibles.</p>
-
-      <div class="card-item">
-        <h3>📞 Numéros d'urgence & écoute</h3>
-        <p><strong>114</strong> : Numéro d'urgence national par SMS, fax, chat et visio pour personnes sourdes ou malentendantes (24h/24, gratuit).</p>
-        <p><strong>15</strong> (SAMU) • <strong>18</strong> (Pompiers) • <strong>112</strong> (Urgence européen).</p>
-      </div>
-
-      <div class="card-item">
-        <h3>🪪 Carte d'attestation rapide à montrer</h3>
-        <p id="attestationText">J'ai un handicap invisible ou une difficulté de communication. Merci de parler calmement, d'utiliser un texte clair ou de m'accorder un peu de temps.</p>
-        <button type="button" class="btn-primary" id="speakAttestationBtn">🔊 Lire l'attestation</button>
-      </div>
-    </section>
-
-    <section class="panel" id="panel-emergency">
-      <div class="ice-banner">
-        <h2 style="margin:0 0 8px;font-size:1.6em;">🚨 URGENCE ICE — 100 % GRATUIT</h2>
-        <p style="margin:0 0 10px;">Écran d'urgence immédiat pour les secours et personnes autour de vous.</p>
-        <button type="button" class="btn-primary" id="iceSpeakBtn" style="background:#ffffff;color:#b91c1c;">🔊 J'AI BESOIN D'AIDE MÉDICALE</button>
-      </div>
-
-      <div class="card-item">
-        <h3>📋 Ma Fiche Médicale & Contact ICE</h3>
-        <div class="form-row">
-          <input type="text" id="iceName" placeholder="Nom et prénom" />
-          <input type="text" id="iceBlood" placeholder="Groupe sanguin / Allergies" />
-        </div>
-        <div class="form-row">
-          <input type="tel" id="icePhone" placeholder="Téléphone du proche ICE (ex. 0600000000)" />
-          <button type="button" class="btn-primary" id="saveIceBtn">💾 Enregistrer</button>
-        </div>
-        <a class="ice-call-btn" id="iceCallLink" href="tel:114">📞 Appeler le contact ICE / 114</a>
-      </div>
-    </section>
-  </main>
-
-  <div class="modal-backdrop" id="subModal" role="dialog" aria-modal="true" aria-labelledby="subModalTitle">
-    <div class="modal-card">
-      <h2 id="subModalTitle" style="margin-top:0;">⭐ HandiVie+ Premium — 3,00 €/mois</h2>
-      <p><strong>7 jours d'essai gratuit</strong>, puis <strong>3,00 €/mois</strong> via Google Play Billing (résiliable à tout moment). L'<strong>Urgence ICE</strong> reste toujours 100 % gratuite.</p>
-      <ul>
-        <li>6 langues complètes (FR, EN, ES, AR, DE, IT) + voix adaptées</li>
-        <li>Profils d'accessibilité, balayage contacteur & mode DYS</li>
-        <li>Rappels vocaux illimités, outils sensoriels & lieux PMR</li>
-      </ul>
-      <div class="form-row">
-        <button type="button" class="btn-primary" id="activateSubBtn">✅ Activer l'essai / 3 €/mois</button>
-        <button type="button" class="btn-secondary" id="closeSubBtn">Fermer</button>
-      </div>
+      <button type="button" class="btn-pro" id="btnPro">⭐ 3,00 €/mois</button>
+      <button type="button" class="btn-ice" id="btnTopIce">🚨 ICE</button>
     </div>
   </div>
 
-  <div class="modal-backdrop" id="playModal" role="dialog" aria-modal="true" aria-labelledby="playModalTitle">
-    <div class="modal-card">
-      <h2 id="playModalTitle" style="margin-top:0;">📦 Préparation Google Play Store (.aab)</h2>
-      <p>Ce pack inclut <code>manifest.json</code>, <code>sw.js</code>, <code>assetlinks.json</code> et la configuration <strong>Bubblewrap / TWA</strong> pour publier sur Google Play :</p>
-      <ol>
-        <li>Hébergez les fichiers du dossier <code>public/</code> en HTTPS (ex. Firebase Hosting / GitHub Pages).</li>
-        <li>Créez le produit d'abonnement <code>handivie_plus_monthly</code> à <strong>3,00 € / mois</strong> dans la Google Play Console.</li>
-        <li>Exécutez <code>./android_twa/build_aab.sh</code> pour générer <code>app-release-bundle.aab</code> et téléversez-le sur Google Play.</li>
-      </ol>
-      <button type="button" class="btn-secondary" id="closePlayBtn">Fermer</button>
+  <div class="container">
+    <div class="card">
+      <h1 id="titleApp" style="margin:0 0 6px;">♿ HandiVie+</h1>
+      <p id="subtitleApp" style="margin:0;color:var(--muted);">Application universelle pour faciliter le quotidien des personnes en situation de handicap</p>
+      <div id="statusBadge" style="margin-top:10px;font-weight:800;color:var(--accent);">Urgence ICE gratuite • Option 3,00 €/mois disponible</div>
+    </div>
+
+    <div class="tabs">
+      <button type="button" class="tab active" data-tab="speak" id="tabSpeak">🗣️ Parler</button>
+      <button type="button" class="tab" data-tab="day" id="tabDay">⏰ Ma Journée</button>
+      <button type="button" class="tab" data-tab="calm" id="tabCalm">🧘 Calme</button>
+      <button type="button" class="tab" data-tab="ice" id="tabIce">🚨 Urgence ICE</button>
+    </div>
+
+    <div class="card panel active" id="panel-speak">
+      <h2 id="speakTitle" style="margin-top:0;">Communication rapide</h2>
+      <div class="phrase-box">
+        <div class="phrase-output" id="phraseBox">Bonjour, j'ai besoin d'aide.</div>
+        <div class="row" style="margin-bottom:0;">
+          <button type="button" class="btn-primary" id="btnSpeakPhrase">🔊 Parler</button>
+          <button type="button" class="btn-secondary" id="btnClearPhrase">🗑️ Effacer</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <input type="text" id="customInput" placeholder="Écrire un message..." />
+        <button type="button" class="btn-primary" id="btnSendCustom">➕ Dire</button>
+      </div>
+
+      <div class="caa-grid" id="caaGrid"></div>
+    </div>
+
+    <div class="card panel" id="panel-day">
+      <h2 id="dayTitle" style="margin-top:0;">Rappels du quotidien</h2>
+      <div class="row">
+        <input type="time" id="remTime" value="08:30" />
+        <input type="text" id="remText" placeholder="Ex. Médicament, rendez-vous..." />
+        <button type="button" class="btn-primary" id="btnAddRem">➕ Ajouter</button>
+      </div>
+      <div id="remList"></div>
+    </div>
+
+    <div class="card panel" id="panel-calm">
+      <h2 id="calmTitle" style="margin-top:0;">Minuteur & Respiration</h2>
+      <div class="row" style="align-items:center;">
+        <button type="button" class="btn-primary" id="btnTimerToggle">▶️ Minuteur 3 min</button>
+        <strong id="timerDisplay" style="font-size:1.4em;">03:00</strong>
+      </div>
+      <div class="row" style="align-items:center;margin-top:14px;">
+        <button type="button" class="btn-secondary" id="btnBreath">🌬️ Respiration guidée</button>
+        <span id="breathStatus" style="font-weight:700;">Prêt</span>
+      </div>
+    </div>
+
+    <div class="card panel" id="panel-ice">
+      <div class="ice-box">
+        <h2 id="iceBannerTitle" style="margin:0 0 8px;">🚨 URGENCE ICE — 100 % GRATUIT</h2>
+        <p id="iceBannerDesc" style="margin:0 0 10px;">Fiche d'urgence accessible gratuitement à tout moment.</p>
+        <button type="button" class="btn-secondary" style="background:#ffffff;color:var(--danger);" id="btnIceAlert">🔊 Lire l'alerte d'urgence</button>
+      </div>
+
+      <div class="row">
+        <input type="text" id="iceName" placeholder="Nom et prénom" />
+        <input type="tel" id="icePhone" placeholder="Téléphone d'urgence (ex. 114)" />
+      </div>
+      <div class="row">
+        <input type="text" id="iceNotes" placeholder="Handicap, allergies ou consignes" />
+        <button type="button" class="btn-primary" id="btnSaveIce">💾 Enregistrer ICE</button>
+      </div>
+      <a class="ice-call" id="iceCallLink" href="tel:114">📞 Appeler le contact ICE</a>
+      <div id="iceSavedInfo" style="margin-top:10px;font-weight:700;"></div>
     </div>
   </div>
 
   <script>
-    const I18N = {
+    const TEXTS = {
       fr: {
         dir: 'ltr', lang: 'fr-FR',
         title: '♿ HandiVie+',
-        subtitle: 'Application universelle pour faciliter la vie quotidienne de tous les handicaps',
-        tabSpeak: 'Parler & Écouter', tabDay: 'Ma Journée', tabTools: 'Outils & Calme',
-        tabPlaces: 'Lieux PMR', tabFalc: 'Droits FALC', tabEmergency: 'Urgence ICE',
-        defaultPhrase: "Bonjour, j'ai besoin d'aide s'il vous plaît.",
-        iceAlert: "Urgence ! J'ai besoin d'aide médicale immédiatement.",
+        subtitle: 'Application universelle pour faciliter le quotidien des personnes en situation de handicap',
+        tabSpeak: '🗣️ Parler', tabDay: '⏰ Ma Journée', tabCalm: '🧘 Calme', tabIce: '🚨 Urgence ICE',
+        defaultPhrase: "Bonjour, j'ai besoin d'aide.",
+        alertPhrase: "Urgence ! J'ai besoin d'aide médicale immédiatement.",
         caa: [
           { e: '🆘', t: "J'ai besoin d'aide" },
           { e: '💧', t: "J'ai soif" },
           { e: '🍽️', t: "J'ai faim" },
-          { e: '🚻', t: 'Je cherche les toilettes' },
+          { e: '🚻', t: 'Où sont les toilettes ?' },
           { e: '🩺', t: "J'ai mal" },
-          { e: '🔇', t: 'Trop de bruit, aidons-nous au calme' },
-          { e: '✅', t: 'Oui, d’accord' },
-          { e: '❌', t: 'Non, merci' }
-        ]
-      },
-      en: {
-        dir: 'ltr', lang: 'en-US',
-        title: '♿ HandiVie+',
-        subtitle: 'Universal daily life assistant for all disabilities',
-        tabSpeak: 'Speak & Listen', tabDay: 'My Day', tabTools: 'Calm & Tools',
-        tabPlaces: 'Accessible Places', tabFalc: 'Easy Read', tabEmergency: 'ICE Emergency',
-        defaultPhrase: 'Hello, I need help please.',
-        iceAlert: 'Emergency! I need medical help right now.',
-        caa: [
-          { e: '🆘', t: 'I need help' },
-          { e: '💧', t: 'I am thirsty' },
-          { e: '🍽️', t: 'I am hungry' },
-          { e: '🚻', t: 'Where is the restroom?' },
-          { e: '🩺', t: 'I am in pain' },
-          { e: '🔇', t: 'Too loud, please move to a quiet spot' },
-          { e: '✅', t: 'Yes, please' },
-          { e: '❌', t: 'No, thank you' }
-        ]
-      },
-      es: {
-        dir: 'ltr', lang: 'es-ES',
-        title: '♿ HandiVie+',
-        subtitle: 'Asistente diario universal para todo tipo de discapacidad',
-        tabSpeak: 'Hablar y Escuchar', tabDay: 'Mi Día', tabTools: 'Calma y Herramientas',
-        tabPlaces: 'Lugares Accesibles', tabFalc: 'Lectura Fácil', tabEmergency: 'Emergencia ICE',
-        defaultPhrase: 'Hola, necesito ayuda por favor.',
-        iceAlert: '¡Emergencia! Necesito ayuda médica ahora mismo.',
-        caa: [
-          { e: '🆘', t: 'Necesito ayuda' },
-          { e: '💧', t: 'Tengo sed' },
-          { e: '🍽️', t: 'Tengo hambre' },
-          { e: '🚻', t: '¿Dónde está el baño?' },
-          { e: '🩺', t: 'Siento dolor' },
-          { e: '🔇', t: 'Hay mucho ruido, busquemos un lugar tranquilo' },
-          { e: '✅', t: 'Sí, de acuerdo' },
-          { e: '❌', t: 'No, gracias' }
+          { e: '✅', t: 'Oui, merci' }
         ]
       },
       ar: {
         dir: 'rtl', lang: 'ar-SA',
-        title: '♿ هاندي في+ (HandiVie+)',
-        subtitle: 'تطبيق شامل لتسهيل الحياة اليومية لجميع ذوي الإعاقة',
-        tabSpeak: 'تحدث واستمع', tabDay: 'يومي', tabTools: 'أدوات وهدوء',
-        tabPlaces: 'أماكن ميسرة', tabFalc: 'قراءة سهلة', tabEmergency: 'طوارئ ICE',
-        defaultPhrase: 'مرحبًا، أحتاج إلى مساعدة من فضلك.',
-        iceAlert: 'طوارئ! أحتاج إلى مساعدة طبية فورًا.',
+        title: '♿ HandiVie+ — هاندي في بلس',
+        subtitle: 'تطبيق شامل لتسهيل الحياة اليومية لذوي الاحتياجات الخاصة',
+        tabSpeak: '🗣️ تحدث', tabDay: '⏰ يومي', tabCalm: '🧘 هدوء', tabIce: '🚨 طوارئ ICE',
+        defaultPhrase: 'مرحبًا، أحتاج إلى مساعدة.',
+        alertPhrase: 'طوارئ! أحتاج إلى مساعدة طبية فورًا.',
         caa: [
           { e: '🆘', t: 'أحتاج إلى مساعدة' },
           { e: '💧', t: 'أنا عطشان' },
           { e: '🍽️', t: 'أنا جائع' },
           { e: '🚻', t: 'أين دورة المياه؟' },
           { e: '🩺', t: 'أشعر بألم' },
-          { e: '🔇', t: 'الضوضاء عالية جدًا، لنذهب لمكان هادئ' },
-          { e: '✅', t: 'نعم، موافق' },
-          { e: '❌', t: 'لا، شكرًا' }
+          { e: '✅', t: 'نعم، شكرًا' }
         ]
       },
-      de: {
-        dir: 'ltr', lang: 'de-DE',
+      en: {
+        dir: 'ltr', lang: 'en-US',
         title: '♿ HandiVie+',
-        subtitle: 'Universeller Alltagsassistent für alle Behinderungsarten',
-        tabSpeak: 'Sprechen & Hören', tabDay: 'Mein Tag', tabTools: 'Ruhe & Tools',
-        tabPlaces: 'Barrierefreie Orte', tabFalc: 'Leichte Sprache', tabEmergency: 'ICE-Notfall',
-        defaultPhrase: 'Hallo, ich brauche bitte Hilfe.',
-        iceAlert: 'Notfall! Ich brauche sofort medizinische Hilfe.',
+        subtitle: 'Universal daily assistant for people with disabilities',
+        tabSpeak: '🗣️ Speak', tabDay: '⏰ My Day', tabCalm: '🧘 Calm', tabIce: '🚨 ICE Emergency',
+        defaultPhrase: 'Hello, I need help.',
+        alertPhrase: 'Emergency! I need medical help right now.',
         caa: [
-          { e: '🆘', t: 'Ich brauche Hilfe' },
-          { e: '💧', t: 'Ich habe Durst' },
-          { e: '🍽️', t: 'Ich habe Hunger' },
-          { e: '🚻', t: 'Wo ist die Toilette?' },
-          { e: '🩺', t: 'Ich habe Schmerzen' },
-          { e: '🔇', t: 'Zu laut, bitte an einen ruhigen Ort' },
-          { e: '✅', t: 'Ja, gerne' },
-          { e: '❌', t: 'Nein, danke' }
+          { e: '🆘', t: 'I need help' },
+          { e: '💧', t: 'I am thirsty' },
+          { e: '🍽️', t: 'I am hungry' },
+          { e: '🚻', t: 'Where is the restroom?' },
+          { e: '🩺', t: 'I am in pain' },
+          { e: '✅', t: 'Yes, thank you' }
         ]
       },
-      it: {
-        dir: 'ltr', lang: 'it-IT',
+      es: {
+        dir: 'ltr', lang: 'es-ES',
         title: '♿ HandiVie+',
-        subtitle: 'Assistente quotidiano universale per ogni disabilità',
-        tabSpeak: 'Parla e Ascolta', tabDay: 'La Mia Giornata', tabTools: 'Calma e Strumenti',
-        tabPlaces: 'Luoghi Accessibili', tabFalc: 'Facile da Leggere', tabEmergency: 'Emergenza ICE',
-        defaultPhrase: 'Ciao, ho bisogno di aiuto per favore.',
-        iceAlert: 'Emergenza! Ho bisogno di assistenza medica subito.',
+        subtitle: 'Asistente universal para facilitar la vida diaria',
+        tabSpeak: '🗣️ Hablar', tabDay: '⏰ Mi Día', tabCalm: '🧘 Calma', tabIce: '🚨 Urgencia ICE',
+        defaultPhrase: 'Hola, necesito ayuda.',
+        alertPhrase: '¡Emergencia! Necesito ayuda médica ahora mismo.',
         caa: [
-          { e: '🆘', t: 'Ho bisogno di aiuto' },
-          { e: '💧', t: 'Ho sete' },
-          { e: '🍽️', t: 'Ho fame' },
-          { e: '🚻', t: 'Dov’è il bagno?' },
-          { e: '🩺', t: 'Sento dolore' },
-          { e: '🔇', t: 'Troppo rumore, cerchiamo un posto calmo' },
-          { e: '✅', t: 'Sì, d’accordo' },
-          { e: '❌', t: 'No, grazie' }
+          { e: '🆘', t: 'Necesito ayuda' },
+          { e: '💧', t: 'Tengo sed' },
+          { e: '🍽️', t: 'Tengo hambre' },
+          { e: '🚻', t: '¿Dónde está el baño?' },
+          { e: '🩺', t: 'Siento dolor' },
+          { e: '✅', t: 'Sí, gracias' }
         ]
       }
     };
 
-    const PLACES = [
-      { name: 'Mairie & Accueil Citoyen', tags: ['rampe', 'toilettes', 'auditif'], info: 'Rampe douce, sanitaires adaptés, boucle magnétique.' },
-      { name: 'Pharmacie Centrale', tags: ['rampe', 'calme'], info: 'Comptoir bas accessible fauteuil et espace calme.' },
-      { name: 'Médiathèque Municipale', tags: ['rampe', 'toilettes', 'calme'], info: 'Ascenseur, zone de lecture calme, grand format.' }
-    ];
+    let currentLang = 'fr';
+    let fontSize = 18;
+    let reminders = JSON.parse(localStorage.getItem('hv_pro_rem') || '[{"time":"08:30","text":"Traitement du matin","done":false}]');
+    let iceData = JSON.parse(localStorage.getItem('hv_pro_ice') || '{"name":"","phone":"114","notes":""}');
+    let timerLeft = 180;
+    let timerId = null;
 
-    const state = {
-      lang: 'fr',
-      fontSize: 18,
-      reminders: JSON.parse(localStorage.getItem('hv_reminders') || '[{"time":"09:00","label":"Traitement du matin","done":false}]'),
-      ice: JSON.parse(localStorage.getItem('hv_ice') || '{"name":"","blood":"","phone":"114"}'),
-      subscribed: localStorage.getItem('hv_sub') === '1',
-      scanTimer: null,
-      scanIdx: 0,
-      timerSeconds: 300,
-      timerInterval: null,
-      breathInterval: null
-    };
-
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2600);
+    function notify(msg) {
+      const el = document.getElementById('feedback');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2200);
     }
 
-    function triggerFlash() {
-      const f = document.getElementById('flashOverlay');
-      f.classList.add('active');
-      setTimeout(() => f.classList.remove('active'), 260);
-    }
-
-    function speak(text) {
-      if (!text) return;
-      document.getElementById('phraseOutput').textContent = text;
+    function speakText(msg) {
+      if (!msg) return;
+      document.getElementById('phraseBox').textContent = msg;
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = I18N[state.lang].lang;
+        const u = new SpeechSynthesisUtterance(msg);
+        u.lang = TEXTS[currentLang].lang;
         window.speechSynthesis.speak(u);
       }
-      showToast('🔊 ' + text);
+      notify('🔊 ' + msg);
     }
 
-    function setLanguage(lang) {
-      state.lang = lang;
-      const d = I18N[lang];
-      document.documentElement.lang = lang;
-      document.documentElement.dir = d.dir;
-      document.getElementById('appTitle').textContent = d.title;
-      document.getElementById('appSubtitle').textContent = d.subtitle;
-      document.getElementById('tabSpeak').textContent = d.tabSpeak;
-      document.getElementById('tabDay').textContent = d.tabDay;
-      document.getElementById('tabTools').textContent = d.tabTools;
-      document.getElementById('tabPlaces').textContent = d.tabPlaces;
-      document.getElementById('tabFalc').textContent = d.tabFalc;
-      document.getElementById('tabEmergency').textContent = d.tabEmergency;
-      document.getElementById('phraseOutput').textContent = d.defaultPhrase;
-      renderCAA();
+    function applyLang(lang) {
+      currentLang = TEXTS[lang] ? lang : 'fr';
+      const t = TEXTS[currentLang];
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = t.dir;
+      document.getElementById('titleApp').textContent = t.title;
+      document.getElementById('subtitleApp').textContent = t.subtitle;
+      document.getElementById('tabSpeak').textContent = t.tabSpeak;
+      document.getElementById('tabDay').textContent = t.tabDay;
+      document.getElementById('tabCalm').textContent = t.tabCalm;
+      document.getElementById('tabIce').textContent = t.tabIce;
+      document.getElementById('phraseBox').textContent = t.defaultPhrase;
+      renderCaa();
     }
 
-    function renderCAA() {
+    function renderCaa() {
       const grid = document.getElementById('caaGrid');
       grid.innerHTML = '';
-      I18N[state.lang].caa.forEach(item => {
+      TEXTS[currentLang].caa.forEach((item) => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'caa-card';
-        btn.innerHTML = `<span class="emoji">${item.e}</span><span>${item.t}</span>`;
-        btn.addEventListener('click', () => speak(item.t));
+        btn.className = 'caa-btn';
+        btn.innerHTML = '<span class="caa-emoji">' + item.e + '</span><span>' + item.t + '</span>';
+        btn.addEventListener('click', () => speakText(item.t));
         grid.appendChild(btn);
       });
     }
 
     function renderReminders() {
-      const list = document.getElementById('remindersList');
+      const list = document.getElementById('remList');
       list.innerHTML = '';
-      state.reminders.forEach((r, idx) => {
+      reminders.forEach((r, i) => {
         const div = document.createElement('div');
-        div.className = 'card-item';
-        div.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
-            <div>
-              <strong>${r.time}</strong> — <span style="${r.done ? 'text-decoration:line-through;opacity:0.65;' : ''}">${r.label}</span>
-            </div>
-            <div style="display:flex;gap:8px;">
-              <button type="button" class="btn-secondary" onclick="toggleReminder(${idx})">${r.done ? '↩️ Annuler' : '✅ Fait'}</button>
-              <button type="button" class="btn-secondary" onclick="testReminder(${idx})">🔔 Tester</button>
-              <button type="button" class="btn-secondary" onclick="deleteReminder(${idx})">🗑️</button>
-            </div>
-          </div>
-        `;
-        list.appendChild(div);
-      });
-      localStorage.setItem('hv_reminders', JSON.stringify(state.reminders));
-    }
+        div.className = 'item';
+        const label = document.createElement('span');
+        label.style.textDecoration = r.done ? 'line-through' : 'none';
+        label.textContent = r.time + ' — ' + r.text;
 
-    window.toggleReminder = (idx) => {
-      state.reminders[idx].done = !state.reminders[idx].done;
-      renderReminders();
-    };
-    window.testReminder = (idx) => {
-      triggerFlash();
-      speak(state.reminders[idx].label);
-    };
-    window.deleteReminder = (idx) => {
-      state.reminders.splice(idx, 1);
-      renderReminders();
-    };
+        const actions = document.createElement('div');
+        actions.className = 'group';
 
-    function renderPlaces() {
-      const filter = document.getElementById('placeFilter').value;
-      const list = document.getElementById('placesList');
-      list.innerHTML = '';
-      PLACES.filter(p => filter === 'all' || p.tags.includes(filter)).forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'card-item';
-        div.innerHTML = `<strong>${p.name}</strong><p style="margin:6px 0 0;">${p.info}</p>`;
+        const bDone = document.createElement('button');
+        bDone.type = 'button';
+        bDone.className = 'btn-secondary';
+        bDone.textContent = r.done ? '↩️' : '✅';
+        bDone.addEventListener('click', () => {
+          reminders[i].done = !reminders[i].done;
+          saveReminders();
+        });
+
+        const bTest = document.createElement('button');
+        bTest.type = 'button';
+        bTest.className = 'btn-secondary';
+        bTest.textContent = '🔔';
+        bTest.addEventListener('click', () => speakText(r.text));
+
+        const bDel = document.createElement('button');
+        bDel.type = 'button';
+        bDel.className = 'btn-secondary';
+        bDel.textContent = '🗑️';
+        bDel.addEventListener('click', () => {
+          reminders.splice(i, 1);
+          saveReminders();
+        });
+
+        actions.append(bDone, bTest, bDel);
+        div.append(label, actions);
         list.appendChild(div);
       });
     }
 
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
-      });
-    });
+    function saveReminders() {
+      localStorage.setItem('hv_pro_rem', JSON.stringify(reminders));
+      renderReminders();
+    }
 
-    document.getElementById('fontIncBtn').addEventListener('click', () => {
-      state.fontSize = Math.min(30, state.fontSize + 2);
-      document.documentElement.style.setProperty('--font-size', state.fontSize + 'px');
-    });
-    document.getElementById('fontDecBtn').addEventListener('click', () => {
-      state.fontSize = Math.max(15, state.fontSize - 2);
-      document.documentElement.style.setProperty('--font-size', state.fontSize + 'px');
-    });
-    document.getElementById('contrastBtn').addEventListener('click', () => {
-      document.body.classList.toggle('contrast-high');
-    });
-    document.getElementById('dysBtn').addEventListener('click', () => {
-      document.body.classList.toggle('dyslexia-mode');
-    });
-    document.getElementById('rulerBtn').addEventListener('click', () => {
-      document.body.classList.toggle('reading-ruler-on');
-    });
-    document.addEventListener('mousemove', (e) => {
-      const ruler = document.getElementById('readingRuler');
-      if (document.body.classList.contains('reading-ruler-on')) {
-        ruler.style.top = (e.clientY - 27) + 'px';
-      }
-    });
+    function openTab(name) {
+      document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t.dataset.tab === name));
+      document.querySelectorAll('.panel').forEach((p) => p.classList.toggle('active', p.id === 'panel-' + name));
+    }
 
-    document.getElementById('scanBtn').addEventListener('click', function () {
+    document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => openTab(t.dataset.tab)));
+    document.getElementById('langSelect').addEventListener('change', (e) => applyLang(e.target.value));
+
+    document.getElementById('btnFontInc').addEventListener('click', () => {
+      fontSize = Math.min(28, fontSize + 2);
+      document.body.style.fontSize = fontSize + 'px';
+      notify('Texte : ' + fontSize + 'px');
+    });
+    document.getElementById('btnFontDec').addEventListener('click', () => {
+      fontSize = Math.max(15, fontSize - 2);
+      document.body.style.fontSize = fontSize + 'px';
+      notify('Texte : ' + fontSize + 'px');
+    });
+    document.getElementById('btnContrast').addEventListener('click', function () {
+      document.body.classList.toggle('high-contrast');
       this.classList.toggle('active');
-      if (this.classList.contains('active')) {
-        const items = Array.from(document.querySelectorAll('button:not(#scanBtn), a.ice-call-btn'));
-        state.scanIdx = 0;
-        state.scanTimer = setInterval(() => {
-          items.forEach(el => el.classList.remove('scan-highlight'));
-          if (items.length) {
-            const target = items[state.scanIdx % items.length];
-            target.classList.add('scan-highlight');
-            state.scanIdx++;
-          }
-        }, 1400);
-        showToast('Balayage actif (touche Entrée pour valider)');
-      } else {
-        clearInterval(state.scanTimer);
-        document.querySelectorAll('.scan-highlight').forEach(el => el.classList.remove('scan-highlight'));
-      }
+      notify('Contraste mis à jour');
+    });
+    document.getElementById('btnDys').addEventListener('click', function () {
+      document.body.classList.toggle('dys-mode');
+      this.classList.toggle('active');
+      notify('Mode DYS mis à jour');
+    });
+    document.getElementById('btnSpeakPage').addEventListener('click', () => {
+      const active = document.querySelector('.panel.active');
+      if (active) speakText(active.innerText.slice(0, 220));
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const activeScan = document.querySelector('.scan-highlight');
-        if (activeScan && document.getElementById('scanBtn').classList.contains('active')) {
-          e.preventDefault();
-          activeScan.click();
-        }
-      }
+    document.getElementById('btnSpeakPhrase').addEventListener('click', () => speakText(document.getElementById('phraseBox').textContent));
+    document.getElementById('btnClearPhrase').addEventListener('click', () => {
+      document.getElementById('phraseBox').textContent = '';
+      notify('Texte effacé');
+    });
+    document.getElementById('btnSendCustom').addEventListener('click', () => {
+      const inp = document.getElementById('customInput');
+      if (!inp.value.trim()) return;
+      speakText(inp.value.trim());
+      inp.value = '';
     });
 
-    document.getElementById('readPageBtn').addEventListener('click', () => {
-      const activePanel = document.querySelector('.panel.active');
-      if (activePanel) speak(activePanel.innerText.slice(0, 260));
+    document.getElementById('btnAddRem').addEventListener('click', () => {
+      const time = document.getElementById('remTime').value || '09:00';
+      const text = document.getElementById('remText').value.trim();
+      if (!text) return;
+      reminders.push({ time, text, done: false });
+      document.getElementById('remText').value = '';
+      saveReminders();
+      notify('Rappel ajouté');
     });
 
-    document.getElementById('langSelect').addEventListener('change', (e) => setLanguage(e.target.value));
-
-    document.querySelectorAll('.profile-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.profile-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const p = btn.dataset.profile;
-        document.body.classList.remove('contrast-high', 'dyslexia-mode');
-        if (p === 'vision') {
-          document.body.classList.add('contrast-high');
-          state.fontSize = 24;
-        } else if (p === 'motor') {
-          state.fontSize = 22;
-        } else if (p === 'hearing') {
-          triggerFlash();
-          showToast('Alertes visuelles activées');
-        } else if (p === 'cognitive') {
-          document.body.classList.add('dyslexia-mode');
-          state.fontSize = 22;
-        } else {
-          state.fontSize = 18;
-        }
-        document.documentElement.style.setProperty('--font-size', state.fontSize + 'px');
-      });
-    });
-
-    document.getElementById('speakNowBtn').addEventListener('click', () => {
-      speak(document.getElementById('phraseOutput').textContent);
-    });
-    document.getElementById('clearPhraseBtn').addEventListener('click', () => {
-      document.getElementById('phraseOutput').textContent = '';
-    });
-    document.getElementById('bigScreenBtn').addEventListener('click', () => {
-      const txt = document.getElementById('phraseOutput').textContent || I18N[state.lang].defaultPhrase;
-      const w = window.open('', '_blank');
-      if (w) {
-        w.document.write(`<body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#000;color:#fff;font-family:sans-serif;font-size:8vw;text-align:center;padding:24px;">${txt}</body>`);
-      }
-    });
-    document.getElementById('addCustomPhraseBtn').addEventListener('click', () => {
-      const inp = document.getElementById('customPhraseInput');
-      if (inp.value.trim()) {
-        speak(inp.value.trim());
-        inp.value = '';
-      }
-    });
-    document.getElementById('dictateBtn').addEventListener('click', () => {
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) {
-        showToast('Dictée vocale non supportée sur ce navigateur');
+    document.getElementById('btnTimerToggle').addEventListener('click', () => {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+        notify('Minuteur en pause');
         return;
       }
-      const rec = new SR();
-      rec.lang = I18N[state.lang].lang;
-      rec.onresult = (ev) => {
-        const transcript = ev.results[0][0].transcript;
-        document.getElementById('phraseOutput').textContent = transcript;
-      };
-      rec.start();
-      showToast('🎤 Écoute en cours...');
-    });
-
-    document.getElementById('addReminderBtn').addEventListener('click', () => {
-      const time = document.getElementById('reminderTime').value || '12:00';
-      const label = document.getElementById('reminderLabel').value.trim();
-      if (!label) return;
-      state.reminders.push({ time, label, done: false });
-      document.getElementById('reminderLabel').value = '';
-      renderReminders();
-    });
-
-    function updateTimerDisplay() {
-      const m = String(Math.floor(state.timerSeconds / 60)).padStart(2, '0');
-      const s = String(state.timerSeconds % 60).padStart(2, '0');
-      document.getElementById('timerDisplay').textContent = `${m}:${s}`;
-    }
-    document.getElementById('timerStartBtn').addEventListener('click', () => {
-      if (state.timerInterval) {
-        clearInterval(state.timerInterval);
-        state.timerInterval = null;
-        return;
-      }
-      state.timerInterval = setInterval(() => {
-        if (state.timerSeconds > 0) {
-          state.timerSeconds--;
-          updateTimerDisplay();
+      timerId = setInterval(() => {
+        if (timerLeft > 0) {
+          timerLeft--;
+          const m = String(Math.floor(timerLeft / 60)).padStart(2, '0');
+          const s = String(timerLeft % 60).padStart(2, '0');
+          document.getElementById('timerDisplay').textContent = m + ':' + s;
         } else {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-          triggerFlash();
-          speak('Minuteur terminé');
+          clearInterval(timerId);
+          timerId = null;
+          timerLeft = 180;
+          document.getElementById('timerDisplay').textContent = '03:00';
+          speakText('Minuteur terminé');
         }
       }, 1000);
-    });
-    document.getElementById('timerResetBtn').addEventListener('click', () => {
-      clearInterval(state.timerInterval);
-      state.timerInterval = null;
-      state.timerSeconds = 300;
-      updateTimerDisplay();
+      notify('Minuteur démarré');
     });
 
-    document.getElementById('breathToggleBtn').addEventListener('click', () => {
-      const circle = document.getElementById('breathCircle');
-      if (state.breathInterval) {
-        clearInterval(state.breathInterval);
-        state.breathInterval = null;
-        circle.style.transform = 'scale(1)';
-        circle.textContent = 'Repos';
-        return;
-      }
-      let step = 0;
-      const phases = [
-        { label: 'Inspirez', scale: '1.28' },
-        { label: 'Expirez', scale: '0.92' }
-      ];
-      const runStep = () => {
-        const p = phases[step % phases.length];
-        circle.textContent = p.label;
-        circle.style.transform = `scale(${p.scale})`;
-        step++;
-      };
-      runStep();
-      state.breathInterval = setInterval(runStep, 4000);
+    document.getElementById('btnBreath').addEventListener('click', () => {
+      const el = document.getElementById('breathStatus');
+      el.textContent = 'Inspirez 4s... puis expirez 4s';
+      speakText('Inspirez calmement pendant quatre secondes');
     });
 
-    document.getElementById('syllableBtn').addEventListener('click', () => {
-      const txt = document.getElementById('syllableInput').value.trim();
-      if (!txt) return;
-      const parts = txt.split(/\s+/).map(word =>
-        word.replace(/([aeiouyàâéèêëîïôùûü])([^aeiouyàâéèêëîïôùûü\s])/gi, '$1·$2')
-      );
-      const out = parts.join('   ');
-      document.getElementById('syllableResult').textContent = out;
-      speak(txt);
-    });
-
-    document.getElementById('placeFilter').addEventListener('change', renderPlaces);
-    document.getElementById('speakAttestationBtn').addEventListener('click', () => {
-      speak(document.getElementById('attestationText').textContent);
-    });
-
-    document.getElementById('topIceBtn').addEventListener('click', () => {
-      document.querySelector('[data-tab="emergency"]').click();
-      triggerFlash();
-    });
-    document.getElementById('iceSpeakBtn').addEventListener('click', () => {
-      triggerFlash();
-      speak(I18N[state.lang].iceAlert);
-    });
-    document.getElementById('saveIceBtn').addEventListener('click', () => {
-      state.ice = {
+    document.getElementById('btnTopIce').addEventListener('click', () => openTab('ice'));
+    document.getElementById('btnIceAlert').addEventListener('click', () => speakText(TEXTS[currentLang].alertPhrase));
+    document.getElementById('btnSaveIce').addEventListener('click', () => {
+      iceData = {
         name: document.getElementById('iceName').value.trim(),
-        blood: document.getElementById('iceBlood').value.trim(),
-        phone: document.getElementById('icePhone').value.trim() || '114'
+        phone: document.getElementById('icePhone').value.trim() || '114',
+        notes: document.getElementById('iceNotes').value.trim()
       };
-      localStorage.setItem('hv_ice', JSON.stringify(state.ice));
-      document.getElementById('iceCallLink').href = 'tel:' + state.ice.phone;
-      showToast('Fiche ICE enregistrée');
+      localStorage.setItem('hv_pro_ice', JSON.stringify(iceData));
+      document.getElementById('iceCallLink').href = 'tel:' + iceData.phone;
+      document.getElementById('iceSavedInfo').textContent =
+        'Enregistré : ' + (iceData.name || 'Contact') + ' — ' + iceData.phone;
+      notify('Fiche ICE enregistrée');
     });
 
-    document.getElementById('openSubBtn').addEventListener('click', () => document.getElementById('subModal').classList.add('open'));
-    document.getElementById('closeSubBtn').addEventListener('click', () => document.getElementById('subModal').classList.remove('open'));
-    document.getElementById('activateSubBtn').addEventListener('click', async () => {
-      if ('getDigitalGoodsService' in window) {
-        try {
-          await window.getDigitalGoodsService('https://play.google.com/billing');
-        } catch (_) {}
-      }
-      state.subscribed = true;
-      localStorage.setItem('hv_sub', '1');
-      document.getElementById('subStatusBadge').textContent = 'Actif • 3,00 €/mois';
-      document.getElementById('subModal').classList.remove('open');
-      showToast('Abonnement HandiVie+ (3,00 €/mois) activé');
+    document.getElementById('btnPro').addEventListener('click', () => {
+      localStorage.setItem('hv_pro_sub', '1');
+      document.getElementById('statusBadge').textContent = 'Option HandiVie+ (3,00 €/mois) active • ICE toujours gratuite';
+      notify('Option 3,00 €/mois activée');
     });
 
-    document.getElementById('openPlayGuideBtn').addEventListener('click', () => document.getElementById('playModal').classList.add('open'));
-    document.getElementById('closePlayBtn').addEventListener('click', () => document.getElementById('playModal').classList.remove('open'));
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
+    document.getElementById('iceName').value = iceData.name || '';
+    document.getElementById('icePhone').value = iceData.phone || '114';
+    document.getElementById('iceNotes').value = iceData.notes || '';
+    document.getElementById('iceCallLink').href = 'tel:' + (iceData.phone || '114');
+    if (localStorage.getItem('hv_pro_sub') === '1') {
+      document.getElementById('statusBadge').textContent = 'Option HandiVie+ (3,00 €/mois) active • ICE toujours gratuite';
     }
 
-    document.getElementById('iceName').value = state.ice.name || '';
-    document.getElementById('iceBlood').value = state.ice.blood || '';
-    document.getElementById('icePhone').value = state.ice.phone || '114';
-    document.getElementById('iceCallLink').href = 'tel:' + (state.ice.phone || '114');
-    if (state.subscribed) {
-      document.getElementById('subStatusBadge').textContent = 'Actif • 3,00 €/mois';
-    }
-    setLanguage('fr');
+    applyLang('fr');
     renderReminders();
-    renderPlaces();
-    updateTimerDisplay();
   </script>
 </body>
 </html>
