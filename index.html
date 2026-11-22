@@ -3,62 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HandiVie+ — Assistant Quotidien Professionnel</title>
-  <meta name="theme-color" content="#1d4ed8" />
+  <title>HandiVie+ — Compagnon d'Accessibilité & Vie Quotidienne</title>
+  <meta name="theme-color" content="#1e40af" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f1f5f9;
+      --bg-grad: linear-gradient(160deg, #eff6ff 0%, #f8fafc 48%, #ecfdf5 100%);
+      --bg-solid: #f1f5f9;
       --surface: #ffffff;
-      --surface-2: #e2e8f0;
+      --surface-alt: #f8fafc;
+      --surface-soft: #eef2ff;
       --text: #0f172a;
-      --muted: #475569;
+      --text-muted: #475569;
       --primary: #1d4ed8;
-      --primary-soft: #dbeafe;
-      --accent: #0f766e;
-      --accent-soft: #ccfbf1;
-      --danger: #b91c1c;
-      --danger-soft: #fee2e2;
+      --primary-dark: #1e3a8a;
+      --primary-light: #dbeafe;
+      --emerald: #059669;
+      --emerald-light: #d1fae5;
+      --amber: #d97706;
+      --amber-light: #fef3c7;
+      --violet: #7c3aed;
+      --violet-light: #ede9fe;
+      --danger: #dc2626;
+      --danger-dark: #991b1b;
+      --danger-light: #fee2e2;
       --border: #cbd5e1;
-      --radius: 18px;
+      --border-strong: #94a3b8;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
       --font-size: 18px;
-      --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --line-height: 1.6;
+      --letter-spacing: 0px;
+      --word-spacing: 0px;
+      --font-main: 'Plus Jakarta Sans', 'Noto Naskh Arabic', system-ui, -apple-system, sans-serif;
+      --shadow-card: 0 10px 28px -6px rgba(15, 23, 42, 0.08), 0 4px 12px -4px rgba(15, 23, 42, 0.04);
+      --shadow-soft: 0 4px 14px rgba(15, 23, 42, 0.05);
     }
 
-    body.high-contrast {
-      --bg: #000000;
-      --surface: #111111;
-      --surface-2: #222222;
+    body.theme-contrast {
+      --bg-grad: #000000;
+      --bg-solid: #000000;
+      --surface: #0b0f17;
+      --surface-alt: #131a26;
+      --surface-soft: #172554;
       --text: #ffffff;
-      --muted: #fde047;
-      --primary: #facc15;
-      --primary-soft: #27272a;
-      --accent: #4ade80;
-      --accent-soft: #14532d;
-      --danger: #ff4d4d;
-      --danger-soft: #3b0707;
+      --text-muted: #fde047;
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --primary-light: #0c4a6e;
+      --emerald: #34d399;
+      --emerald-light: #064e3b;
+      --amber: #fbbf24;
+      --amber-light: #451a03;
+      --violet: #c084fc;
+      --violet-light: #3b0764;
+      --danger: #f87171;
+      --danger-dark: #dc2626;
+      --danger-light: #450a0a;
       --border: #facc15;
+      --border-strong: #fde047;
+      --shadow-card: none;
+      --shadow-soft: none;
     }
 
-    body.dys-mode {
-      --font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
-      letter-spacing: 0.03em;
-      word-spacing: 0.14em;
-      line-height: 1.8;
+    body.theme-dys {
+      --font-main: 'Atkinson Hyperlegible', 'Noto Naskh Arabic', system-ui, sans-serif;
+      --line-height: 1.85;
+      --letter-spacing: 0.035em;
+      --word-spacing: 0.16em;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      background: var(--bg);
+      min-height: 100vh;
+      background: var(--bg-grad);
+      background-color: var(--bg-solid);
       color: var(--text);
-      font-family: var(--font-family);
+      font-family: var(--font-main);
       font-size: var(--font-size);
+      line-height: var(--line-height);
+      letter-spacing: var(--letter-spacing);
+      word-spacing: var(--word-spacing);
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     button, input, select, textarea {
@@ -70,606 +107,1186 @@
     button {
       cursor: pointer;
       border: 2px solid transparent;
-      border-radius: 14px;
+      border-radius: var(--radius-sm);
       font-weight: 700;
-      padding: 12px 16px;
       min-height: 48px;
+      padding: 11px 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.12s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
     }
 
-    .topbar {
+    button:hover {
+      filter: brightness(0.98);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
+      outline: 4px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .reading-guide {
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: rgba(250, 204, 21, 0.16);
+      border-top: 2px solid #eab308;
+      border-bottom: 2px solid #eab308;
+      pointer-events: none;
+      z-index: 800;
+      display: none;
+    }
+    body.guide-active .reading-guide {
+      display: block;
+    }
+
+    .top-bar {
       position: sticky;
       top: 0;
-      z-index: 20;
-      background: var(--surface);
+      z-index: 400;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
       border-bottom: 2px solid var(--border);
-      padding: 10px 14px;
+      padding: 10px 16px;
+    }
+    body.theme-contrast .top-bar {
+      background: rgba(11, 15, 23, 0.96);
+    }
+
+    .top-bar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
     }
 
-    .group {
+    .tool-cluster {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
       align-items: center;
+      gap: 8px;
     }
 
-    .chip {
-      background: var(--surface-2);
+    .tool-btn {
+      background: var(--surface-alt);
       border: 2px solid var(--border);
-      padding: 8px 12px;
       min-height: 42px;
-      font-size: 0.9em;
+      padding: 7px 12px;
+      font-size: 0.88em;
+      border-radius: 11px;
     }
 
-    .chip.active {
+    .tool-btn.is-on {
       background: var(--primary);
-      color: #ffffff;
       border-color: var(--primary);
+      color: #ffffff;
     }
-    body.high-contrast .chip.active {
+    body.theme-contrast .tool-btn.is-on {
       color: #000000;
     }
 
-    .btn-ice {
-      background: var(--danger);
+    .lang-select {
+      background: var(--primary-light);
+      border: 2px solid var(--primary);
+      border-radius: 11px;
+      padding: 7px 12px;
+      min-height: 42px;
+      font-weight: 800;
+      font-size: 0.9em;
+      cursor: pointer;
+    }
+    body.theme-contrast .lang-select {
       color: #ffffff;
     }
 
-    .btn-pro {
-      background: var(--accent);
+    .ice-pill {
+      background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
       color: #ffffff;
+      border-color: var(--danger-dark);
+      font-weight: 800;
+      min-height: 42px;
+      padding: 8px 14px;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.28);
     }
 
-    .container {
-      max-width: 1040px;
+    .pro-pill {
+      background: linear-gradient(135deg, var(--violet) 0%, #5b21b6 100%);
+      color: #ffffff;
+      border-color: #5b21b6;
+      font-weight: 800;
+      min-height: 42px;
+      padding: 8px 14px;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.24);
+    }
+
+    .wrap {
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 18px 14px 80px;
+      padding: 20px 16px 90px;
     }
 
-    .card {
+    .hero {
       background: var(--surface);
       border: 2px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 16px;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .tabs {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--emerald), var(--violet));
+    }
+
+    .hero-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-size: 1.75em;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-sub {
+      margin: 6px 0 0;
+      color: var(--text-muted);
+      font-size: 1em;
+    }
+
+    .status-strip {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1.5px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
       gap: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.82em;
+      font-weight: 800;
+    }
+
+    .badge-free {
+      background: var(--emerald-light);
+      color: #065f46;
+      border: 1px solid var(--emerald);
+    }
+
+    .badge-pro {
+      background: var(--violet-light);
+      color: #5b21b6;
+      border: 1px solid var(--violet);
+    }
+
+    body.theme-contrast .badge-free,
+    body.theme-contrast .badge-pro {
+      color: #ffffff;
+    }
+
+    .presets-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
       margin-bottom: 18px;
     }
 
-    .tab {
+    .preset-btn {
       background: var(--surface);
       border: 2px solid var(--border);
-      padding: 14px 10px;
-      text-align: center;
+      border-radius: 999px;
+      min-height: 44px;
+      padding: 8px 15px;
+      font-size: 0.9em;
+      box-shadow: var(--shadow-soft);
     }
 
-    .tab.active {
-      background: var(--primary);
-      color: #ffffff;
-      border-color: var(--primary);
+    .preset-btn.selected {
+      background: var(--emerald-light);
+      border-color: var(--emerald);
     }
-    body.high-contrast .tab.active {
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .nav-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 12px;
+      min-height: 68px;
+      flex-direction: column;
+      gap: 4px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .nav-card.active {
+      background: var(--primary);
+      border-color: var(--primary-dark);
+      color: #ffffff;
+      box-shadow: 0 8px 20px rgba(29, 78, 216, 0.25);
+    }
+    body.theme-contrast .nav-card.active {
       color: #000000;
     }
 
-    .panel {
+    .surface-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
       display: none;
     }
 
-    .panel.active {
+    .surface-card.active {
       display: block;
+      animation: fadeUp 0.18s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .panel-head {
+      margin: 0 0 6px;
+      font-size: 1.4em;
+      font-weight: 800;
+    }
+
+    .panel-lead {
+      margin: 0 0 18px;
+      color: var(--text-muted);
+    }
+
+    .speech-stage {
+      background: linear-gradient(135deg, var(--surface-soft) 0%, var(--surface-alt) 100%);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .speech-text {
+      font-size: 1.45em;
+      font-weight: 800;
+      min-height: 44px;
+      margin-bottom: 14px;
     }
 
     .btn-primary {
       background: var(--primary);
       color: #ffffff;
+      border-color: var(--primary-dark);
     }
-    body.high-contrast .btn-primary {
+    body.theme-contrast .btn-primary {
       color: #000000;
     }
 
-    .btn-secondary {
-      background: var(--surface-2);
+    .btn-emerald {
+      background: var(--emerald);
+      color: #ffffff;
+      border-color: #047857;
+    }
+    body.theme-contrast .btn-emerald {
+      color: #000000;
+    }
+
+    .btn-ghost {
+      background: var(--surface-alt);
       border: 2px solid var(--border);
     }
 
-    .phrase-box {
-      background: var(--primary-soft);
-      border: 2px solid var(--primary);
-      border-radius: 14px;
-      padding: 16px;
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .filter-pill {
+      background: var(--surface-alt);
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      min-height: 40px;
+      padding: 6px 14px;
+      font-size: 0.88em;
+    }
+
+    .filter-pill.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .comm-tile {
+      background: var(--surface-alt);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 12px;
+      min-height: 118px;
+      flex-direction: column;
+      text-align: center;
+      gap: 8px;
+    }
+
+    .comm-tile:hover {
+      border-color: var(--primary);
+      background: var(--surface-soft);
+    }
+
+    .comm-emoji {
+      font-size: 2.1em;
+      line-height: 1;
+    }
+
+    .form-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-bottom: 14px;
     }
 
-    .phrase-output {
-      font-size: 1.3em;
-      font-weight: 800;
-      margin-bottom: 12px;
-      min-height: 36px;
+    input[type="text"], input[type="time"], input[type="tel"], textarea, select.field-select {
+      background: var(--surface-alt);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      min-height: 50px;
+      flex: 1 1 200px;
     }
 
-    .caa-grid {
+    .two-col {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 10px;
-      margin-top: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 16px;
     }
 
-    .caa-btn {
-      background: var(--surface-2);
+    .sub-box {
+      background: var(--surface-alt);
       border: 2px solid var(--border);
-      padding: 14px 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      min-height: 100px;
-    }
-
-    .caa-emoji {
-      font-size: 1.9em;
-    }
-
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    input, textarea, select {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      flex: 1 1 180px;
-      min-height: 48px;
-    }
-
-    .item {
-      background: var(--surface-2);
-      border: 2px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .ice-box {
-      background: var(--danger);
-      color: #ffffff;
-      border-radius: 16px;
+      border-radius: var(--radius-md);
       padding: 18px;
       margin-bottom: 14px;
     }
 
-    .ice-call {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 12px 18px;
-      background: #ffffff;
-      color: var(--danger);
+    .progress-track {
+      height: 10px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 100%;
+      background: var(--primary);
+      transition: width 0.35s linear;
+    }
+
+    .breath-orb {
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      margin: 14px auto;
+      background: radial-gradient(circle at 30% 30%, #34d399, var(--emerald));
+      color: #ffffff;
       font-weight: 800;
-      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 14px;
+      transition: transform 3.8s ease-in-out;
+    }
+    body.theme-contrast .breath-orb {
+      color: #000000;
+    }
+
+    .list-row {
+      background: var(--surface-alt);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .ice-hero {
+      background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+      color: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .ice-call-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 13px 20px;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--danger-dark);
+      font-weight: 900;
       text-decoration: none;
     }
 
-    .feedback {
+    .ice-summary-box {
+      background: var(--danger-light);
+      border: 2px solid var(--danger);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-top: 14px;
+      color: var(--text);
+    }
+
+    .modal-bg {
       position: fixed;
-      bottom: 18px;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1000;
+    }
+    .modal-bg.open {
+      display: flex;
+    }
+
+    .modal-panel {
+      background: var(--surface);
+      border: 2px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      max-width: 560px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .toast-banner {
+      position: fixed;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       background: #0f172a;
       color: #ffffff;
-      padding: 10px 18px;
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      padding: 11px 20px;
       border-radius: 999px;
       font-weight: 700;
-      z-index: 50;
+      font-size: 0.92em;
+      z-index: 1400;
       display: none;
+      max-width: 92vw;
+      text-align: center;
     }
-
-    .feedback.show {
+    .toast-banner.visible {
       display: block;
     }
   </style>
 </head>
 <body>
-  <div class="feedback" id="feedback"></div>
+  <div class="reading-guide" id="readingGuide"></div>
+  <div class="toast-banner" id="toastBanner" role="status" aria-live="polite"></div>
 
-  <div class="topbar">
-    <div class="group">
-      <button type="button" class="chip" id="btnFontDec">A-</button>
-      <button type="button" class="chip" id="btnFontInc">A+</button>
-      <button type="button" class="chip" id="btnContrast">🌗 Contraste</button>
-      <button type="button" class="chip" id="btnDys">🔤 DYS</button>
-      <button type="button" class="chip" id="btnSpeakPage">🔊 Lire</button>
+  <header class="top-bar" aria-label="Barre d'accessibilité et langue">
+    <div class="top-bar-inner">
+      <div class="tool-cluster">
+        <button type="button" class="tool-btn" id="btnSmaller">A-</button>
+        <button type="button" class="tool-btn" id="btnLarger">A+</button>
+        <button type="button" class="tool-btn" id="btnContrast">🌗 Contraste</button>
+        <button type="button" class="tool-btn" id="btnDys">🔤 Lecture DYS</button>
+        <button type="button" class="tool-btn" id="btnGuide">📏 Règle</button>
+        <button type="button" class="tool-btn" id="btnReadAll">🔊 Lire l'écran</button>
+      </div>
+
+      <div class="tool-cluster">
+        <select class="lang-select" id="langChooser" aria-label="Choisir la langue">
+          <option value="fr">🇫🇷 Français</option>
+          <option value="ar">🇸🇦 العربية</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="es">🇪🇸 Español</option>
+        </select>
+        <button type="button" class="pro-pill" id="btnOpenPro">⭐ 3,00 €/mois</button>
+        <button type="button" class="ice-pill" id="btnQuickIce">🚨 Urgence ICE</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <h1 class="hero-title" id="uiTitle">♿ HandiVie+</h1>
+          <p class="hero-sub" id="uiSubtitle">Compagnon d'accessibilité, de communication et d'autonomie au quotidien</p>
+        </div>
+        <span class="badge badge-free" id="uiFreeTag">✓ Urgence ICE 100 % gratuite</span>
+      </div>
+
+      <div class="status-strip">
+        <span id="uiPlanInfo" class="badge badge-pro">Option Confort : 3,00 €/mois</span>
+        <span id="uiLiveAction" style="font-size:0.9em;font-weight:700;color:var(--text-muted);">Prêt à vous accompagner</span>
+      </div>
+    </section>
+
+    <div class="presets-bar" aria-label="Réglages rapides par besoin">
+      <button type="button" class="preset-btn" data-preset="vision" id="presetVision">👁️ Confort visuel</button>
+      <button type="button" class="preset-btn" data-preset="dys" id="presetDys">🧠 Lecture facilitée</button>
+      <button type="button" class="preset-btn" data-preset="calm" id="presetCalm">🌿 Mode apaisé</button>
+      <button type="button" class="preset-btn" data-preset="reset" id="presetReset">↺ Réglages standards</button>
     </div>
 
-    <div class="group">
-      <select id="langSelect" class="chip" aria-label="Langue">
-        <option value="fr">🇫🇷 Français</option>
-        <option value="ar">🇸🇦 العربية</option>
-        <option value="en">🇬🇧 English</option>
-        <option value="es">🇪🇸 Español</option>
-      </select>
-      <button type="button" class="btn-pro" id="btnPro">⭐ 3,00 €/mois</button>
-      <button type="button" class="btn-ice" id="btnTopIce">🚨 ICE</button>
-    </div>
-  </div>
+    <nav class="nav-grid" aria-label="Sections principales">
+      <button type="button" class="nav-card active" data-section="comm" id="navComm">🗣️ <span>Communication</span></button>
+      <button type="button" class="nav-card" data-section="routine" id="navRoutine">⏰ <span>Ma Journée</span></button>
+      <button type="button" class="nav-card" data-section="wellbeing" id="navWellbeing">🧘 <span>Calme & Temps</span></button>
+      <button type="button" class="nav-card" data-section="places" id="navPlaces">🗺️ <span>Lieux Accessibles</span></button>
+      <button type="button" class="nav-card" data-section="ice" id="navIce">🚨 <span>Urgence ICE</span></button>
+    </nav>
 
-  <div class="container">
-    <div class="card">
-      <h1 id="titleApp" style="margin:0 0 6px;">♿ HandiVie+</h1>
-      <p id="subtitleApp" style="margin:0;color:var(--muted);">Application universelle pour faciliter le quotidien des personnes en situation de handicap</p>
-      <div id="statusBadge" style="margin-top:10px;font-weight:800;color:var(--accent);">Urgence ICE gratuite • Option 3,00 €/mois disponible</div>
-    </div>
+    <section class="surface-card active" id="sec-comm">
+      <h2 class="panel-head" id="commTitle">Exprimer un besoin ou communiquer</h2>
+      <p class="panel-lead" id="commLead">Saisissez un message, choisissez une carte illustrée ou affichez votre besoin en grand.</p>
 
-    <div class="tabs">
-      <button type="button" class="tab active" data-tab="speak" id="tabSpeak">🗣️ Parler</button>
-      <button type="button" class="tab" data-tab="day" id="tabDay">⏰ Ma Journée</button>
-      <button type="button" class="tab" data-tab="calm" id="tabCalm">🧘 Calme</button>
-      <button type="button" class="tab" data-tab="ice" id="tabIce">🚨 Urgence ICE</button>
-    </div>
-
-    <div class="card panel active" id="panel-speak">
-      <h2 id="speakTitle" style="margin-top:0;">Communication rapide</h2>
-      <div class="phrase-box">
-        <div class="phrase-output" id="phraseBox">Bonjour, j'ai besoin d'aide.</div>
-        <div class="row" style="margin-bottom:0;">
-          <button type="button" class="btn-primary" id="btnSpeakPhrase">🔊 Parler</button>
-          <button type="button" class="btn-secondary" id="btnClearPhrase">🗑️ Effacer</button>
+      <div class="speech-stage">
+        <div class="speech-text" id="spokenMessage" aria-live="polite">Bonjour, j'ai besoin d'aide s'il vous plaît.</div>
+        <div class="form-line" style="margin-bottom:0;">
+          <button type="button" class="btn-primary" id="btnSayIt">🔊 Lire à voix haute</button>
+          <button type="button" class="btn-emerald" id="btnBigCard">🖥️ Afficher en grand</button>
+          <button type="button" class="btn-ghost" id="btnClearMsg">✕ Effacer</button>
         </div>
       </div>
 
-      <div class="row">
-        <input type="text" id="customInput" placeholder="Écrire un message..." />
-        <button type="button" class="btn-primary" id="btnSendCustom">➕ Dire</button>
+      <div class="form-line">
+        <input type="text" id="customMsgInput" placeholder="Écrire une phrase à dire ou afficher..." />
+        <button type="button" class="btn-primary" id="btnAddSay">➕ Dire la phrase</button>
       </div>
 
-      <div class="caa-grid" id="caaGrid"></div>
+      <div class="filter-pills" id="catPills">
+        <button type="button" class="filter-pill active" data-cat="all" id="catAll">Tout</button>
+        <button type="button" class="filter-pill" data-cat="needs" id="catNeeds">Besoins</button>
+        <button type="button" class="filter-pill" data-cat="help" id="catHelp">Aide & Mobilité</button>
+        <button type="button" class="filter-pill" data-cat="social" id="catSocial">Échanges</button>
+      </div>
+
+      <div class="cards-grid" id="commCards"></div>
+    </section>
+
+    <section class="surface-card" id="sec-routine">
+      <h2 class="panel-head" id="routineTitle">Rappels & Routine du jour</h2>
+      <p class="panel-lead" id="routineLead">Gardez le fil de vos traitements, rendez-vous et étapes importantes.</p>
+
+      <div class="form-line">
+        <input type="time" id="taskTime" value="09:00" />
+        <input type="text" id="taskLabel" placeholder="Ex. Prise de traitement, rendez-vous..." />
+        <button type="button" class="btn-emerald" id="btnSaveTask">➕ Ajouter</button>
+      </div>
+
+      <div id="taskContainer"></div>
+    </section>
+
+    <section class="surface-card" id="sec-wellbeing">
+      <h2 class="panel-head" id="wellbeingTitle">Minuteur visuel & Respiration apaisante</h2>
+      <p class="panel-lead" id="wellbeingLead">Des repères calmes pour structurer une activité ou retrouver son souffle.</p>
+
+      <div class="two-col">
+        <div class="sub-box" style="text-align:center;">
+          <h3 style="margin-top:0;" id="timerHeading">⏳ Minuteur d'activité (3 min)</h3>
+          <div id="clockReadout" style="font-size:2.2em;font-weight:800;margin:8px 0;">03:00</div>
+          <div class="progress-track">
+            <div class="progress-fill" id="clockBar"></div>
+          </div>
+          <div class="form-line" style="justify-content:center;margin-bottom:0;">
+            <button type="button" class="btn-primary" id="btnClockGo">▶️ Démarrer</button>
+            <button type="button" class="btn-ghost" id="btnClockReset">↺ Réinitialiser</button>
+          </div>
+        </div>
+
+        <div class="sub-box" style="text-align:center;">
+          <h3 style="margin-top:0;" id="breathHeading">🌬️ Respiration guidée</h3>
+          <div class="breath-orb" id="breathOrb">Inspirez</div>
+          <div id="breathCycleLabel" style="font-weight:700;margin-bottom:10px;color:var(--text-muted);">Cycle : 0</div>
+          <div class="form-line" style="justify-content:center;margin-bottom:0;">
+            <button type="button" class="btn-emerald" id="btnBreathGo">▶️ Lancer / Arrêter</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="surface-card" id="sec-places">
+      <h2 class="panel-head" id="placesTitle">Repères & Accessibilité des lieux</h2>
+      <p class="panel-lead" id="placesLead">Consultez les équipements disponibles et les numéros d'urgence accessibles.</p>
+
+      <div class="form-line">
+        <select class="field-select" id="placeFilterSelect" aria-label="Filtrer les lieux">
+          <option value="all">Tous les critères</option>
+          <option value="ramp">Rampe / Accès fauteuil</option>
+          <option value="wc">Sanitaires adaptés</option>
+          <option value="quiet">Zone calme</option>
+        </select>
+      </div>
+
+      <div id="placesContainer"></div>
+
+      <div class="sub-box" style="margin-top:14px;">
+        <h3 style="margin-top:0;" id="helpNumsTitle">📞 Numéros utiles</h3>
+        <p style="margin:4px 0;"><strong>114</strong> : Urgences par SMS, chat et visio (sourds / malentendants).</p>
+        <p style="margin:4px 0;"><strong>15</strong> • <strong>18</strong> • <strong>112</strong> : Secours et urgences médicales.</p>
+      </div>
+    </section>
+
+    <section class="surface-card" id="sec-ice">
+      <div class="ice-hero">
+        <span class="badge badge-free" style="margin-bottom:8px;">✓ 100 % GRATUIT</span>
+        <h2 style="margin:0 0 6px;font-size:1.5em;" id="iceBannerTitle">🚨 Fiche Urgence ICE</h2>
+        <p style="margin:0 0 12px;" id="iceBannerSub">Accessible à tout moment pour prévenir un proche ou expliquer vos besoins.</p>
+        <button type="button" class="btn-ghost" style="background:#ffffff;color:var(--danger-dark);" id="btnIceVoice">🔊 Lire l'alerte d'urgence</button>
+      </div>
+
+      <div class="form-line">
+        <input type="text" id="iceContactName" placeholder="Nom du contact d'urgence (ex. Samira — Sœur)" />
+        <input type="tel" id="iceContactPhone" placeholder="Téléphone (ex. 0612345678)" />
+      </div>
+      <div class="form-line">
+        <input type="text" id="iceMedicalInfo" placeholder="Allergies, traitement ou besoin d'accessibilité" />
+        <button type="button" class="btn-primary" id="btnSaveIceCard">💾 Enregistrer la fiche</button>
+      </div>
+
+      <a class="ice-call-link" id="iceDialLink" href="tel:114">📞 Appeler le contact ICE</a>
+
+      <div class="ice-summary-box" id="iceCardSummary">
+        <strong>Aperçu de la fiche ICE :</strong>
+        <p id="iceSummaryBody" style="margin:6px 0 0;">Aucune fiche enregistrée pour l'instant.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-bg" id="bigCardModal" role="dialog" aria-modal="true" aria-label="Affichage plein écran">
+    <div class="modal-panel" style="text-align:center;max-width:760px;">
+      <p style="margin:0 0 12px;color:var(--text-muted);font-weight:700;">HandiVie+</p>
+      <div id="bigCardText" style="font-size:2.1em;font-weight:800;line-height:1.35;margin:18px 0 26px;"></div>
+      <button type="button" class="btn-primary" id="btnCloseBigCard">Fermer l'affichage</button>
     </div>
+  </div>
 
-    <div class="card panel" id="panel-day">
-      <h2 id="dayTitle" style="margin-top:0;">Rappels du quotidien</h2>
-      <div class="row">
-        <input type="time" id="remTime" value="08:30" />
-        <input type="text" id="remText" placeholder="Ex. Médicament, rendez-vous..." />
-        <button type="button" class="btn-primary" id="btnAddRem">➕ Ajouter</button>
+  <div class="modal-bg" id="proModal" role="dialog" aria-modal="true" aria-labelledby="proModalHeading">
+    <div class="modal-panel">
+      <span class="badge badge-pro">OPTION CONFORT</span>
+      <h2 id="proModalHeading" style="margin:10px 0 8px;">HandiVie+ Essentiel — 3,00 €/mois</h2>
+      <p style="margin:0 0 12px;color:var(--text-muted);">
+        Soutient l'évolution de l'application et inclut 7 jours d'essai, puis <strong>3,00 €/mois</strong>. L'accès à la <strong>Fiche Urgence ICE</strong> reste toujours 100 % gratuit.
+      </p>
+      <ul style="margin:0 0 18px;padding-inline-start:20px;">
+        <li>Interface multilingue avec français, arabe (RTL), anglais et espagnol</li>
+        <li>Outils de lecture (contraste élevé, police DYS, règle de lecture)</li>
+        <li>Cartes de communication, rappels, minuteur et respiration</li>
+      </ul>
+      <div class="form-line" style="margin-bottom:0;">
+        <button type="button" class="btn-primary" id="btnConfirmPro">✓ Activer l'option 3,00 €/mois</button>
+        <button type="button" class="btn-ghost" id="btnClosePro">Fermer</button>
       </div>
-      <div id="remList"></div>
-    </div>
-
-    <div class="card panel" id="panel-calm">
-      <h2 id="calmTitle" style="margin-top:0;">Minuteur & Respiration</h2>
-      <div class="row" style="align-items:center;">
-        <button type="button" class="btn-primary" id="btnTimerToggle">▶️ Minuteur 3 min</button>
-        <strong id="timerDisplay" style="font-size:1.4em;">03:00</strong>
-      </div>
-      <div class="row" style="align-items:center;margin-top:14px;">
-        <button type="button" class="btn-secondary" id="btnBreath">🌬️ Respiration guidée</button>
-        <span id="breathStatus" style="font-weight:700;">Prêt</span>
-      </div>
-    </div>
-
-    <div class="card panel" id="panel-ice">
-      <div class="ice-box">
-        <h2 id="iceBannerTitle" style="margin:0 0 8px;">🚨 URGENCE ICE — 100 % GRATUIT</h2>
-        <p id="iceBannerDesc" style="margin:0 0 10px;">Fiche d'urgence accessible gratuitement à tout moment.</p>
-        <button type="button" class="btn-secondary" style="background:#ffffff;color:var(--danger);" id="btnIceAlert">🔊 Lire l'alerte d'urgence</button>
-      </div>
-
-      <div class="row">
-        <input type="text" id="iceName" placeholder="Nom et prénom" />
-        <input type="tel" id="icePhone" placeholder="Téléphone d'urgence (ex. 114)" />
-      </div>
-      <div class="row">
-        <input type="text" id="iceNotes" placeholder="Handicap, allergies ou consignes" />
-        <button type="button" class="btn-primary" id="btnSaveIce">💾 Enregistrer ICE</button>
-      </div>
-      <a class="ice-call" id="iceCallLink" href="tel:114">📞 Appeler le contact ICE</a>
-      <div id="iceSavedInfo" style="margin-top:10px;font-weight:700;"></div>
     </div>
   </div>
 
   <script>
-    const TEXTS = {
+    const COPY = {
       fr: {
-        dir: 'ltr', lang: 'fr-FR',
+        dir: 'ltr', voice: 'fr-FR',
         title: '♿ HandiVie+',
-        subtitle: 'Application universelle pour faciliter le quotidien des personnes en situation de handicap',
-        tabSpeak: '🗣️ Parler', tabDay: '⏰ Ma Journée', tabCalm: '🧘 Calme', tabIce: '🚨 Urgence ICE',
-        defaultPhrase: "Bonjour, j'ai besoin d'aide.",
-        alertPhrase: "Urgence ! J'ai besoin d'aide médicale immédiatement.",
-        caa: [
-          { e: '🆘', t: "J'ai besoin d'aide" },
-          { e: '💧', t: "J'ai soif" },
-          { e: '🍽️', t: "J'ai faim" },
-          { e: '🚻', t: 'Où sont les toilettes ?' },
-          { e: '🩺', t: "J'ai mal" },
-          { e: '✅', t: 'Oui, merci' }
+        subtitle: "Compagnon d'accessibilité, de communication et d'autonomie au quotidien",
+        freeTag: '✓ Urgence ICE 100 % gratuite',
+        planInfo: 'Option Confort : 3,00 €/mois',
+        planActive: '✓ Option 3,00 €/mois activée • ICE toujours gratuit',
+        navComm: 'Communication', navRoutine: 'Ma Journée', navWellbeing: 'Calme & Temps', navPlaces: 'Lieux Accessibles', navIce: 'Urgence ICE',
+        defaultMsg: "Bonjour, j'ai besoin d'aide s'il vous plaît.",
+        iceAlert: "Attention, urgence. J'ai besoin d'aide et d'assistance immédiatement.",
+        cards: [
+          { e: '🆘', t: "J'ai besoin d'aide", cat: 'help' },
+          { e: '💧', t: "J'ai soif, un verre d'eau s'il vous plaît", cat: 'needs' },
+          { e: '🍽️', t: "J'ai faim", cat: 'needs' },
+          { e: '🚻', t: 'Où sont les toilettes accessibles ?', cat: 'help' },
+          { e: '🩺', t: 'Je ressens une douleur', cat: 'help' },
+          { e: '🔇', t: 'Il y a trop de bruit pour moi', cat: 'social' },
+          { e: '🐢', t: 'Parlez lentement et clairement', cat: 'social' },
+          { e: '👍', t: 'Oui, tout est clair pour moi', cat: 'social' }
         ]
       },
       ar: {
-        dir: 'rtl', lang: 'ar-SA',
+        dir: 'rtl', voice: 'ar-SA',
         title: '♿ HandiVie+ — هاندي في بلس',
-        subtitle: 'تطبيق شامل لتسهيل الحياة اليومية لذوي الاحتياجات الخاصة',
-        tabSpeak: '🗣️ تحدث', tabDay: '⏰ يومي', tabCalm: '🧘 هدوء', tabIce: '🚨 طوارئ ICE',
-        defaultPhrase: 'مرحبًا، أحتاج إلى مساعدة.',
-        alertPhrase: 'طوارئ! أحتاج إلى مساعدة طبية فورًا.',
-        caa: [
-          { e: '🆘', t: 'أحتاج إلى مساعدة' },
-          { e: '💧', t: 'أنا عطشان' },
-          { e: '🍽️', t: 'أنا جائع' },
-          { e: '🚻', t: 'أين دورة المياه؟' },
-          { e: '🩺', t: 'أشعر بألم' },
-          { e: '✅', t: 'نعم، شكرًا' }
+        subtitle: 'رفيق إمكانية الوصول والتواصل والاستقلالية في الحياة اليومية',
+        freeTag: '✓ طوارئ ICE مجانية 100٪',
+        planInfo: 'خيار الراحة: 3,00 € / شهر',
+        planActive: '✓ تم تفعيل خيار 3,00 € / شهر • طوارئ ICE مجانية دائمًا',
+        navComm: 'التواصل', navRoutine: 'يومي', navWellbeing: 'الهدوء والوقت', navPlaces: 'أماكن ميسرة', navIce: 'طوارئ ICE',
+        defaultMsg: 'مرحبًا، أحتاج إلى مساعدة من فضلك.',
+        iceAlert: 'تنبيه طوارئ. أحتاج إلى مساعدة فورية.',
+        cards: [
+          { e: '🆘', t: 'أحتاج إلى مساعدة', cat: 'help' },
+          { e: '💧', t: 'أنا عطشان، أريد كوب ماء من فضلك', cat: 'needs' },
+          { e: '🍽️', t: 'أنا جائع', cat: 'needs' },
+          { e: '🚻', t: 'أين توجد دورات المياه الميسرة؟', cat: 'help' },
+          { e: '🩺', t: 'أشعر بألم', cat: 'help' },
+          { e: '🔇', t: 'الضوضاء مرتفعة جدًا بالنسبة لي', cat: 'social' },
+          { e: '🐢', t: 'يرجى التحدث ببطء ووضوح', cat: 'social' },
+          { e: '👍', t: 'نعم، الأمر واضح بالنسبة لي', cat: 'social' }
         ]
       },
       en: {
-        dir: 'ltr', lang: 'en-US',
+        dir: 'ltr', voice: 'en-US',
         title: '♿ HandiVie+',
-        subtitle: 'Universal daily assistant for people with disabilities',
-        tabSpeak: '🗣️ Speak', tabDay: '⏰ My Day', tabCalm: '🧘 Calm', tabIce: '🚨 ICE Emergency',
-        defaultPhrase: 'Hello, I need help.',
-        alertPhrase: 'Emergency! I need medical help right now.',
-        caa: [
-          { e: '🆘', t: 'I need help' },
-          { e: '💧', t: 'I am thirsty' },
-          { e: '🍽️', t: 'I am hungry' },
-          { e: '🚻', t: 'Where is the restroom?' },
-          { e: '🩺', t: 'I am in pain' },
-          { e: '✅', t: 'Yes, thank you' }
+        subtitle: 'Everyday accessibility, communication, and autonomy companion',
+        freeTag: '✓ ICE Emergency 100% free',
+        planInfo: 'Comfort Option: €3.00 / month',
+        planActive: '✓ €3.00/month option active • ICE always free',
+        navComm: 'Communication', navRoutine: 'My Day', navWellbeing: 'Calm & Time', navPlaces: 'Accessible Places', navIce: 'ICE Emergency',
+        defaultMsg: 'Hello, I need help please.',
+        iceAlert: 'Emergency alert. I need immediate help and support.',
+        cards: [
+          { e: '🆘', t: 'I need help', cat: 'help' },
+          { e: '💧', t: 'I am thirsty, a glass of water please', cat: 'needs' },
+          { e: '🍽️', t: 'I am hungry', cat: 'needs' },
+          { e: '🚻', t: 'Where is the accessible restroom?', cat: 'help' },
+          { e: '🩺', t: 'I am in pain', cat: 'help' },
+          { e: '🔇', t: 'It is too noisy for me right now', cat: 'social' },
+          { e: '🐢', t: 'Please speak slowly and clearly', cat: 'social' },
+          { e: '👍', t: 'Yes, that is clear to me', cat: 'social' }
         ]
       },
       es: {
-        dir: 'ltr', lang: 'es-ES',
+        dir: 'ltr', voice: 'es-ES',
         title: '♿ HandiVie+',
-        subtitle: 'Asistente universal para facilitar la vida diaria',
-        tabSpeak: '🗣️ Hablar', tabDay: '⏰ Mi Día', tabCalm: '🧘 Calma', tabIce: '🚨 Urgencia ICE',
-        defaultPhrase: 'Hola, necesito ayuda.',
-        alertPhrase: '¡Emergencia! Necesito ayuda médica ahora mismo.',
-        caa: [
-          { e: '🆘', t: 'Necesito ayuda' },
-          { e: '💧', t: 'Tengo sed' },
-          { e: '🍽️', t: 'Tengo hambre' },
-          { e: '🚻', t: '¿Dónde está el baño?' },
-          { e: '🩺', t: 'Siento dolor' },
-          { e: '✅', t: 'Sí, gracias' }
+        subtitle: 'Compañero de accesibilidad, comunicación y autonomía diaria',
+        freeTag: '✓ Emergencia ICE 100 % gratuita',
+        planInfo: 'Opción Confort: 3,00 € / mes',
+        planActive: '✓ Opción 3,00 €/mes activa • ICE siempre gratis',
+        navComm: 'Comunicación', navRoutine: 'Mi Día', navWellbeing: 'Calma y Tiempo', navPlaces: 'Lugares Accesibles', navIce: 'Emergencia ICE',
+        defaultMsg: 'Hola, necesito ayuda por favor.',
+        iceAlert: 'Aviso de emergencia. Necesito ayuda inmediata.',
+        cards: [
+          { e: '🆘', t: 'Necesito ayuda', cat: 'help' },
+          { e: '💧', t: 'Tengo sed, un vaso de agua por favor', cat: 'needs' },
+          { e: '🍽️', t: 'Tengo hambre', cat: 'needs' },
+          { e: '🚻', t: '¿Dónde está el baño accesible?', cat: 'help' },
+          { e: '🩺', t: 'Siento dolor', cat: 'help' },
+          { e: '🔇', t: 'Hay demasiado ruido para mí', cat: 'social' },
+          { e: '🐢', t: 'Por favor, hable despacio y con claridad', cat: 'social' },
+          { e: '👍', t: 'Sí, está claro para mí', cat: 'social' }
         ]
       }
     };
 
-    let currentLang = 'fr';
-    let fontSize = 18;
-    let reminders = JSON.parse(localStorage.getItem('hv_pro_rem') || '[{"time":"08:30","text":"Traitement du matin","done":false}]');
-    let iceData = JSON.parse(localStorage.getItem('hv_pro_ice') || '{"name":"","phone":"114","notes":""}');
-    let timerLeft = 180;
-    let timerId = null;
+    const VENUES = [
+      { title: 'Accueil Municipal & Services', tags: ['ramp', 'wc'], desc: 'Accès de plain-pied, sanitaires adaptés et signalétique lisible.' },
+      { title: 'Pharmacie de Proximité', tags: ['ramp', 'quiet'], desc: 'Entrée accessible fauteuil et espace d’échange calme.' },
+      { title: 'Bibliothèque & Espace Lecture', tags: ['ramp', 'wc', 'quiet'], desc: 'Ascenseur, coin silencieux et ouvrages en gros caractères.' }
+    ];
 
-    function notify(msg) {
-      const el = document.getElementById('feedback');
+    const app = {
+      lang: 'fr',
+      category: 'all',
+      fontPx: 18,
+      tasks: JSON.parse(localStorage.getItem('hv2_tasks') || '[{"time":"08:30","label":"Traitement du matin","done":false}]'),
+      ice: JSON.parse(localStorage.getItem('hv2_ice') || '{"name":"","phone":"114","notes":""}'),
+      proEnabled: localStorage.getItem('hv2_pro') === '1',
+      clockSec: 180,
+      clockTimer: null,
+      breathTimer: null,
+      breathCount: 0
+    };
+
+    function toast(msg) {
+      const el = document.getElementById('toastBanner');
+      const live = document.getElementById('uiLiveAction');
       el.textContent = msg;
-      el.classList.add('show');
-      setTimeout(() => el.classList.remove('show'), 2200);
+      live.textContent = msg;
+      el.classList.add('visible');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => el.classList.remove('visible'), 2500);
     }
 
-    function speakText(msg) {
-      if (!msg) return;
-      document.getElementById('phraseBox').textContent = msg;
+    function speak(text) {
+      if (!text) return;
+      document.getElementById('spokenMessage').textContent = text;
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(msg);
-        u.lang = TEXTS[currentLang].lang;
-        window.speechSynthesis.speak(u);
+        try {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = COPY[app.lang].voice;
+          window.speechSynthesis.speak(utter);
+        } catch (_) {}
       }
-      notify('🔊 ' + msg);
+      toast('🔊 ' + text);
     }
 
-    function applyLang(lang) {
-      currentLang = TEXTS[lang] ? lang : 'fr';
-      const t = TEXTS[currentLang];
-      document.documentElement.lang = currentLang;
-      document.documentElement.dir = t.dir;
-      document.getElementById('titleApp').textContent = t.title;
-      document.getElementById('subtitleApp').textContent = t.subtitle;
-      document.getElementById('tabSpeak').textContent = t.tabSpeak;
-      document.getElementById('tabDay').textContent = t.tabDay;
-      document.getElementById('tabCalm').textContent = t.tabCalm;
-      document.getElementById('tabIce').textContent = t.tabIce;
-      document.getElementById('phraseBox').textContent = t.defaultPhrase;
-      renderCaa();
+    function switchSection(key) {
+      document.querySelectorAll('.nav-card').forEach((b) => b.classList.toggle('active', b.dataset.section === key));
+      document.querySelectorAll('.surface-card').forEach((s) => s.classList.toggle('active', s.id === 'sec-' + key));
     }
 
-    function renderCaa() {
-      const grid = document.getElementById('caaGrid');
-      grid.innerHTML = '';
-      TEXTS[currentLang].caa.forEach((item) => {
+    function renderCards() {
+      const box = document.getElementById('commCards');
+      box.innerHTML = '';
+      const list = COPY[app.lang].cards.filter((c) => app.category === 'all' || c.cat === app.category);
+      list.forEach((item) => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'caa-btn';
-        btn.innerHTML = '<span class="caa-emoji">' + item.e + '</span><span>' + item.t + '</span>';
-        btn.addEventListener('click', () => speakText(item.t));
-        grid.appendChild(btn);
+        btn.className = 'comm-tile';
+        btn.innerHTML = '<span class="comm-emoji">' + item.e + '</span><span>' + item.t + '</span>';
+        btn.addEventListener('click', () => speak(item.t));
+        box.appendChild(btn);
       });
     }
 
-    function renderReminders() {
-      const list = document.getElementById('remList');
-      list.innerHTML = '';
-      reminders.forEach((r, i) => {
-        const div = document.createElement('div');
-        div.className = 'item';
-        const label = document.createElement('span');
-        label.style.textDecoration = r.done ? 'line-through' : 'none';
-        label.textContent = r.time + ' — ' + r.text;
+    function renderTasks() {
+      const wrap = document.getElementById('taskContainer');
+      wrap.innerHTML = '';
+      app.tasks.forEach((t, idx) => {
+        const row = document.createElement('div');
+        row.className = 'list-row';
 
-        const actions = document.createElement('div');
-        actions.className = 'group';
+        const info = document.createElement('div');
+        info.innerHTML = '<strong>' + t.time + '</strong> — <span style="' + (t.done ? 'text-decoration:line-through;opacity:0.6;' : '') + '">' + t.label + '</span>';
+
+        const btns = document.createElement('div');
+        btns.className = 'tool-cluster';
 
         const bDone = document.createElement('button');
         bDone.type = 'button';
-        bDone.className = 'btn-secondary';
-        bDone.textContent = r.done ? '↩️' : '✅';
+        bDone.className = 'btn-ghost';
+        bDone.textContent = t.done ? '↩️' : '✓';
         bDone.addEventListener('click', () => {
-          reminders[i].done = !reminders[i].done;
-          saveReminders();
+          app.tasks[idx].done = !app.tasks[idx].done;
+          persistTasks();
         });
 
-        const bTest = document.createElement('button');
-        bTest.type = 'button';
-        bTest.className = 'btn-secondary';
-        bTest.textContent = '🔔';
-        bTest.addEventListener('click', () => speakText(r.text));
+        const bVoice = document.createElement('button');
+        bVoice.type = 'button';
+        bVoice.className = 'btn-ghost';
+        bVoice.textContent = '🔊';
+        bVoice.addEventListener('click', () => speak(t.time + ' : ' + t.label));
 
         const bDel = document.createElement('button');
         bDel.type = 'button';
-        bDel.className = 'btn-secondary';
+        bDel.className = 'btn-ghost';
         bDel.textContent = '🗑️';
         bDel.addEventListener('click', () => {
-          reminders.splice(i, 1);
-          saveReminders();
+          app.tasks.splice(idx, 1);
+          persistTasks();
         });
 
-        actions.append(bDone, bTest, bDel);
-        div.append(label, actions);
-        list.appendChild(div);
+        btns.append(bDone, bVoice, bDel);
+        row.append(info, btns);
+        wrap.appendChild(row);
       });
     }
 
-    function saveReminders() {
-      localStorage.setItem('hv_pro_rem', JSON.stringify(reminders));
-      renderReminders();
+    function persistTasks() {
+      localStorage.setItem('hv2_tasks', JSON.stringify(app.tasks));
+      renderTasks();
     }
 
-    function openTab(name) {
-      document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t.dataset.tab === name));
-      document.querySelectorAll('.panel').forEach((p) => p.classList.toggle('active', p.id === 'panel-' + name));
+    function renderVenues() {
+      const filter = document.getElementById('placeFilterSelect').value;
+      const box = document.getElementById('placesContainer');
+      box.innerHTML = '';
+      VENUES.filter((v) => filter === 'all' || v.tags.includes(filter)).forEach((v) => {
+        const card = document.createElement('div');
+        card.className = 'list-row';
+        card.innerHTML = '<div><strong>' + v.title + '</strong><p style="margin:4px 0 0;color:var(--text-muted);">' + v.desc + '</p></div>';
+        box.appendChild(card);
+      });
     }
 
-    document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => openTab(t.dataset.tab)));
-    document.getElementById('langSelect').addEventListener('change', (e) => applyLang(e.target.value));
+    function renderIceSummary() {
+      const p = app.ice.phone || '114';
+      document.getElementById('iceDialLink').href = 'tel:' + p;
+      document.getElementById('iceDialLink').textContent = '📞 Appeler (' + p + ')';
+      document.getElementById('iceSummaryBody').textContent =
+        'Contact : ' + (app.ice.name || 'Non renseigné') +
+        ' • Téléphone : ' + p +
+        ' • Infos : ' + (app.ice.notes || 'Aucune consigne saisie');
+    }
 
-    document.getElementById('btnFontInc').addEventListener('click', () => {
-      fontSize = Math.min(28, fontSize + 2);
-      document.body.style.fontSize = fontSize + 'px';
-      notify('Texte : ' + fontSize + 'px');
+    function updatePlanBadge() {
+      document.getElementById('uiPlanInfo').textContent = app.proEnabled ? COPY[app.lang].planActive : COPY[app.lang].planInfo;
+    }
+
+    function applyLang(lang) {
+      app.lang = COPY[lang] ? lang : 'fr';
+      const c = COPY[app.lang];
+      document.documentElement.lang = app.lang;
+      document.documentElement.dir = c.dir;
+
+      document.getElementById('uiTitle').textContent = c.title;
+      document.getElementById('uiSubtitle').textContent = c.subtitle;
+      document.getElementById('uiFreeTag').textContent = c.freeTag;
+      document.getElementById('navComm').innerHTML = '🗣️ <span>' + c.navComm + '</span>';
+      document.getElementById('navRoutine').innerHTML = '⏰ <span>' + c.navRoutine + '</span>';
+      document.getElementById('navWellbeing').innerHTML = '🧘 <span>' + c.navWellbeing + '</span>';
+      document.getElementById('navPlaces').innerHTML = '🗺️ <span>' + c.navPlaces + '</span>';
+      document.getElementById('navIce').innerHTML = '🚨 <span>' + c.navIce + '</span>';
+      document.getElementById('spokenMessage').textContent = c.defaultMsg;
+
+      updatePlanBadge();
+      renderCards();
+      toast('Langue : ' + app.lang.toUpperCase());
+    }
+
+    document.querySelectorAll('.nav-card').forEach((b) => b.addEventListener('click', () => switchSection(b.dataset.section)));
+    document.getElementById('langChooser').addEventListener('change', (e) => applyLang(e.target.value));
+
+    document.getElementById('btnLarger').addEventListener('click', () => {
+      app.fontPx = Math.min(28, app.fontPx + 2);
+      document.body.style.fontSize = app.fontPx + 'px';
+      toast('Taille : ' + app.fontPx + 'px');
     });
-    document.getElementById('btnFontDec').addEventListener('click', () => {
-      fontSize = Math.max(15, fontSize - 2);
-      document.body.style.fontSize = fontSize + 'px';
-      notify('Texte : ' + fontSize + 'px');
+    document.getElementById('btnSmaller').addEventListener('click', () => {
+      app.fontPx = Math.max(15, app.fontPx - 2);
+      document.body.style.fontSize = app.fontPx + 'px';
+      toast('Taille : ' + app.fontPx + 'px');
     });
     document.getElementById('btnContrast').addEventListener('click', function () {
-      document.body.classList.toggle('high-contrast');
-      this.classList.toggle('active');
-      notify('Contraste mis à jour');
+      document.body.classList.toggle('theme-contrast');
+      this.classList.toggle('is-on');
+      toast('Contraste élevé mis à jour');
     });
     document.getElementById('btnDys').addEventListener('click', function () {
-      document.body.classList.toggle('dys-mode');
-      this.classList.toggle('active');
-      notify('Mode DYS mis à jour');
+      document.body.classList.toggle('theme-dys');
+      this.classList.toggle('is-on');
+      toast('Lecture DYS mise à jour');
     });
-    document.getElementById('btnSpeakPage').addEventListener('click', () => {
-      const active = document.querySelector('.panel.active');
-      if (active) speakText(active.innerText.slice(0, 220));
+    document.getElementById('btnGuide').addEventListener('click', function () {
+      document.body.classList.toggle('guide-active');
+      this.classList.toggle('is-on');
+      toast('Règle de lecture mise à jour');
+    });
+    document.addEventListener('pointermove', (e) => {
+      if (document.body.classList.contains('guide-active')) {
+        document.getElementById('readingGuide').style.top = (e.clientY - 26) + 'px';
+      }
+    });
+    document.getElementById('btnReadAll').addEventListener('click', () => {
+      const sec = document.querySelector('.surface-card.active');
+      if (sec) speak(sec.innerText.slice(0, 240));
     });
 
-    document.getElementById('btnSpeakPhrase').addEventListener('click', () => speakText(document.getElementById('phraseBox').textContent));
-    document.getElementById('btnClearPhrase').addEventListener('click', () => {
-      document.getElementById('phraseBox').textContent = '';
-      notify('Texte effacé');
+    document.querySelectorAll('.preset-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.preset-btn').forEach((b) => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        const p = btn.dataset.preset;
+        document.body.classList.remove('theme-contrast', 'theme-dys', 'guide-active');
+        document.getElementById('btnContrast').classList.remove('is-on');
+        document.getElementById('btnDys').classList.remove('is-on');
+        document.getElementById('btnGuide').classList.remove('is-on');
+
+        if (p === 'vision') {
+          document.body.classList.add('theme-contrast');
+          document.getElementById('btnContrast').classList.add('is-on');
+          app.fontPx = 22;
+        } else if (p === 'dys') {
+          document.body.classList.add('theme-dys', 'guide-active');
+          document.getElementById('btnDys').classList.add('is-on');
+          document.getElementById('btnGuide').classList.add('is-on');
+          app.fontPx = 20;
+        } else if (p === 'calm') {
+          app.fontPx = 20;
+          switchSection('wellbeing');
+        } else {
+          app.fontPx = 18;
+        }
+        document.body.style.fontSize = app.fontPx + 'px';
+        toast('Réglage appliqué');
+      });
     });
-    document.getElementById('btnSendCustom').addEventListener('click', () => {
-      const inp = document.getElementById('customInput');
+
+    document.querySelectorAll('.filter-pill').forEach((pill) => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach((x) => x.classList.remove('active'));
+        pill.classList.add('active');
+        app.category = pill.dataset.cat;
+        renderCards();
+      });
+    });
+
+    document.getElementById('btnSayIt').addEventListener('click', () => speak(document.getElementById('spokenMessage').textContent));
+    document.getElementById('btnClearMsg').addEventListener('click', () => {
+      document.getElementById('spokenMessage').textContent = '';
+      toast('Message effacé');
+    });
+    document.getElementById('btnAddSay').addEventListener('click', () => {
+      const inp = document.getElementById('customMsgInput');
       if (!inp.value.trim()) return;
-      speakText(inp.value.trim());
+      speak(inp.value.trim());
       inp.value = '';
     });
+    document.getElementById('btnBigCard').addEventListener('click', () => {
+      document.getElementById('bigCardText').textContent = document.getElementById('spokenMessage').textContent || COPY[app.lang].defaultMsg;
+      document.getElementById('bigCardModal').classList.add('open');
+    });
+    document.getElementById('btnCloseBigCard').addEventListener('click', () => document.getElementById('bigCardModal').classList.remove('open'));
 
-    document.getElementById('btnAddRem').addEventListener('click', () => {
-      const time = document.getElementById('remTime').value || '09:00';
-      const text = document.getElementById('remText').value.trim();
-      if (!text) return;
-      reminders.push({ time, text, done: false });
-      document.getElementById('remText').value = '';
-      saveReminders();
-      notify('Rappel ajouté');
+    document.getElementById('btnSaveTask').addEventListener('click', () => {
+      const time = document.getElementById('taskTime').value || '09:00';
+      const label = document.getElementById('taskLabel').value.trim();
+      if (!label) return;
+      app.tasks.push({ time, label, done: false });
+      document.getElementById('taskLabel').value = '';
+      persistTasks();
+      toast('Rappel ajouté');
     });
 
-    document.getElementById('btnTimerToggle').addEventListener('click', () => {
-      if (timerId) {
-        clearInterval(timerId);
-        timerId = null;
-        notify('Minuteur en pause');
+    function refreshClock() {
+      const m = String(Math.floor(app.clockSec / 60)).padStart(2, '0');
+      const s = String(app.clockSec % 60).padStart(2, '0');
+      document.getElementById('clockReadout').textContent = m + ':' + s;
+      document.getElementById('clockBar').style.width = Math.max(0, (app.clockSec / 180) * 100) + '%';
+    }
+    document.getElementById('btnClockGo').addEventListener('click', () => {
+      if (app.clockTimer) {
+        clearInterval(app.clockTimer);
+        app.clockTimer = null;
+        toast('Minuteur en pause');
         return;
       }
-      timerId = setInterval(() => {
-        if (timerLeft > 0) {
-          timerLeft--;
-          const m = String(Math.floor(timerLeft / 60)).padStart(2, '0');
-          const s = String(timerLeft % 60).padStart(2, '0');
-          document.getElementById('timerDisplay').textContent = m + ':' + s;
+      toast('Minuteur démarré');
+      app.clockTimer = setInterval(() => {
+        if (app.clockSec > 0) {
+          app.clockSec--;
+          refreshClock();
         } else {
-          clearInterval(timerId);
-          timerId = null;
-          timerLeft = 180;
-          document.getElementById('timerDisplay').textContent = '03:00';
-          speakText('Minuteur terminé');
+          clearInterval(app.clockTimer);
+          app.clockTimer = null;
+          app.clockSec = 180;
+          refreshClock();
+          speak('Temps écoulé');
         }
       }, 1000);
-      notify('Minuteur démarré');
+    });
+    document.getElementById('btnClockReset').addEventListener('click', () => {
+      clearInterval(app.clockTimer);
+      app.clockTimer = null;
+      app.clockSec = 180;
+      refreshClock();
+      toast('Minuteur réinitialisé');
     });
 
-    document.getElementById('btnBreath').addEventListener('click', () => {
-      const el = document.getElementById('breathStatus');
-      el.textContent = 'Inspirez 4s... puis expirez 4s';
-      speakText('Inspirez calmement pendant quatre secondes');
-    });
-
-    document.getElementById('btnTopIce').addEventListener('click', () => openTab('ice'));
-    document.getElementById('btnIceAlert').addEventListener('click', () => speakText(TEXTS[currentLang].alertPhrase));
-    document.getElementById('btnSaveIce').addEventListener('click', () => {
-      iceData = {
-        name: document.getElementById('iceName').value.trim(),
-        phone: document.getElementById('icePhone').value.trim() || '114',
-        notes: document.getElementById('iceNotes').value.trim()
+    document.getElementById('btnBreathGo').addEventListener('click', () => {
+      const orb = document.getElementById('breathOrb');
+      if (app.breathTimer) {
+        clearInterval(app.breathTimer);
+        app.breathTimer = null;
+        orb.style.transform = 'scale(1)';
+        orb.textContent = 'Repos';
+        toast('Respiration arrêtée');
+        return;
+      }
+      let phase = 0;
+      const run = () => {
+        const inhale = phase % 2 === 0;
+        orb.textContent = inhale ? 'Inspirez' : 'Expirez';
+        orb.style.transform = inhale ? 'scale(1.24)' : 'scale(0.92)';
+        if (!inhale) {
+          app.breathCount++;
+          document.getElementById('breathCycleLabel').textContent = 'Cycle : ' + app.breathCount;
+        }
+        phase++;
       };
-      localStorage.setItem('hv_pro_ice', JSON.stringify(iceData));
-      document.getElementById('iceCallLink').href = 'tel:' + iceData.phone;
-      document.getElementById('iceSavedInfo').textContent =
-        'Enregistré : ' + (iceData.name || 'Contact') + ' — ' + iceData.phone;
-      notify('Fiche ICE enregistrée');
+      run();
+      app.breathTimer = setInterval(run, 4000);
+      toast('Respiration guidée active');
     });
 
-    document.getElementById('btnPro').addEventListener('click', () => {
-      localStorage.setItem('hv_pro_sub', '1');
-      document.getElementById('statusBadge').textContent = 'Option HandiVie+ (3,00 €/mois) active • ICE toujours gratuite';
-      notify('Option 3,00 €/mois activée');
+    document.getElementById('placeFilterSelect').addEventListener('change', renderVenues);
+
+    document.getElementById('btnQuickIce').addEventListener('click', () => {
+      switchSection('ice');
+      toast('Fiche Urgence ICE ouverte');
+    });
+    document.getElementById('btnIceVoice').addEventListener('click', () => speak(COPY[app.lang].iceAlert));
+    document.getElementById('btnSaveIceCard').addEventListener('click', () => {
+      app.ice = {
+        name: document.getElementById('iceContactName').value.trim(),
+        phone: document.getElementById('iceContactPhone').value.trim() || '114',
+        notes: document.getElementById('iceMedicalInfo').value.trim()
+      };
+      localStorage.setItem('hv2_ice', JSON.stringify(app.ice));
+      renderIceSummary();
+      toast('Fiche ICE enregistrée');
     });
 
-    document.getElementById('iceName').value = iceData.name || '';
-    document.getElementById('icePhone').value = iceData.phone || '114';
-    document.getElementById('iceNotes').value = iceData.notes || '';
-    document.getElementById('iceCallLink').href = 'tel:' + (iceData.phone || '114');
-    if (localStorage.getItem('hv_pro_sub') === '1') {
-      document.getElementById('statusBadge').textContent = 'Option HandiVie+ (3,00 €/mois) active • ICE toujours gratuite';
-    }
+    document.getElementById('btnOpenPro').addEventListener('click', () => document.getElementById('proModal').classList.add('open'));
+    document.getElementById('btnClosePro').addEventListener('click', () => document.getElementById('proModal').classList.remove('open'));
+    document.getElementById('btnConfirmPro').addEventListener('click', () => {
+      app.proEnabled = true;
+      localStorage.setItem('hv2_pro', '1');
+      updatePlanBadge();
+      document.getElementById('proModal').classList.remove('open');
+      toast('Option 3,00 €/mois activée');
+    });
+
+    document.getElementById('iceContactName').value = app.ice.name || '';
+    document.getElementById('iceContactPhone').value = app.ice.phone || '114';
+    document.getElementById('iceMedicalInfo').value = app.ice.notes || '';
 
     applyLang('fr');
-    renderReminders();
+    renderTasks();
+    renderVenues();
+    renderIceSummary();
+    refreshClock();
   </script>
 </body>
 </html>
