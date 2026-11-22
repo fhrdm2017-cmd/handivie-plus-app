@@ -3,1437 +3,597 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HandiVie+ — Compagnon Universel d'Autonomie & Accessibilité</title>
-  <meta name="theme-color" content="#1e3a8a" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>HandiVie+</title>
   <style>
     :root {
-      --bg-page: linear-gradient(155deg, #eff6ff 0%, #f8fafc 45%, #f0fdf4 100%);
-      --bg-solid: #f1f5f9;
-      --surface: #ffffff;
-      --surface-2: #f8fafc;
-      --surface-3: #eef2ff;
-      --text: #0f172a;
-      --muted: #475569;
-      --primary: #1d4ed8;
-      --primary-dark: #1e3a8a;
-      --primary-soft: #dbeafe;
-      --emerald: #059669;
-      --emerald-soft: #d1fae5;
-      --amber: #d97706;
-      --amber-soft: #fef3c7;
-      --violet: #6d28d9;
-      --violet-soft: #ede9fe;
-      --danger: #dc2626;
-      --danger-dark: #991b1b;
-      --danger-soft: #fee2e2;
-      --border: #cbd5e1;
-      --border-strong: #94a3b8;
-      --radius-xl: 24px;
-      --radius-lg: 18px;
-      --radius-md: 14px;
-      --font-size: 18px;
-      --line-height: 1.6;
-      --letter-spacing: 0px;
-      --word-spacing: 0px;
-      --font-main: 'Plus Jakarta Sans', 'Noto Naskh Arabic', system-ui, -apple-system, sans-serif;
-      --shadow-lg: 0 14px 34px -8px rgba(15, 23, 42, 0.10), 0 4px 12px -4px rgba(15, 23, 42, 0.05);
-      --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --soft: #eef2f6;
+      --text: #111827;
+      --muted: #4b5563;
+      --line: #d1d5db;
+      --accent: #1e3a8a;
+      --danger: #b91c1c;
+      --ok: #15803d;
+      --font: 18px;
     }
 
-    body.mode-contrast {
-      --bg-page: #000000;
-      --bg-solid: #000000;
-      --surface: #0a0e17;
-      --surface-2: #131b2b;
-      --surface-3: #172554;
-      --text: #ffffff;
-      --muted: #fde047;
-      --primary: #38bdf8;
-      --primary-dark: #0284c7;
-      --primary-soft: #0c4a6e;
-      --emerald: #34d399;
-      --emerald-soft: #064e3b;
-      --amber: #fbbf24;
-      --amber-soft: #451a03;
-      --violet: #c084fc;
-      --violet-soft: #3b0764;
-      --danger: #f87171;
-      --danger-dark: #dc2626;
-      --danger-soft: #450a0a;
-      --border: #facc15;
-      --border-strong: #fde047;
-      --shadow-lg: none;
-      --shadow-sm: none;
-    }
-
-    body.mode-dys {
-      --font-main: 'Atkinson Hyperlegible', 'Noto Naskh Arabic', system-ui, sans-serif;
-      --line-height: 1.88;
-      --letter-spacing: 0.035em;
-      --word-spacing: 0.16em;
+    body.dark {
+      --bg: #0b0f17;
+      --card: #131a26;
+      --soft: #1c2638;
+      --text: #f9fafb;
+      --muted: #cbd5e1;
+      --line: #334155;
+      --accent: #60a5fa;
+      --danger: #ef4444;
+      --ok: #4ade80;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      min-height: 100vh;
-      background: var(--bg-page);
-      background-color: var(--bg-solid);
+      padding: 16px;
+      background: var(--bg);
       color: var(--text);
-      font-family: var(--font-main);
-      font-size: var(--font-size);
-      line-height: var(--line-height);
-      letter-spacing: var(--letter-spacing);
-      word-spacing: var(--word-spacing);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", Tahoma, sans-serif;
+      font-size: var(--font);
+      line-height: 1.5;
     }
 
-    button, input, select, textarea {
-      font-family: inherit;
-      font-size: inherit;
-      color: inherit;
-    }
-
-    button, .ext-link {
-      cursor: pointer;
-      border: 2px solid transparent;
-      border-radius: var(--radius-md);
-      font-weight: 700;
-      min-height: 48px;
-      padding: 11px 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-      transition: transform 0.12s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    button:active, .ext-link:active { transform: scale(0.98); }
-    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
-      outline: 4px solid var(--primary);
-      outline-offset: 2px;
-    }
-
-    .scan-active {
-      outline: 5px solid #facc15 !important;
-      outline-offset: 3px !important;
-      box-shadow: 0 0 0 6px rgba(250, 204, 21, 0.35) !important;
-    }
-
-    .reading-ruler {
-      position: fixed;
-      left: 0; right: 0;
-      height: 54px;
-      background: rgba(250, 204, 21, 0.18);
-      border-top: 2px solid #eab308;
-      border-bottom: 2px solid #eab308;
-      pointer-events: none;
-      z-index: 900;
-      display: none;
-    }
-    body.ruler-on .reading-ruler { display: block; }
-
-    .screen-flash {
-      position: fixed;
-      inset: 0;
-      background: #ffffff;
-      opacity: 0;
-      pointer-events: none;
-      z-index: 1300;
-      transition: opacity 0.15s ease;
-    }
-    .screen-flash.on { opacity: 0.92; }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 450;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(12px);
-      border-bottom: 2px solid var(--border);
-      padding: 10px 14px;
-    }
-    body.mode-contrast .topbar { background: rgba(10, 14, 23, 0.96); }
-
-    .topbar-inner {
-      max-width: 1160px;
+    .app {
+      max-width: 780px;
       margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
     }
 
-    .cluster {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .chip-btn {
-      background: var(--surface-2);
-      border: 2px solid var(--border);
-      min-height: 42px;
-      padding: 6px 11px;
-      font-size: 0.86em;
-      border-radius: 11px;
-    }
-    .chip-btn.on {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #ffffff;
-    }
-    body.mode-contrast .chip-btn.on { color: #000000; }
-
-    .lang-picker {
-      background: var(--primary-soft);
-      border: 2px solid var(--primary);
-      border-radius: 11px;
-      padding: 6px 11px;
-      min-height: 42px;
-      font-weight: 800;
-      font-size: 0.88em;
-      cursor: pointer;
-    }
-    body.mode-contrast .lang-picker { color: #ffffff; }
-
-    .btn-pro-badge {
-      background: linear-gradient(135deg, var(--violet) 0%, #4c1d95 100%);
-      color: #ffffff;
-      min-height: 42px;
-      padding: 7px 14px;
-      font-size: 0.88em;
-      box-shadow: 0 4px 12px rgba(109, 40, 217, 0.25);
-    }
-
-    .btn-ice-badge {
-      background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
-      color: #ffffff;
-      min-height: 42px;
-      padding: 7px 14px;
-      font-size: 0.88em;
-      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.28);
-    }
-
-    .shell {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 20px 14px 96px;
-    }
-
-    .hero-banner {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 24px;
-      box-shadow: var(--shadow-lg);
-      margin-bottom: 18px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-banner::before {
-      content: "";
-      position: absolute;
-      inset-inline: 0;
-      top: 0;
-      height: 7px;
-      background: linear-gradient(90deg, var(--primary), var(--emerald), var(--amber), var(--violet));
-    }
-
-    .hero-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .hero-title {
-      margin: 0;
-      font-size: 1.8em;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .hero-sub {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 1em;
-    }
-
-    .pill-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 13px;
-      border-radius: 999px;
-      font-size: 0.82em;
-      font-weight: 800;
-    }
-    .tag-free { background: var(--emerald-soft); color: #065f46; border: 1.5px solid var(--emerald); }
-    .tag-pro { background: var(--violet-soft); color: #5b21b6; border: 1.5px solid var(--violet); }
-    .tag-warn { background: var(--amber-soft); color: #92400e; border: 1.5px solid var(--amber); }
-    body.mode-contrast .tag-free, body.mode-contrast .tag-pro, body.mode-contrast .tag-warn { color: #ffffff; }
-
-    .hero-footer {
-      margin-top: 16px;
-      padding-top: 14px;
-      border-top: 1.5px solid var(--border);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .profiles-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .profile-pill {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: 999px;
-      min-height: 44px;
-      padding: 8px 15px;
-      font-size: 0.88em;
-      box-shadow: var(--shadow-sm);
-    }
-    .profile-pill.active {
-      background: var(--emerald-soft);
-      border-color: var(--emerald);
-    }
-
-    .module-nav {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .module-tab {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 13px 10px;
-      min-height: 70px;
-      flex-direction: column;
-      gap: 4px;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-    }
-    .module-tab.active {
-      background: var(--primary);
-      border-color: var(--primary-dark);
-      color: #ffffff;
-      box-shadow: 0 8px 20px rgba(29, 78, 216, 0.25);
-    }
-    body.mode-contrast .module-tab.active { color: #000000; }
-
-    .module-panel {
-      display: none;
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 24px;
-      box-shadow: var(--shadow-lg);
-    }
-    .module-panel.active {
-      display: block;
-      animation: rise 0.18s ease;
-    }
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .panel-title { margin: 0 0 6px; font-size: 1.42em; font-weight: 800; }
-    .panel-sub { margin: 0 0 18px; color: var(--muted); }
-
-    .btn-blue { background: var(--primary); color: #ffffff; border-color: var(--primary-dark); }
-    body.mode-contrast .btn-blue { color: #000000; }
-    .btn-green { background: var(--emerald); color: #ffffff; border-color: #047857; }
-    body.mode-contrast .btn-green { color: #000000; }
-    .btn-amber { background: var(--amber); color: #ffffff; border-color: #b45309; }
-    .btn-soft { background: var(--surface-2); border: 2px solid var(--border); }
-
-    .stage-box {
-      background: linear-gradient(135deg, var(--surface-3) 0%, var(--surface-2) 100%);
-      border: 2px solid var(--primary);
-      border-radius: var(--radius-lg);
+    .card {
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
       padding: 18px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
-    .stage-text {
-      font-size: 1.45em;
-      font-weight: 800;
-      min-height: 46px;
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
       margin-bottom: 12px;
     }
 
-    .row-flex {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 14px;
-      align-items: center;
-    }
-
-    input[type="text"], input[type="time"], input[type="tel"], textarea, select.std-select {
-      background: var(--surface-2);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      min-height: 50px;
-      flex: 1 1 200px;
-    }
-
-    .caa-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(162px, 1fr));
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .caa-tile {
-      background: var(--surface-2);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 16px 12px;
-      min-height: 118px;
-      flex-direction: column;
-      text-align: center;
-      gap: 8px;
-    }
-    .caa-tile:hover {
-      border-color: var(--primary);
-      background: var(--surface-3);
-    }
-
-    .priority-card {
-      background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 55%, #0f766e 100%);
-      color: #ffffff;
-      border-radius: var(--radius-xl);
-      padding: 26px;
-      text-align: center;
-      margin-bottom: 18px;
-      box-shadow: 0 14px 30px rgba(29, 78, 216, 0.28);
-    }
-
-    .box-card {
-      background: var(--surface-2);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      margin-bottom: 14px;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-      gap: 16px;
-    }
-
-    .item-strip {
-      background: var(--surface-2);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
-      margin-bottom: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .bar-bg {
-      height: 12px;
-      background: var(--border);
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 12px 0;
-    }
-    .bar-fill {
-      height: 100%;
-      width: 100%;
-      background: var(--primary);
-      transition: width 0.35s linear;
-    }
-
-    .orb-breath {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      margin: 14px auto;
-      background: radial-gradient(circle at 30% 30%, #34d399, var(--emerald));
-      color: #ffffff;
-      font-weight: 800;
-      display: flex;
+    button, select, input, a.btn {
+      font-family: inherit;
+      font-size: inherit;
+      min-height: 46px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--line);
+      background: var(--soft);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 12px;
-      transition: transform 3.8s ease-in-out;
+      gap: 6px;
     }
-    body.mode-contrast .orb-breath { color: #000000; }
 
-    .ice-hero {
-      background: linear-gradient(135deg, var(--danger) 0%, var(--danger-dark) 100%);
+    button.primary, a.btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
       color: #ffffff;
-      border-radius: var(--radius-lg);
-      padding: 22px;
-      margin-bottom: 18px;
     }
 
-    .ice-dial {
-      background: #ffffff;
-      color: var(--danger-dark);
-      font-weight: 900;
+    body.dark button.primary, body.dark a.btn.primary {
+      color: #0b0f17;
+    }
+
+    button.danger, a.btn.danger {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: #ffffff;
+    }
+
+    input, select {
+      flex: 1 1 180px;
+      background: var(--card);
+      cursor: text;
+    }
+
+    select { cursor: pointer; }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    body.dark .tab.active { color: #0b0f17; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .status-bar {
+      font-size: 0.9em;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .msg-box {
+      padding: 14px;
+      border-radius: 10px;
+      background: var(--soft);
+      border: 1.5px solid var(--line);
+      font-size: 1.2em;
+      font-weight: 700;
+      min-height: 52px;
+      margin-bottom: 12px;
+    }
+
+    .grid-phrases {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      gap: 8px;
+    }
+
+    .result-box {
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--soft);
+      border: 1px solid var(--line);
       margin-top: 10px;
     }
 
-    .ice-preview {
-      background: var(--danger-soft);
-      border: 2px solid var(--danger);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      margin-top: 14px;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.74);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 1100;
-    }
-    .modal-overlay.open { display: flex; }
-
-    .modal-box {
-      background: var(--surface);
-      border: 2px solid var(--border-strong);
-      border-radius: var(--radius-xl);
-      max-width: 580px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 24px;
-      box-shadow: var(--shadow-lg);
-    }
-
-    .toast-msg {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #0f172a;
-      color: #ffffff;
-      border: 2px solid rgba(255, 255, 255, 0.25);
-      padding: 11px 20px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 0.92em;
-      z-index: 1500;
-      display: none;
-      max-width: 92vw;
-      text-align: center;
-    }
-    .toast-msg.show { display: block; }
+    .ok { color: var(--ok); font-weight: 700; }
+    .err { color: var(--danger); font-weight: 700; }
   </style>
 </head>
 <body>
-  <div class="reading-ruler" id="readingRuler"></div>
-  <div class="screen-flash" id="screenFlash"></div>
-  <div class="toast-msg" id="toastMsg" role="status" aria-live="polite"></div>
-
-  <header class="topbar" aria-label="Outils d'accessibilité et langue">
-    <div class="topbar-inner">
-      <div class="cluster">
-        <button type="button" class="chip-btn" id="btnFontDown">A-</button>
-        <button type="button" class="chip-btn" id="btnFontUp">A+</button>
-        <button type="button" class="chip-btn" id="btnContrast">🌗 Contraste</button>
-        <button type="button" class="chip-btn" id="btnDys">🔤 DYS</button>
-        <button type="button" class="chip-btn" id="btnRuler">📏 Règle</button>
-        <button type="button" class="chip-btn" id="btnScan">🎛️ Balayage</button>
-        <button type="button" class="chip-btn" id="btnReadScreen">🔊 Lire</button>
-      </div>
-
-      <div class="cluster">
-        <select class="lang-picker" id="langSelect" aria-label="Langue">
-          <option value="fr">🇫🇷 Français</option>
-          <option value="ar">🇸🇦 العربية</option>
-          <option value="en">🇬🇧 English</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="de">🇩🇪 Deutsch</option>
-          <option value="it">🇮🇹 Italiano</option>
-        </select>
-        <button type="button" class="btn-pro-badge" id="btnOpenSub">⭐ 3,00 €/mois</button>
-        <button type="button" class="btn-ice-badge" id="btnTopIce">🚨 Urgence ICE</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="shell">
-    <section class="hero-banner">
-      <div class="hero-header">
-        <div>
-          <h1 class="hero-title" id="uiAppTitle">♿ HandiVie+</h1>
-          <p class="hero-sub" id="uiAppSub">Suite complète d'autonomie, communication, suivi santé et accès prioritaire</p>
-        </div>
-        <span class="pill-tag tag-free" id="uiFreeBadge">✓ Urgence ICE 100 % gratuite</span>
-      </div>
-
-      <div class="hero-footer">
-        <span class="pill-tag tag-pro" id="uiSubStatus">Essai 7 jours • Option Confort 3,00 €/mois</span>
-        <span id="uiActivityLog" style="font-size:0.9em;font-weight:700;color:var(--muted);">Prêt à vous accompagner</span>
-      </div>
-    </section>
-
-    <div class="profiles-strip" aria-label="Profils rapides">
-      <button type="button" class="profile-pill" data-prof="vision">👁️ Handicap Visuel</button>
-      <button type="button" class="profile-pill" data-prof="motor">🦾 Handicap Moteur</button>
-      <button type="button" class="profile-pill" data-prof="hearing">👂 Handicap Auditif</button>
-      <button type="button" class="profile-pill" data-prof="cognitive">🧠 Cognitif / DYS</button>
-      <button type="button" class="profile-pill" data-prof="reset">↺ Standard</button>
-    </div>
-
-    <nav class="module-nav" aria-label="Navigation principale">
-      <button type="button" class="module-tab active" data-tab="speak" id="navSpeak">🗣️ <span>Parler & Écouter</span></button>
-      <button type="button" class="module-tab" data-tab="priority" id="navPriority">🪪 <span>Pass Prioritaire</span></button>
-      <button type="button" class="module-tab" data-tab="health" id="navHealth">💊 <span>Pilulier & Jour</span></button>
-      <button type="button" class="module-tab" data-tab="falc" id="navFalc">📘 <span>Lecteur FALC</span></button>
-      <button type="button" class="module-tab" data-tab="calm" id="navCalm">🧘 <span>Calme & Temps</span></button>
-      <button type="button" class="module-tab" data-tab="places" id="navPlaces">🗺️ <span>Lieux & GPS PMR</span></button>
-      <button type="button" class="module-tab" data-tab="ice" id="navIce">🚨 <span>Urgence ICE</span></button>
-    </nav>
-
-    <!-- 1. PARLER & ECOUTER -->
-    <section class="module-panel active" id="panel-speak">
-      <h2 class="panel-title" id="speakHead">Communication Parlée, Pictogrammes & Sous-titres</h2>
-      <p class="panel-sub" id="speakLead">Construisez une phrase avec les cartes, faites-la lire à voix haute ou transcrivez la voix de votre interlocuteur.</p>
-
-      <div class="stage-box">
-        <div class="stage-text" id="phraseDisplay" aria-live="polite">Bonjour, j'ai besoin d'aide s'il vous plaît.</div>
-        <div class="row-flex" style="margin-bottom:0;">
-          <button type="button" class="btn-blue" id="btnSpeakNow">🔊 Parler</button>
-          <button type="button" class="btn-green" id="btnLiveCaptions">🎤 Sous-titrer l'interlocuteur</button>
-          <button type="button" class="btn-amber" id="btnFullscreenText">🖥️ Écran Géant</button>
-          <button type="button" class="btn-soft" id="btnClearText">✕ Effacer</button>
-          <select class="std-select" id="speechRate" aria-label="Vitesse vocale" style="max-width:175px;">
-            <option value="0.75">🐢 Voix lente</option>
-            <option value="1" selected>▶️ Voix normale</option>
-            <option value="1.25">⚡ Voix rapide</option>
+  <div class="app">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px;">
+        <h1 id="tTitle" style="margin:0;font-size:1.5em;">HandiVie+</h1>
+        <div class="row" style="margin-bottom:0;">
+          <select id="langSel" aria-label="Langue">
+            <option value="fr">Français</option>
+            <option value="ar">العربية</option>
           </select>
+          <button type="button" id="btnTheme">Sombre</button>
+          <button type="button" id="btnSizePlus">A+</button>
+          <button type="button" id="btnSizeMinus">A-</button>
         </div>
       </div>
 
-      <div class="row-flex">
-        <input type="text" id="customInput" placeholder="Écrire une phrase personnalisée..." />
-        <button type="button" class="btn-blue" id="btnAddSpeak">➕ Dire</button>
+      <div class="status-bar">
+        <span id="netStatus">Connexion : vérification...</span>
+        <span id="planStatus">ICE : gratuit • Option : 3,00 €/mois</span>
       </div>
-
-      <div class="caa-grid" id="caaContainer"></div>
-    </section>
-
-    <!-- 2. PASS PRIORITAIRE & CMI -->
-    <section class="module-panel" id="panel-priority">
-      <h2 class="panel-title" id="prioHead">Pass Prioritaire Visuel & Sonore (File d'attente / Caisse)</h2>
-      <p class="panel-sub" id="prioLead">Signalez votre priorité ou votre besoin d'aménagement sans avoir à vous justifier oralement.</p>
-
-      <div class="priority-card">
-        <span class="pill-tag tag-warn" style="margin-bottom:10px;">CARTE MOBILITÉ INCLUSION / PRIORITÉ</span>
-        <h3 id="prioCardTitle" style="margin:6px 0 10px;font-size:1.6em;">♿ Accès Prioritaire Demandé</h3>
-        <p id="prioCardBody" style="margin:0 0 16px;font-size:1.08em;">
-          Je suis titulaire d'une carte de priorité / mobilité inclusion. Merci de me faciliter le passage ou de m'accorder un accueil adapté.
-        </p>
-        <div class="row-flex" style="justify-content:center;margin-bottom:0;">
-          <button type="button" class="btn-soft" style="background:#ffffff;color:#0f172a;" id="btnTriggerSignal">🔔 Signal Visuel & Vocal</button>
-          <button type="button" class="btn-soft" style="background:#ffffff;color:#0f172a;" id="btnShowPrioFull">🖥️ Montrer en Plein Écran</button>
-        </div>
-      </div>
-
-      <div class="box-card">
-        <h3 style="margin-top:0;">Personnaliser mon message d'accueil</h3>
-        <div class="row-flex" style="margin-bottom:0;">
-          <select class="std-select" id="prioPresetSelect">
-            <option value="Je suis titulaire d'une carte de priorité / mobilité inclusion. Merci de me faciliter le passage.">♿ Accès prioritaire file d'attente / caisse</option>
-            <option value="J'ai un handicap invisible qui rend la station debout pénible. Merci de me laisser une place assise.">🪑 Besoin d'une place assise (handicap invisible)</option>
-            <option value="Je suis sourd ou malentendant. Merci de me parler de face, lentement, ou d'écrire.">👂 Communication adaptée (malentendant)</option>
-            <option value="J'ai besoin d'un accompagnement calme et sans précipitation pour mes démarches.">🌿 Accueil calme et sans stress</option>
-          </select>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. PILULIER & ROUTINE -->
-    <section class="module-panel" id="panel-health">
-      <h2 class="panel-title" id="healthHead">Pilulier Horodaté & Routine Quotidienne</h2>
-      <p class="panel-sub" id="healthLead">Suivez vos prises de médicaments avec l'heure exacte de validation et partagez le bilan à un proche ou médecin.</p>
-
-      <div class="row-flex">
-        <input type="time" id="medTime" value="08:30" />
-        <input type="text" id="medName" placeholder="Ex. Traitement matin, séance kiné, hydratation..." />
-        <button type="button" class="btn-green" id="btnAddMed">➕ Ajouter</button>
-        <button type="button" class="btn-soft" id="btnShareLog">📋 Copier le bilan du jour</button>
-      </div>
-
-      <div id="medList"></div>
-    </section>
-
-    <!-- 4. LECTEUR FALC & DYS -->
-    <section class="module-panel" id="panel-falc">
-      <h2 class="panel-title" id="falcHead">Assistant de Lecture Facile (FALC / DYS) & Numéros Utiles</h2>
-      <p class="panel-sub" id="falcLead">Collez un courrier administratif, une ordonnance ou une notice : l'outil découpe les syllabes et le lit lentement.</p>
-
-      <div class="box-card">
-        <textarea id="falcInput" rows="3" style="width:100%;margin-bottom:10px;" placeholder="Collez ici un texte difficile à lire...">Votre dossier de renouvellement de Carte Mobilité Inclusion est en cours de traitement par la maison départementale.</textarea>
-        <div class="row-flex" style="margin-bottom:10px;">
-          <button type="button" class="btn-blue" id="btnProcessFalc">✂️ Découper en syllabes & Lire</button>
-          <button type="button" class="btn-soft" id="btnReadFalcOnly">🔊 Lire sans découper</button>
-        </div>
-        <div id="falcOutput" style="font-size:1.25em;font-weight:700;padding:12px;background:var(--surface);border-radius:12px;border:1.5px solid var(--border);"></div>
-      </div>
-
-      <div class="box-card">
-        <h3 style="margin-top:0;">📞 Numéros d'urgence accessibles</h3>
-        <p style="margin:4px 0;"><strong>114</strong> : Urgences par SMS, chat et visio pour personnes sourdes ou malentendantes (gratuit 24h/24).</p>
-        <p style="margin:4px 0;"><strong>15</strong> (SAMU) • <strong>18</strong> (Pompiers) • <strong>112</strong> (Urgence européen).</p>
-      </div>
-    </section>
-
-    <!-- 5. CALME & TEMPS -->
-    <section class="module-panel" id="panel-calm">
-      <h2 class="panel-title" id="calmHead">Minuteur Visuel & Cohérence Cardiaque</h2>
-      <p class="panel-sub" id="calmLead">Structurer le temps visuellement et apaiser le stress ou la surcharge sensorielle.</p>
-
-      <div class="grid-2">
-        <div class="box-card" style="text-align:center;">
-          <h3 style="margin-top:0;">⏳ Minuteur Visuel</h3>
-          <div id="timerText" style="font-size:2.3em;font-weight:800;">05:00</div>
-          <div class="bar-bg"><div class="bar-fill" id="timerBar"></div></div>
-          <div class="row-flex" style="justify-content:center;margin-bottom:8px;">
-            <button type="button" class="btn-soft" onclick="setTimerPreset(180)">3 min</button>
-            <button type="button" class="btn-soft" onclick="setTimerPreset(300)">5 min</button>
-            <button type="button" class="btn-soft" onclick="setTimerPreset(900)">15 min</button>
-          </div>
-          <div class="row-flex" style="justify-content:center;margin-bottom:0;">
-            <button type="button" class="btn-blue" id="btnTimerRun">▶️ Démarrer / Pause</button>
-            <button type="button" class="btn-soft" id="btnTimerZero">↺ Réinitialiser</button>
-          </div>
-        </div>
-
-        <div class="box-card" style="text-align:center;">
-          <h3 style="margin-top:0;">🌬️ Respiration Apaisante</h3>
-          <div class="orb-breath" id="breathCircle">Inspirez</div>
-          <div id="breathCycles" style="font-weight:700;margin-bottom:10px;color:var(--muted);">Cycles complétés : 0</div>
-          <div class="row-flex" style="justify-content:center;margin-bottom:0;">
-            <button type="button" class="btn-green" id="btnBreathStart">▶️ Lancer / Arrêter</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6. LIEUX & GPS PMR -->
-    <section class="module-panel" id="panel-places">
-      <h2 class="panel-title" id="placesHead">Lieux Accessibles, Places PMR & Toilettes Adaptées</h2>
-      <p class="panel-sub" id="placesLead">Accédez directement aux cartes d'accessibilité autour de vous et enregistrez vos propres adresses vérifiées.</p>
-
-      <div class="row-flex">
-        <a class="ext-link btn-blue" href="https://www.google.com/maps/search/parking+handicap%C3%A9+PMR/" target="_blank" rel="noopener">🅿️ Places PMR autour de moi</a>
-        <a class="ext-link btn-green" href="https://www.google.com/maps/search/toilettes+publiques+accessibles+PMR/" target="_blank" rel="noopener">🚻 Toilettes PMR proches</a>
-        <a class="ext-link btn-amber" href="https://wheelmap.org/" target="_blank" rel="noopener">♿ Carte Wheelmap</a>
-      </div>
-
-      <div class="box-card">
-        <h3 style="margin-top:0;">📍 Mon Carnet de Lieux Vérifiés</h3>
-        <div class="row-flex">
-          <input type="text" id="placeName" placeholder="Nom du lieu (ex. Pharmacie du Centre)" />
-          <input type="text" id="placeNote" placeholder="Équipement (ex. Rampe douce, WC PMR, calme)" />
-          <button type="button" class="btn-blue" id="btnAddPlace">➕ Enregistrer</button>
-        </div>
-        <div id="placesList"></div>
-      </div>
-    </section>
-
-    <!-- 7. URGENCE ICE -->
-    <section class="module-panel" id="panel-ice">
-      <div class="ice-hero">
-        <span class="pill-tag tag-free" style="margin-bottom:8px;">✓ 100 % GRATUIT À VIE</span>
-        <h2 style="margin:0 0 6px;font-size:1.55em;" id="iceTitle">🚨 Urgence ICE (In Case of Emergency)</h2>
-        <p style="margin:0 0 12px;" id="iceSub">Vos informations vitales et l'appel d'urgence sont toujours accessibles gratuitement.</p>
-        <button type="button" class="btn-soft" style="background:#ffffff;color:var(--danger-dark);" id="btnIceSpeak">🔊 Alerte Vocale & Flash d'Urgence</button>
-      </div>
-
-      <div class="row-flex">
-        <input type="text" id="iceName" placeholder="Votre nom et prénom" />
-        <input type="text" id="iceContact" placeholder="Proche à prévenir (ex. Samira — Sœur)" />
-      </div>
-      <div class="row-flex">
-        <input type="tel" id="icePhone" placeholder="Téléphone d'urgence (ex. 0612345678)" />
-        <input type="text" id="iceBlood" placeholder="Groupe sanguin / Allergies / Traitement" />
-      </div>
-      <div class="row-flex">
-        <input type="text" id="iceNeeds" placeholder="Consignes aux secours (ex. Fauteuil roulant, malentendant...)" />
-        <button type="button" class="btn-blue" id="btnSaveIce">💾 Enregistrer ma fiche ICE</button>
-      </div>
-
-      <a class="ext-link ice-dial" id="iceCallBtn" href="tel:114">📞 Appeler le contact ICE</a>
-
-      <div class="ice-preview" id="icePreviewBox">
-        <strong>Aperçu de la fiche ICE prête pour les secours :</strong>
-        <p id="icePreviewText" style="margin:6px 0 0;">Aucune fiche enregistrée pour le moment.</p>
-      </div>
-    </section>
-  </main>
-
-  <!-- MODAL PLEIN ECRAN -->
-  <div class="modal-overlay" id="fullModal" role="dialog" aria-modal="true" aria-label="Affichage géant">
-    <div class="modal-box" style="text-align:center;max-width:780px;">
-      <p style="margin:0 0 10px;color:var(--muted);font-weight:800;">HandiVie+</p>
-      <div id="fullModalContent" style="font-size:2.15em;font-weight:800;line-height:1.35;margin:20px 0 28px;"></div>
-      <button type="button" class="btn-blue" id="btnCloseFull">Fermer</button>
     </div>
-  </div>
 
-  <!-- MODAL ABONNEMENT -->
-  <div class="modal-overlay" id="subModal" role="dialog" aria-modal="true" aria-labelledby="subTitle">
-    <div class="modal-box">
-      <span class="pill-tag tag-pro">HANDIVIE+ CONFORT</span>
-      <h2 id="subTitle" style="margin:10px 0 8px;">Abonnement HandiVie+ — 3,00 € / mois</h2>
-      <p style="margin:0 0 12px;color:var(--muted);">
-        Inclut <strong>7 jours d'essai gratuit</strong>, puis <strong>3,00 €/mois</strong> (sans engagement). La <strong>Fiche Urgence ICE</strong> reste toujours 100 % gratuite.
+    <div class="tabs">
+      <button type="button" class="tab active" data-p="gps" id="tabGps">GPS & Lieux</button>
+      <button type="button" class="tab" data-p="speak" id="tabSpeak">Parler</button>
+      <button type="button" class="tab" data-p="ice" id="tabIce">Urgence ICE</button>
+      <button type="button" class="tab" data-p="plus" id="tabPlus">3,00 €/mois</button>
+    </div>
+
+    <!-- 1. GPS & RECHERCHE D'ENDROITS -->
+    <div class="card panel active" id="panel-gps">
+      <h2 id="hGps" style="margin-top:0;">Recherche d'endroits avec GPS</h2>
+
+      <div class="row">
+        <button type="button" class="primary" id="btnLocate">Ma position GPS</button>
+        <button type="button" id="btnTestNet">Tester Wi-Fi / Données</button>
+      </div>
+
+      <div class="row">
+        <input type="text" id="placeQuery" placeholder="Ex. : pharmacie, hôpital, gare, toilettes PMR..." />
+        <button type="button" class="primary" id="btnSearchPlace">Rechercher</button>
+      </div>
+
+      <div class="row">
+        <button type="button" class="quick-cat" data-q="pharmacie">Pharmacie</button>
+        <button type="button" class="quick-cat" data-q="hopital urgences">Hôpital</button>
+        <button type="button" class="quick-cat" data-q="parking PMR">Parking PMR</button>
+        <button type="button" class="quick-cat" data-q="toilettes publiques">Toilettes</button>
+      </div>
+
+      <div class="result-box" id="gpsOutput">
+        Appuyez sur <strong>Ma position GPS</strong> ou entrez un endroit puis <strong>Rechercher</strong>.
+      </div>
+
+      <div class="row" style="margin-top:12px;margin-bottom:0;">
+        <a class="btn primary" id="mapOpenLink" href="https://www.openstreetmap.org" target="_blank" rel="noopener">Ouvrir la carte</a>
+      </div>
+    </div>
+
+    <!-- 2. PARLER (PHRASES & VOIX) -->
+    <div class="card panel" id="panel-speak">
+      <h2 id="hSpeak" style="margin-top:0;">Messages & Lecture vocale</h2>
+
+      <div class="msg-box" id="msgBox">J'ai besoin d'aide.</div>
+
+      <div class="row">
+        <button type="button" class="primary" id="btnSay">Lire à voix haute</button>
+        <button type="button" id="btnClear">Effacer</button>
+      </div>
+
+      <div class="row">
+        <input type="text" id="msgInput" placeholder="Écrire un message..." />
+        <button type="button" class="primary" id="btnSendMsg">Afficher et lire</button>
+      </div>
+
+      <div class="grid-phrases" id="phrasesList"></div>
+    </div>
+
+    <!-- 3. URGENCE ICE (GRATUIT) -->
+    <div class="card panel" id="panel-ice">
+      <h2 id="hIce" style="margin-top:0;">Urgence ICE (Gratuit)</h2>
+
+      <div class="row">
+        <input type="text" id="iceName" placeholder="Nom du contact" />
+        <input type="tel" id="icePhone" placeholder="Numéro de téléphone" />
+      </div>
+      <div class="row">
+        <input type="text" id="iceNote" placeholder="Allergies, traitement ou aide nécessaire" />
+        <button type="button" class="danger" id="btnSaveIce">Enregistrer</button>
+      </div>
+
+      <div class="result-box" id="iceSummary">Aucune fiche enregistrée.</div>
+
+      <div class="row" style="margin-top:12px;margin-bottom:0;">
+        <a class="btn danger" id="iceCallBtn" href="tel:112">Appeler</a>
+      </div>
+    </div>
+
+    <!-- 4. OPTION 3,00 EUR / MOIS -->
+    <div class="card panel" id="panel-plus">
+      <h2 id="hPlus" style="margin-top:0;">HandiVie+ — 3,00 € / mois</h2>
+      <p id="pPlus" style="color:var(--muted);margin-top:0;">
+        Option mensuelle à 3,00 € pour débloquer les fonctions avancées. L'Urgence ICE reste gratuite.
       </p>
-      <ul style="margin:0 0 18px;padding-inline-start:20px;">
-        <li>Communication CAA multilingue (6 langues dont l'arabe RTL) + sous-titrage vocal</li>
-        <li>Pass Prioritaire CMI visuel et sonore pour files d'attente et caisses</li>
-        <li>Pilulier horodaté avec export médical & Lecteur syllabique FALC / DYS</li>
-        <li>Carnet d'accessibilité PMR, minuteur visuel et cohérence cardiaque</li>
-      </ul>
-      <div class="row-flex" style="margin-bottom:0;">
-        <button type="button" class="btn-blue" id="btnActivateSub">✓ Activer l'essai / 3,00 €/mois</button>
-        <button type="button" class="btn-soft" id="btnCloseSub">Fermer</button>
-      </div>
+      <button type="button" class="primary" id="btnActivatePlus">Activer l'option 3,00 €/mois</button>
+      <div class="result-box" id="plusResult">Statut : non activé sur cet appareil.</div>
     </div>
   </div>
 
   <script>
-    const LANGS = {
+    const I18N = {
       fr: {
         dir: 'ltr', voice: 'fr-FR',
-        title: '♿ HandiVie+',
-        sub: "Suite complète d'autonomie, communication, suivi santé et accès prioritaire",
-        free: '✓ Urgence ICE 100 % gratuite',
-        subOff: 'Essai 7 jours • Option Confort 3,00 €/mois',
-        subOn: '✓ HandiVie+ actif (3,00 €/mois) • ICE toujours gratuit',
-        nav: ['Parler & Écouter', 'Pass Prioritaire', 'Pilulier & Jour', 'Lecteur FALC', 'Calme & Temps', 'Lieux & GPS PMR', 'Urgence ICE'],
-        defaultMsg: "Bonjour, j'ai besoin d'aide s'il vous plaît.",
-        iceVoice: "Urgence médicale. Merci de consulter ma fiche ICE sur l'écran et d'appeler mon contact.",
-        caa: [
-          { e: '🆘', t: "J'ai besoin d'aide" },
-          { e: '💧', t: "J'ai soif, un verre d'eau s'il vous plaît" },
-          { e: '🍽️', t: "J'ai faim" },
-          { e: '🚻', t: 'Où sont les toilettes accessibles ?' },
-          { e: '🩺', t: 'Je ressens une douleur' },
-          { e: '🪑', t: "J'ai besoin de m'asseoir" },
-          { e: '🔇', t: 'Trop de bruit, cherchons un endroit calme' },
-          { e: '🐢', t: 'Parlez lentement et clairement' }
-        ]
+        title: 'HandiVie+',
+        tabs: ['GPS & Lieux', 'Parler', 'Urgence ICE', '3,00 €/mois'],
+        hGps: "Recherche d'endroits avec GPS",
+        btnLocate: 'Ma position GPS',
+        btnTestNet: 'Tester Wi-Fi / Données',
+        qPlaceholder: 'Ex. : pharmacie, hôpital, gare, toilettes PMR...',
+        btnSearch: 'Rechercher',
+        openMap: 'Ouvrir la carte',
+        hSpeak: 'Messages & Lecture vocale',
+        btnSay: 'Lire à voix haute',
+        btnClear: 'Effacer',
+        msgPlaceholder: 'Écrire un message...',
+        btnSend: 'Afficher et lire',
+        defaultMsg: "J'ai besoin d'aide.",
+        phrases: ["J'ai besoin d'aide", "J'ai soif", "J'ai besoin de m'asseoir", "Parlez lentement"],
+        hIce: 'Urgence ICE (Gratuit)',
+        iceNamePh: 'Nom du contact',
+        icePhonePh: 'Numéro de téléphone',
+        iceNotePh: 'Allergies, traitement ou aide nécessaire',
+        btnSaveIce: 'Enregistrer',
+        callBtn: 'Appeler',
+        hPlus: 'HandiVie+ — 3,00 € / mois',
+        btnPlus: "Activer l'option 3,00 €/mois"
       },
       ar: {
         dir: 'rtl', voice: 'ar-SA',
-        title: '♿ HandiVie+ — هاندي في بلس',
-        sub: 'منظومة متكاملة للاستقلالية والتواصل والمتابعة الصحية والأولوية',
-        free: '✓ طوارئ ICE مجانية 100٪',
-        subOff: 'تجربة 7 أيام • خيار الراحة 3,00 € / شهر',
-        subOn: '✓ اشتراك HandiVie+ مفعّل (3,00 € / شهر) • طوارئ ICE مجانية',
-        nav: ['تحدث واستمع', 'بطاقة الأولوية', 'الأدوية ويومي', 'القارئ السهل', 'الهدوء والوقت', 'أماكن ميسرة', 'طوارئ ICE'],
-        defaultMsg: 'مرحبًا، أحتاج إلى مساعدة من فضلك.',
-        iceVoice: 'حالة طوارئ. يرجى قراءة بطاقة الطوارئ على الشاشة والاتصال بجهة الاتصال.',
-        caa: [
-          { e: '🆘', t: 'أحتاج إلى مساعدة' },
-          { e: '💧', t: 'أنا عطشان، أريد كوب ماء من فضلك' },
-          { e: '🍽️', t: 'أنا جائع' },
-          { e: '🚻', t: 'أين توجد دورات المياه الميسرة؟' },
-          { e: '🩺', t: 'أشعر بألم' },
-          { e: '🪑', t: 'أحتاج إلى الجلوس' },
-          { e: '🔇', t: 'الضوضاء مرتفعة جدًا، لنذهب لمكان هادئ' },
-          { e: '🐢', t: 'يرجى التحدث ببطء ووضوح' }
-        ]
-      },
-      en: {
-        dir: 'ltr', voice: 'en-US',
-        title: '♿ HandiVie+',
-        sub: 'Complete autonomy, communication, health tracking, and priority access suite',
-        free: '✓ ICE Emergency 100% free',
-        subOff: '7-day trial • Comfort Option €3.00 / month',
-        subOn: '✓ HandiVie+ active (€3.00/mo) • ICE always free',
-        nav: ['Speak & Listen', 'Priority Pass', 'Meds & Day', 'Easy Reader', 'Calm & Time', 'Accessible Places', 'ICE Emergency'],
-        defaultMsg: 'Hello, I need help please.',
-        iceVoice: 'Medical emergency. Please read my ICE card on screen and call my emergency contact.',
-        caa: [
-          { e: '🆘', t: 'I need help' },
-          { e: '💧', t: 'I am thirsty, a glass of water please' },
-          { e: '🍽️', t: 'I am hungry' },
-          { e: '🚻', t: 'Where is the accessible restroom?' },
-          { e: '🩺', t: 'I am in pain' },
-          { e: '🪑', t: 'I need to sit down' },
-          { e: '🔇', t: 'Too noisy, please move to a quiet spot' },
-          { e: '🐢', t: 'Please speak slowly and clearly' }
-        ]
-      },
-      es: {
-        dir: 'ltr', voice: 'es-ES',
-        title: '♿ HandiVie+',
-        sub: 'Suite completa de autonomía, comunicación, salud y acceso prioritario',
-        free: '✓ Emergencia ICE 100 % gratuita',
-        subOff: 'Prueba 7 días • Opción Confort 3,00 € / mes',
-        subOn: '✓ HandiVie+ activo (3,00 €/mes) • ICE siempre gratis',
-        nav: ['Hablar y Escuchar', 'Pase Prioritario', 'Medicación y Día', 'Lector Fácil', 'Calma y Tiempo', 'Lugares PMR', 'Emergencia ICE'],
-        defaultMsg: 'Hola, necesito ayuda por favor.',
-        iceVoice: 'Emergencia médica. Por favor lea mi ficha ICE en pantalla y llame a mi contacto.',
-        caa: [
-          { e: '🆘', t: 'Necesito ayuda' },
-          { e: '💧', t: 'Tengo sed, un vaso de agua por favor' },
-          { e: '🍽️', t: 'Tengo hambre' },
-          { e: '🚻', t: '¿Dónde está el baño accesible?' },
-          { e: '🩺', t: 'Siento dolor' },
-          { e: '🪑', t: 'Necesito sentarme' },
-          { e: '🔇', t: 'Demasiado ruido, busquemos un lugar tranquilo' },
-          { e: '🐢', t: 'Por favor hable despacio y con claridad' }
-        ]
-      },
-      de: {
-        dir: 'ltr', voice: 'de-DE',
-        title: '♿ HandiVie+',
-        sub: 'Komplette Suite für Selbstständigkeit, Kommunikation, Gesundheit & Vorrang',
-        free: '✓ ICE-Notfall 100 % kostenlos',
-        subOff: '7 Tage Test • Komfort-Option 3,00 € / Monat',
-        subOn: '✓ HandiVie+ aktiv (3,00 €/Monat) • ICE kostenlos',
-        nav: ['Sprechen & Hören', 'Vorrang-Pass', 'Medikamente', 'Leichtes Lesen', 'Ruhe & Zeit', 'Barrierefreie Orte', 'ICE-Notfall'],
-        defaultMsg: 'Hallo, ich brauche bitte Hilfe.',
-        iceVoice: 'Medizinischer Notfall. Bitte lesen Sie meine ICE-Karte und rufen Sie meinen Kontakt an.',
-        caa: [
-          { e: '🆘', t: 'Ich brauche Hilfe' },
-          { e: '💧', t: 'Ich habe Durst, bitte ein Glas Wasser' },
-          { e: '🍽️', t: 'Ich habe Hunger' },
-          { e: '🚻', t: 'Wo ist die barrierefreie Toilette?' },
-          { e: '🩺', t: 'Ich habe Schmerzen' },
-          { e: '🪑', t: 'Ich muss mich setzen' },
-          { e: '🔇', t: 'Zu laut, bitte an einen ruhigen Ort' },
-          { e: '🐢', t: 'Bitte sprechen Sie langsam und deutlich' }
-        ]
-      },
-      it: {
-        dir: 'ltr', voice: 'it-IT',
-        title: '♿ HandiVie+',
-        sub: 'Suite completa per autonomia, comunicazione, salute e accesso prioritario',
-        free: '✓ Emergenza ICE 100% gratuita',
-        subOff: 'Prova 7 giorni • Opzione Comfort 3,00 € / mese',
-        subOn: '✓ HandiVie+ attivo (3,00 €/mese) • ICE sempre gratuito',
-        nav: ['Parla e Ascolta', 'Pass Prioritario', 'Farmaci e Giorno', 'Lettura Facile', 'Calma e Tempo', 'Luoghi Accessibili', 'Emergenza ICE'],
-        defaultMsg: 'Ciao, ho bisogno di aiuto per favore.',
-        iceVoice: 'Emergenza medica. Leggi la mia scheda ICE sullo schermo e chiama il mio contatto.',
-        caa: [
-          { e: '🆘', t: 'Ho bisogno di aiuto' },
-          { e: '💧', t: 'Ho sete, un bicchiere d’acqua per favore' },
-          { e: '🍽️', t: 'Ho fame' },
-          { e: '🚻', t: 'Dov’è il bagno accessibile?' },
-          { e: '🩺', t: 'Sento dolore' },
-          { e: '🪑', t: 'Ho bisogno di sedermi' },
-          { e: '🔇', t: 'Troppo rumore, cerchiamo un posto calmo' },
-          { e: '🐢', t: 'Parla lentamente e chiaramente' }
-        ]
+        title: 'HandiVie+ — هاندي في بلس',
+        tabs: ['GPS والأماكن', 'تحدث', 'طوارئ ICE', '3,00 € / شهر'],
+        hGps: 'البحث عن الأماكن عبر GPS',
+        btnLocate: 'موقعي عبر GPS',
+        btnTestNet: 'فحص Wi-Fi / الإنترنت',
+        qPlaceholder: 'مثال: صيدلية، مستشفى، موقف ذوي الاحتياجات...',
+        btnSearch: 'بحث',
+        openMap: 'فتح الخريطة',
+        hSpeak: 'الرسائل والقراءة الصوتية',
+        btnSay: 'قراءة بصوت عالٍ',
+        btnClear: 'مسح',
+        msgPlaceholder: 'اكتب رسالة...',
+        btnSend: 'عرض وقراءة',
+        defaultMsg: 'أحتاج إلى مساعدة.',
+        phrases: ['أحتاج إلى مساعدة', 'أنا عطشان', 'أحتاج إلى الجلوس', 'يرجى التحدث ببطء'],
+        hIce: 'طوارئ ICE (مجاني)',
+        iceNamePh: 'اسم جهة الاتصال',
+        icePhonePh: 'رقم الهاتف',
+        iceNotePh: 'الحساسية أو العلاج أو نوع المساعدة',
+        btnSaveIce: 'حفظ',
+        callBtn: 'اتصال',
+        hPlus: 'HandiVie+ — 3,00 € / شهر',
+        btnPlus: 'تفعيل خيار 3,00 € / شهر'
       }
     };
 
-    const store = {
-      lang: 'fr',
-      fontSize: 18,
-      meds: JSON.parse(localStorage.getItem('hv3_meds') || '[{"time":"08:30","name":"Traitement du matin","takenAt":""}]'),
-      places: JSON.parse(localStorage.getItem('hv3_places') || '[{"name":"Mairie & Accueil","note":"Rampe douce + toilettes PMR"}]'),
-      ice: JSON.parse(localStorage.getItem('hv3_ice') || '{"name":"","contact":"","phone":"114","blood":"","needs":""}'),
-      subscribed: localStorage.getItem('hv3_sub') === '1',
-      timerTotal: 300,
-      timerLeft: 300,
-      timerId: null,
-      breathId: null,
-      breathCycles: 0,
-      scanId: null,
-      scanIdx: 0
-    };
+    let lang = 'fr';
+    let fontPx = 18;
+    let coords = null;
 
-    function showToast(msg) {
-      const t = document.getElementById('toastMsg');
-      document.getElementById('uiActivityLog').textContent = msg;
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(showToast._h);
-      showToast._h = setTimeout(() => t.classList.remove('show'), 2500);
+    function getConnType() {
+      if (!navigator.onLine) return { online: false, label: 'Hors ligne (aucun réseau)' };
+      const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      const t = c && c.effectiveType ? c.effectiveType.toUpperCase() : '';
+      const kind = c && c.type ? c.type : '';
+      if (kind === 'wifi') return { online: true, label: 'Connecté : Wi-Fi' };
+      if (kind === 'cellular' || t) return { online: true, label: 'Connecté : Données mobiles' + (t ? ' (' + t + ')' : '') };
+      return { online: true, label: 'Connecté à Internet' };
     }
 
-    function flashScreen() {
-      const f = document.getElementById('screenFlash');
-      f.classList.add('on');
-      setTimeout(() => f.classList.remove('on'), 240);
+    function updateNetStatus() {
+      const st = getConnType();
+      const el = document.getElementById('netStatus');
+      el.textContent = st.label;
+      el.className = st.online ? 'ok' : 'err';
+    }
+
+    function applyLanguage(code) {
+      lang = I18N[code] ? code : 'fr';
+      const d = I18N[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = d.dir;
+
+      document.getElementById('tTitle').textContent = d.title;
+      document.getElementById('tabGps').textContent = d.tabs[0];
+      document.getElementById('tabSpeak').textContent = d.tabs[1];
+      document.getElementById('tabIce').textContent = d.tabs[2];
+      document.getElementById('tabPlus').textContent = d.tabs[3];
+
+      document.getElementById('hGps').textContent = d.hGps;
+      document.getElementById('btnLocate').textContent = d.btnLocate;
+      document.getElementById('btnTestNet').textContent = d.btnTestNet;
+      document.getElementById('placeQuery').placeholder = d.qPlaceholder;
+      document.getElementById('btnSearchPlace').textContent = d.btnSearch;
+      document.getElementById('mapOpenLink').textContent = d.openMap;
+
+      document.getElementById('hSpeak').textContent = d.hSpeak;
+      document.getElementById('btnSay').textContent = d.btnSay;
+      document.getElementById('btnClear').textContent = d.btnClear;
+      document.getElementById('msgInput').placeholder = d.msgPlaceholder;
+      document.getElementById('btnSendMsg').textContent = d.btnSend;
+      document.getElementById('msgBox').textContent = d.defaultMsg;
+
+      document.getElementById('hIce').textContent = d.hIce;
+      document.getElementById('iceName').placeholder = d.iceNamePh;
+      document.getElementById('icePhone').placeholder = d.icePhonePh;
+      document.getElementById('iceNote').placeholder = d.iceNotePh;
+      document.getElementById('btnSaveIce').textContent = d.btnSaveIce;
+      document.getElementById('iceCallBtn').textContent = d.callBtn;
+
+      document.getElementById('hPlus').textContent = d.hPlus;
+      document.getElementById('btnActivatePlus').textContent = d.btnPlus;
+
+      const list = document.getElementById('phrasesList');
+      list.innerHTML = '';
+      d.phrases.forEach((txt) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = txt;
+        b.addEventListener('click', () => speak(txt));
+        list.appendChild(b);
+      });
     }
 
     function speak(text) {
       if (!text) return;
-      document.getElementById('phraseDisplay').textContent = text;
+      document.getElementById('msgBox').textContent = text;
       if ('speechSynthesis' in window) {
         try {
           window.speechSynthesis.cancel();
           const u = new SpeechSynthesisUtterance(text);
-          u.lang = LANGS[store.lang].voice;
-          u.rate = parseFloat(document.getElementById('speechRate').value || '1');
+          u.lang = I18N[lang].voice;
           window.speechSynthesis.speak(u);
         } catch (_) {}
       }
-      showToast('🔊 ' + text);
     }
 
-    function openTab(key) {
-      document.querySelectorAll('.module-tab').forEach((b) => b.classList.toggle('active', b.dataset.tab === key));
-      document.querySelectorAll('.module-panel').forEach((p) => p.classList.toggle('active', p.id === 'panel-' + key));
-    }
-
-    function renderCaa() {
-      const wrap = document.getElementById('caaContainer');
-      wrap.innerHTML = '';
-      LANGS[store.lang].caa.forEach((c) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'caa-tile';
-        b.innerHTML = '<span style="font-size:2em;line-height:1;">' + c.e + '</span><span>' + c.t + '</span>';
-        b.addEventListener('click', () => speak(c.t));
-        wrap.appendChild(b);
-      });
-    }
-
-    function renderMeds() {
-      const list = document.getElementById('medList');
-      list.innerHTML = '';
-      store.meds.forEach((m, idx) => {
-        const row = document.createElement('div');
-        row.className = 'item-strip';
-
-        const left = document.createElement('div');
-        left.innerHTML = '<strong>' + m.time + '</strong> — ' + m.name +
-          (m.takenAt ? ' <span class="pill-tag tag-free" style="margin-inline-start:6px;">✓ Validé à ' + m.takenAt + '</span>' : '');
-
-        const right = document.createElement('div');
-        right.className = 'cluster';
-
-        const bTake = document.createElement('button');
-        bTake.type = 'button';
-        bTake.className = m.takenAt ? 'btn-soft' : 'btn-green';
-        bTake.textContent = m.takenAt ? '↩️ Annuler' : '✓ Valider la prise';
-        bTake.addEventListener('click', () => {
-          if (m.takenAt) {
-            store.meds[idx].takenAt = '';
-          } else {
-            const now = new Date();
-            store.meds[idx].takenAt = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-            showToast('Prise validée à ' + store.meds[idx].takenAt);
-          }
-          saveMeds();
-        });
-
-        const bSpeak = document.createElement('button');
-        bSpeak.type = 'button';
-        bSpeak.className = 'btn-soft';
-        bSpeak.textContent = '🔊';
-        bSpeak.addEventListener('click', () => speak(m.time + ' : ' + m.name));
-
-        const bDel = document.createElement('button');
-        bDel.type = 'button';
-        bDel.className = 'btn-soft';
-        bDel.textContent = '🗑️';
-        bDel.addEventListener('click', () => {
-          store.meds.splice(idx, 1);
-          saveMeds();
-        });
-
-        right.append(bTake, bSpeak, bDel);
-        row.append(left, right);
-        list.appendChild(row);
-      });
-    }
-
-    function saveMeds() {
-      localStorage.setItem('hv3_meds', JSON.stringify(store.meds));
-      renderMeds();
-    }
-
-    function renderPlaces() {
-      const box = document.getElementById('placesList');
-      box.innerHTML = '';
-      store.places.forEach((p, idx) => {
-        const row = document.createElement('div');
-        row.className = 'item-strip';
-        row.innerHTML = '<div><strong>' + p.name + '</strong><p style="margin:3px 0 0;color:var(--muted);">' + p.note + '</p></div>';
-        const del = document.createElement('button');
-        del.type = 'button';
-        del.className = 'btn-soft';
-        del.textContent = '🗑️';
-        del.addEventListener('click', () => {
-          store.places.splice(idx, 1);
-          localStorage.setItem('hv3_places', JSON.stringify(store.places));
-          renderPlaces();
-        });
-        row.appendChild(del);
-        box.appendChild(row);
-      });
-    }
-
-    function renderIce() {
-      const phone = store.ice.phone || '114';
-      document.getElementById('iceCallBtn').href = 'tel:' + phone;
-      document.getElementById('iceCallBtn').textContent = '📞 Appeler le contact ICE (' + phone + ')';
-      document.getElementById('icePreviewText').textContent =
-        'Personne : ' + (store.ice.name || 'Non renseigné') +
-        ' • Contact : ' + (store.ice.contact || 'Non renseigné') +
-        ' • Tél : ' + phone +
-        ' • Médical : ' + (store.ice.blood || 'Aucun') +
-        ' • Consignes : ' + (store.ice.needs || 'Aucune');
-    }
-
-    function setLanguage(lang) {
-      store.lang = LANGS[lang] ? lang : 'fr';
-      const l = LANGS[store.lang];
-      document.documentElement.lang = store.lang;
-      document.documentElement.dir = l.dir;
-
-      document.getElementById('uiAppTitle').textContent = l.title;
-      document.getElementById('uiAppSub').textContent = l.sub;
-      document.getElementById('uiFreeBadge').textContent = l.free;
-      document.getElementById('uiSubStatus').textContent = store.subscribed ? l.subOn : l.subOff;
-
-      const tabIds = ['navSpeak', 'navPriority', 'navHealth', 'navFalc', 'navCalm', 'navPlaces', 'navIce'];
-      const icons = ['🗣️', '🪪', '💊', '📘', '🧘', '🗺️', '🚨'];
-      tabIds.forEach((id, i) => {
-        document.getElementById(id).innerHTML = icons[i] + ' <span>' + l.nav[i] + '</span>';
-      });
-
-      document.getElementById('phraseDisplay').textContent = l.defaultMsg;
-      renderCaa();
-      showToast('Langue : ' + store.lang.toUpperCase());
-    }
-
-    document.querySelectorAll('.module-tab').forEach((b) => b.addEventListener('click', () => openTab(b.dataset.tab)));
-    document.getElementById('langSelect').addEventListener('change', (e) => setLanguage(e.target.value));
-
-    document.getElementById('btnFontUp').addEventListener('click', () => {
-      store.fontSize = Math.min(28, store.fontSize + 2);
-      document.body.style.fontSize = store.fontSize + 'px';
-      showToast('Taille texte : ' + store.fontSize + 'px');
-    });
-    document.getElementById('btnFontDown').addEventListener('click', () => {
-      store.fontSize = Math.max(15, store.fontSize - 2);
-      document.body.style.fontSize = store.fontSize + 'px';
-      showToast('Taille texte : ' + store.fontSize + 'px');
-    });
-    document.getElementById('btnContrast').addEventListener('click', function () {
-      document.body.classList.toggle('mode-contrast');
-      this.classList.toggle('on');
-      showToast('Contraste élevé mis à jour');
-    });
-    document.getElementById('btnDys').addEventListener('click', function () {
-      document.body.classList.toggle('mode-dys');
-      this.classList.toggle('on');
-      showToast('Mode lecture DYS mis à jour');
-    });
-    document.getElementById('btnRuler').addEventListener('click', function () {
-      document.body.classList.toggle('ruler-on');
-      this.classList.toggle('on');
-      showToast('Règle de lecture mise à jour');
-    });
-    document.addEventListener('pointermove', (e) => {
-      if (document.body.classList.contains('ruler-on')) {
-        document.getElementById('readingRuler').style.top = (e.clientY - 27) + 'px';
+    function buildMapUrl(queryText) {
+      const q = encodeURIComponent(queryText.trim());
+      if (coords) {
+        return 'https://www.google.com/maps/search/' + q + '/@' + coords.lat + ',' + coords.lon + ',15z';
       }
-    });
+      return 'https://www.google.com/maps/search/' + q + '/';
+    }
 
-    document.getElementById('btnScan').addEventListener('click', function () {
-      this.classList.toggle('on');
-      if (this.classList.contains('on')) {
-        const targets = Array.from(document.querySelectorAll('button:not(#btnScan), a.ext-link'));
-        store.scanIdx = 0;
-        store.scanId = setInterval(() => {
-          targets.forEach((el) => el.classList.remove('scan-active'));
-          if (targets.length) {
-            targets[store.scanIdx % targets.length].classList.add('scan-active');
-            store.scanIdx++;
-          }
-        }, 1500);
-        showToast('Balayage actif (touche Entrée pour cliquer)');
-      } else {
-        clearInterval(store.scanId);
-        document.querySelectorAll('.scan-active').forEach((el) => el.classList.remove('scan-active'));
-        showToast('Balayage arrêté');
-      }
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && document.getElementById('btnScan').classList.contains('on')) {
-        const cur = document.querySelector('.scan-active');
-        if (cur) { e.preventDefault(); cur.click(); }
-      }
-    });
+    async function searchPlacesByGps(rawQuery) {
+      const q = (rawQuery || document.getElementById('placeQuery').value || '').trim();
+      const out = document.getElementById('gpsOutput');
+      const link = document.getElementById('mapOpenLink');
 
-    document.getElementById('btnReadScreen').addEventListener('click', () => {
-      const active = document.querySelector('.module-panel.active');
-      if (active) speak(active.innerText.slice(0, 260));
-    });
-
-    document.querySelectorAll('.profile-pill').forEach((p) => {
-      p.addEventListener('click', () => {
-        document.querySelectorAll('.profile-pill').forEach((x) => x.classList.remove('active'));
-        p.classList.add('active');
-        const mode = p.dataset.prof;
-        document.body.classList.remove('mode-contrast', 'mode-dys', 'ruler-on');
-        document.getElementById('btnContrast').classList.remove('on');
-        document.getElementById('btnDys').classList.remove('on');
-        document.getElementById('btnRuler').classList.remove('on');
-
-        if (mode === 'vision') {
-          document.body.classList.add('mode-contrast');
-          document.getElementById('btnContrast').classList.add('on');
-          store.fontSize = 24;
-        } else if (mode === 'motor') {
-          store.fontSize = 22;
-        } else if (mode === 'hearing') {
-          flashScreen();
-          openTab('speak');
-        } else if (mode === 'cognitive') {
-          document.body.classList.add('mode-dys', 'ruler-on');
-          document.getElementById('btnDys').classList.add('on');
-          document.getElementById('btnRuler').classList.add('on');
-          store.fontSize = 20;
-        } else {
-          store.fontSize = 18;
-        }
-        document.body.style.fontSize = store.fontSize + 'px';
-        showToast('Profil d’accessibilité activé');
-      });
-    });
-
-    document.getElementById('btnSpeakNow').addEventListener('click', () => speak(document.getElementById('phraseDisplay').textContent));
-    document.getElementById('btnClearText').addEventListener('click', () => {
-      document.getElementById('phraseDisplay').textContent = '';
-      showToast('Zone de texte vidée');
-    });
-    document.getElementById('btnAddSpeak').addEventListener('click', () => {
-      const inp = document.getElementById('customInput');
-      if (!inp.value.trim()) return;
-      speak(inp.value.trim());
-      inp.value = '';
-    });
-    document.getElementById('btnFullscreenText').addEventListener('click', () => {
-      document.getElementById('fullModalContent').textContent = document.getElementById('phraseDisplay').textContent || LANGS[store.lang].defaultMsg;
-      document.getElementById('fullModal').classList.add('open');
-    });
-    document.getElementById('btnCloseFull').addEventListener('click', () => document.getElementById('fullModal').classList.remove('open'));
-
-    document.getElementById('btnLiveCaptions').addEventListener('click', () => {
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) {
-        showToast('Sous-titrage micro non disponible sur ce navigateur');
+      if (!q) {
+        out.innerHTML = '<span class="err">Entrez un endroit à rechercher (ex. : pharmacie).</span>';
         return;
       }
-      const rec = new SR();
-      rec.lang = LANGS[store.lang].voice;
-      rec.onresult = (ev) => {
-        const txt = ev.results[0][0].transcript;
-        document.getElementById('phraseDisplay').textContent = '💬 ' + txt;
-        showToast('Texte transcrit');
-      };
-      rec.start();
-      showToast('🎤 Parlez maintenant...');
-    });
 
-    document.getElementById('prioPresetSelect').addEventListener('change', (e) => {
-      document.getElementById('prioCardBody').textContent = e.target.value;
-    });
-    document.getElementById('btnTriggerSignal').addEventListener('click', () => {
-      flashScreen();
-      speak(document.getElementById('prioCardBody').textContent);
-    });
-    document.getElementById('btnShowPrioFull').addEventListener('click', () => {
-      document.getElementById('fullModalContent').textContent = document.getElementById('prioCardBody').textContent;
-      document.getElementById('fullModal').classList.add('open');
-    });
+      link.href = buildMapUrl(q);
+      out.innerHTML = 'Recherche de <strong>' + escapeHtml(q) + '</strong>...';
 
-    document.getElementById('btnAddMed').addEventListener('click', () => {
-      const time = document.getElementById('medTime').value || '09:00';
-      const name = document.getElementById('medName').value.trim();
-      if (!name) return;
-      store.meds.push({ time, name, takenAt: '' });
-      document.getElementById('medName').value = '';
-      saveMeds();
-      showToast('Rappel ajouté');
-    });
-    document.getElementById('btnShareLog').addEventListener('click', () => {
-      const summary = 'Bilan HandiVie+ :\n' + store.meds.map((m) =>
-        '- ' + m.time + ' : ' + m.name + (m.takenAt ? ' (Validé à ' + m.takenAt + ')' : ' (À faire)')
-      ).join('\n');
-      if (navigator.clipboard) navigator.clipboard.writeText(summary).catch(() => {});
-      showToast('Bilan copié pour votre aidant ou médecin');
-    });
+      if (!navigator.onLine) {
+        out.innerHTML = '<span class="err">Hors ligne.</span> Activez le Wi-Fi ou les données mobiles pour rechercher des lieux.';
+        return;
+      }
 
-    document.getElementById('btnProcessFalc').addEventListener('click', () => {
-      const raw = document.getElementById('falcInput').value.trim();
-      if (!raw) return;
-      const syll = raw.split(/\s+/).map((w) =>
-        w.replace(/([aeiouyàâéèêëîïôùûü])([^aeiouyàâéèêëîïôùûü\s])/gi, '$1·$2')
-      ).join('   ');
-      document.getElementById('falcOutput').textContent = syll;
-      speak(raw);
-    });
-    document.getElementById('btnReadFalcOnly').addEventListener('click', () => {
-      const raw = document.getElementById('falcInput').value.trim();
-      document.getElementById('falcOutput').textContent = raw;
-      speak(raw);
-    });
+      try {
+        let url = 'https://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + encodeURIComponent(q);
+        if (coords) {
+          const dLat = 0.08, dLon = 0.08;
+          url += '&viewbox=' + (coords.lon - dLon) + ',' + (coords.lat + dLat) + ',' + (coords.lon + dLon) + ',' + (coords.lat - dLat) + '&bounded=0';
+        }
+        const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        const data = await res.json();
 
-    function updateClockUI() {
-      const m = String(Math.floor(store.timerLeft / 60)).padStart(2, '0');
-      const s = String(store.timerLeft % 60).padStart(2, '0');
-      document.getElementById('timerText').textContent = m + ':' + s;
-      document.getElementById('timerBar').style.width = Math.max(0, (store.timerLeft / store.timerTotal) * 100) + '%';
+        if (!Array.isArray(data) || data.length === 0) {
+          out.innerHTML = 'Aucun résultat direct trouvé. Touchez <strong>Ouvrir la carte</strong> pour chercher « ' + escapeHtml(q) + ' ».';
+          return;
+        }
+
+        out.innerHTML = data.map((place) => {
+          const lat = Number(place.lat).toFixed(5);
+          const lon = Number(place.lon).toFixed(5);
+          const mapsHref = 'https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lon;
+          return '<div style="padding:8px 0;border-bottom:1px solid var(--line);">' +
+            '<div><strong>' + escapeHtml(place.display_name) + '</strong></div>' +
+            '<div style="margin-top:6px;"><a class="btn primary" href="' + mapsHref + '" target="_blank" rel="noopener">Itinéraire / Carte</a></div>' +
+            '</div>';
+        }).join('');
+      } catch (_) {
+        out.innerHTML = 'Recherche directe indisponible ici. Touchez <strong>Ouvrir la carte</strong> pour voir « ' + escapeHtml(q) + ' ».';
+      }
     }
-    window.setTimerPreset = (sec) => {
-      clearInterval(store.timerId);
-      store.timerId = null;
-      store.timerTotal = sec;
-      store.timerLeft = sec;
-      updateClockUI();
-      showToast('Minuteur réglé sur ' + Math.round(sec / 60) + ' min');
-    };
-    document.getElementById('btnTimerRun').addEventListener('click', () => {
-      if (store.timerId) {
-        clearInterval(store.timerId);
-        store.timerId = null;
-        showToast('Minuteur en pause');
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
+
+    // Onglets
+    document.querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach((p) => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.p).classList.add('active');
+      });
+    });
+
+    // Barre haut
+    document.getElementById('langSel').addEventListener('change', (e) => applyLanguage(e.target.value));
+    document.getElementById('btnTheme').addEventListener('click', () => document.body.classList.toggle('dark'));
+    document.getElementById('btnSizePlus').addEventListener('click', () => {
+      fontPx = Math.min(28, fontPx + 2);
+      document.body.style.fontSize = fontPx + 'px';
+    });
+    document.getElementById('btnSizeMinus').addEventListener('click', () => {
+      fontPx = Math.max(15, fontPx - 2);
+      document.body.style.fontSize = fontPx + 'px';
+    });
+
+    // GPS & Connexion
+    document.getElementById('btnTestNet').addEventListener('click', () => {
+      updateNetStatus();
+      const st = getConnType();
+      document.getElementById('gpsOutput').innerHTML = st.online
+        ? '<span class="ok">' + escapeHtml(st.label) + '</span> — La recherche en ligne est disponible.'
+        : '<span class="err">' + escapeHtml(st.label) + '</span> — Vérifiez votre Wi-Fi ou vos données mobiles.';
+    });
+
+    document.getElementById('btnLocate').addEventListener('click', () => {
+      const out = document.getElementById('gpsOutput');
+      if (!navigator.geolocation) {
+        out.innerHTML = '<span class="err">GPS non disponible sur cet appareil.</span>';
         return;
       }
-      showToast('Minuteur démarré');
-      store.timerId = setInterval(() => {
-        if (store.timerLeft > 0) {
-          store.timerLeft--;
-          updateClockUI();
-        } else {
-          clearInterval(store.timerId);
-          store.timerId = null;
-          store.timerLeft = store.timerTotal;
-          updateClockUI();
-          flashScreen();
-          speak('Le temps est écoulé');
-        }
-      }, 1000);
-    });
-    document.getElementById('btnTimerZero').addEventListener('click', () => {
-      clearInterval(store.timerId);
-      store.timerId = null;
-      store.timerLeft = store.timerTotal;
-      updateClockUI();
-      showToast('Minuteur réinitialisé');
+      out.textContent = 'Localisation GPS en cours...';
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+          const url = 'https://www.google.com/maps/search/?api=1&query=' + coords.lat + ',' + coords.lon;
+          document.getElementById('mapOpenLink').href = url;
+          out.innerHTML = '<span class="ok">Position GPS trouvée :</span> ' +
+            coords.lat.toFixed(5) + ', ' + coords.lon.toFixed(5) +
+            ' (précision ~' + Math.round(pos.coords.accuracy) + ' m)';
+        },
+        (err) => {
+          out.innerHTML = '<span class="err">GPS refusé ou indisponible</span> (' + escapeHtml(err.message || 'autorisation requise') + ').';
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
     });
 
-    document.getElementById('btnBreathStart').addEventListener('click', () => {
-      const orb = document.getElementById('breathCircle');
-      if (store.breathId) {
-        clearInterval(store.breathId);
-        store.breathId = null;
-        orb.style.transform = 'scale(1)';
-        orb.textContent = 'Repos';
-        showToast('Respiration arrêtée');
+    document.getElementById('btnSearchPlace').addEventListener('click', () => searchPlacesByGps());
+    document.getElementById('placeQuery').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') searchPlacesByGps();
+    });
+    document.querySelectorAll('.quick-cat').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.getElementById('placeQuery').value = btn.dataset.q;
+        searchPlacesByGps(btn.dataset.q);
+      });
+    });
+
+    // Parler
+    document.getElementById('btnSay').addEventListener('click', () => speak(document.getElementById('msgBox').textContent));
+    document.getElementById('btnClear').addEventListener('click', () => { document.getElementById('msgBox').textContent = ''; });
+    document.getElementById('btnSendMsg').addEventListener('click', () => {
+      const val = document.getElementById('msgInput').value.trim();
+      if (!val) return;
+      speak(val);
+      document.getElementById('msgInput').value = '';
+    });
+
+    // Urgence ICE
+    function loadIce() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('hv_ice_simple') || '{}');
+        if (saved.name) document.getElementById('iceName').value = saved.name;
+        if (saved.phone) document.getElementById('icePhone').value = saved.phone;
+        if (saved.note) document.getElementById('iceNote').value = saved.note;
+        renderIce(saved);
+      } catch (_) {}
+    }
+
+    function renderIce(d) {
+      const phone = (d && d.phone) ? d.phone.replace(/[^+\d]/g, '') : '';
+      document.getElementById('iceCallBtn').href = phone ? ('tel:' + phone) : 'tel:112';
+      if (!d || (!d.name && !d.phone && !d.note)) {
+        document.getElementById('iceSummary').textContent = 'Aucune fiche enregistrée.';
         return;
       }
-      let step = 0;
-      const tick = () => {
-        const inhale = step % 2 === 0;
-        orb.textContent = inhale ? 'Inspirez' : 'Expirez';
-        orb.style.transform = inhale ? 'scale(1.25)' : 'scale(0.92)';
-        if (!inhale) {
-          store.breathCycles++;
-          document.getElementById('breathCycles').textContent = 'Cycles complétés : ' + store.breathCycles;
-        }
-        step++;
-      };
-      tick();
-      store.breathId = setInterval(tick, 4000);
-      showToast('Cohérence cardiaque active');
-    });
+      document.getElementById('iceSummary').innerHTML =
+        '<strong>Contact :</strong> ' + escapeHtml(d.name || '-') + '<br>' +
+        '<strong>Téléphone :</strong> ' + escapeHtml(d.phone || '-') + '<br>' +
+        '<strong>Infos :</strong> ' + escapeHtml(d.note || '-');
+    }
 
-    document.getElementById('btnAddPlace').addEventListener('click', () => {
-      const name = document.getElementById('placeName').value.trim();
-      const note = document.getElementById('placeNote').value.trim();
-      if (!name) return;
-      store.places.push({ name, note: note || 'Accessible PMR' });
-      localStorage.setItem('hv3_places', JSON.stringify(store.places));
-      document.getElementById('placeName').value = '';
-      document.getElementById('placeNote').value = '';
-      renderPlaces();
-      showToast('Lieu ajouté au carnet');
-    });
-
-    document.getElementById('btnTopIce').addEventListener('click', () => {
-      openTab('ice');
-      showToast('Fiche Urgence ICE ouverte');
-    });
-    document.getElementById('btnIceSpeak').addEventListener('click', () => {
-      flashScreen();
-      speak(LANGS[store.lang].iceVoice);
-    });
     document.getElementById('btnSaveIce').addEventListener('click', () => {
-      store.ice = {
+      const data = {
         name: document.getElementById('iceName').value.trim(),
-        contact: document.getElementById('iceContact').value.trim(),
-        phone: document.getElementById('icePhone').value.trim() || '114',
-        blood: document.getElementById('iceBlood').value.trim(),
-        needs: document.getElementById('iceNeeds').value.trim()
+        phone: document.getElementById('icePhone').value.trim(),
+        note: document.getElementById('iceNote').value.trim()
       };
-      localStorage.setItem('hv3_ice', JSON.stringify(store.ice));
-      renderIce();
-      showToast('Fiche Urgence ICE enregistrée');
+      try { localStorage.setItem('hv_ice_simple', JSON.stringify(data)); } catch (_) {}
+      renderIce(data);
+      document.getElementById('iceSummary').insertAdjacentHTML('afterbegin', '<div class="ok">Fiche enregistrée.</div>');
     });
 
-    document.getElementById('btnOpenSub').addEventListener('click', () => document.getElementById('subModal').classList.add('open'));
-    document.getElementById('btnCloseSub').addEventListener('click', () => document.getElementById('subModal').classList.remove('open'));
-    document.getElementById('btnActivateSub').addEventListener('click', () => {
-      store.subscribed = true;
-      localStorage.setItem('hv3_sub', '1');
-      document.getElementById('uiSubStatus').textContent = LANGS[store.lang].subOn;
-      document.getElementById('subModal').classList.remove('open');
-      showToast('HandiVie+ (3,00 €/mois) activé');
+    // Option 3,00 EUR / mois
+    document.getElementById('btnActivatePlus').addEventListener('click', () => {
+      try { localStorage.setItem('hv_plus_simple', '1'); } catch (_) {}
+      document.getElementById('planStatus').textContent = 'ICE : gratuit • Option 3,00 €/mois : active';
+      document.getElementById('plusResult').innerHTML = '<span class="ok">Option 3,00 €/mois activée sur cet appareil.</span>';
     });
 
-    document.getElementById('iceName').value = store.ice.name || '';
-    document.getElementById('iceContact').value = store.ice.contact || '';
-    document.getElementById('icePhone').value = store.ice.phone || '114';
-    document.getElementById('iceBlood').value = store.ice.blood || '';
-    document.getElementById('iceNeeds').value = store.ice.needs || '';
+    window.addEventListener('online', updateNetStatus);
+    window.addEventListener('offline', updateNetStatus);
 
-    setLanguage('fr');
-    renderMeds();
-    renderPlaces();
-    renderIce();
-    updateClockUI();
+    applyLanguage('fr');
+    updateNetStatus();
+    loadIce();
+    try {
+      if (localStorage.getItem('hv_plus_simple') === '1') {
+        document.getElementById('planStatus').textContent = 'ICE : gratuit • Option 3,00 €/mois : active';
+        document.getElementById('plusResult').innerHTML = '<span class="ok">Option 3,00 €/mois activée sur cet appareil.</span>';
+      }
+    } catch (_) {}
   </script>
 </body>
 </html>
