@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HandiVie+ — Compagnon Universel d'Autonomie & Accessibilité</title>
+  <title>HandiVie+ — Compagnon d'Autonomie & Accessibilité</title>
   <meta name="theme-color" content="#1e3a8a" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -110,6 +110,7 @@
       justify-content: center;
       gap: 8px;
       text-decoration: none;
+      touch-action: manipulation;
       transition: transform 0.12s ease, background-color 0.15s ease, border-color 0.15s ease;
     }
 
@@ -560,7 +561,7 @@
           <option value="de">Deutsch</option>
           <option value="it">Italiano</option>
         </select>
-        <button type="button" class="btn-pro-badge" id="btnOpenSub">3,00 €/mois</button>
+        <button type="button" class="btn-pro-badge" id="btnOpenSub">2,00 €/mois</button>
         <button type="button" class="btn-ice-badge" id="btnTopIce">Urgence ICE</button>
       </div>
     </div>
@@ -578,7 +579,7 @@
 
       <div class="hero-footer">
         <span id="uiNetState" style="font-weight:700;">Internet : vérification...</span>
-        <span class="pill-tag tag-pro" id="uiSubStatus">Essai 7 jours • Option Confort 3,00 €/mois</span>
+        <span class="pill-tag tag-pro" id="uiSubStatus">Essai 7 jours • Option Confort 2,00 €/mois</span>
         <span id="uiActivityLog" style="color:var(--muted);font-weight:600;">Prêt</span>
       </div>
     </section>
@@ -612,6 +613,7 @@
           <button type="button" class="btn-blue" id="btnSpeakNow">Parler</button>
           <button type="button" class="btn-green" id="btnLiveCaptions">Sous-titrer</button>
           <button type="button" class="btn-amber" id="btnFullscreenText">Écran Géant</button>
+          <button type="button" class="btn-soft" id="btnCopyPhrase">Copier</button>
           <button type="button" class="btn-soft" id="btnClearText">Effacer</button>
           <select class="std-select" id="speechRate" aria-label="Vitesse vocale" style="max-width:175px;">
             <option value="0.75">Voix lente</option>
@@ -642,6 +644,7 @@
         </p>
         <div class="row-flex" style="justify-content:center;margin-bottom:0;">
           <button type="button" class="btn-blue" id="btnTriggerSignal">Signal Visuel & Vocal</button>
+          <button type="button" class="btn-amber" id="btnQuickAlarm">Alerte Visuelle</button>
           <button type="button" class="btn-soft" id="btnShowPrioFull">Montrer en Plein Écran</button>
         </div>
       </div>
@@ -661,12 +664,24 @@
 
     <!-- 3. PILULIER & ROUTINE -->
     <section class="module-panel" id="panel-health">
-      <h2 class="panel-title" id="healthHead">Pilulier Horodaté & Routine Quotidienne</h2>
-      <p class="panel-sub" id="healthLead">Suivez vos prises de médicaments avec l'heure exacte de validation et partagez le bilan à un proche ou médecin.</p>
+      <h2 class="panel-title" id="healthHead">Pilulier Horodaté, Hydratation & Routine Quotidienne</h2>
+      <p class="panel-sub" id="healthLead">Suivez vos prises de médicaments, votre hydratation et vos rendez-vous puis partagez le bilan.</p>
+
+      <div class="box-card">
+        <div class="row-flex" style="justify-content:space-between;margin-bottom:0;">
+          <div>
+            <strong>Hydratation du jour :</strong> <span id="waterCountText">0 verre(s)</span>
+          </div>
+          <div class="cluster">
+            <button type="button" class="btn-blue" id="btnAddWater">+1 Verre d'eau</button>
+            <button type="button" class="btn-soft" id="btnResetWater">Réinitialiser</button>
+          </div>
+        </div>
+      </div>
 
       <div class="row-flex">
         <input type="time" id="medTime" value="08:30" />
-        <input type="text" id="medName" placeholder="Ex. Traitement matin, séance kiné, hydratation..." />
+        <input type="text" id="medName" placeholder="Ex. Traitement matin, séance kiné, rdv médecin..." />
         <button type="button" class="btn-green" id="btnAddMed">Ajouter</button>
         <button type="button" class="btn-soft" id="btnShareLog">Copier le bilan</button>
       </div>
@@ -684,7 +699,9 @@
         <div class="row-flex" style="margin-bottom:10px;">
           <button type="button" class="btn-blue" id="btnProcessFalc">Découper en syllabes & Lire</button>
           <button type="button" class="btn-soft" id="btnReadFalcOnly">Lire sans découper</button>
+          <button type="button" class="btn-soft" id="btnClearFalc">Effacer</button>
         </div>
+        <div id="falcStats" style="font-size:0.9em;color:var(--muted);margin-bottom:8px;">Mots : 0</div>
         <div id="falcOutput" style="font-size:1.2em;font-weight:700;padding:12px;background:var(--surface);border-radius:10px;border:1px solid var(--border);"></div>
       </div>
 
@@ -706,9 +723,9 @@
           <div id="timerText" style="font-size:2.2em;font-weight:800;">05:00</div>
           <div class="bar-bg"><div class="bar-fill" id="timerBar"></div></div>
           <div class="row-flex" style="justify-content:center;margin-bottom:8px;">
-            <button type="button" class="btn-soft" onclick="setTimerPreset(180)">3 min</button>
-            <button type="button" class="btn-soft" onclick="setTimerPreset(300)">5 min</button>
-            <button type="button" class="btn-soft" onclick="setTimerPreset(900)">15 min</button>
+            <button type="button" class="btn-soft" data-min="3">3 min</button>
+            <button type="button" class="btn-soft" data-min="5">5 min</button>
+            <button type="button" class="btn-soft" data-min="15">15 min</button>
           </div>
           <div class="row-flex" style="justify-content:center;margin-bottom:0;">
             <button type="button" class="btn-blue" id="btnTimerRun">Démarrer / Pause</button>
@@ -735,6 +752,7 @@
       <div class="row-flex">
         <button type="button" class="btn-blue" id="btnGpsHere">Ma position GPS</button>
         <button type="button" class="btn-soft" id="btnCheckConn">Vérifier Wi-Fi / Données</button>
+        <button type="button" class="btn-soft" id="btnCopyCoords">Copier coordonnées</button>
       </div>
 
       <div class="row-flex">
@@ -775,7 +793,10 @@
         <span class="pill-tag tag-free" style="margin-bottom:8px;">100 % GRATUIT</span>
         <h2 style="margin:0 0 6px;font-size:1.5em;" id="iceTitle">Urgence ICE (In Case of Emergency)</h2>
         <p style="margin:0 0 12px;" id="iceSub">Vos informations vitales et l'appel d'urgence sont toujours accessibles gratuitement.</p>
-        <button type="button" class="btn-soft" style="background:#ffffff;color:var(--danger-dark);" id="btnIceSpeak">Alerte Vocale & Flash</button>
+        <div class="row-flex" style="margin-bottom:0;">
+          <button type="button" class="btn-soft" style="background:#ffffff;color:var(--danger-dark);" id="btnIceSpeak">Alerte Vocale & Flash</button>
+          <button type="button" class="btn-soft" style="background:#ffffff;color:var(--danger-dark);" id="btnCopyIce">Copier fiche ICE</button>
+        </div>
       </div>
 
       <div class="row-flex">
@@ -811,564 +832,876 @@
   <div class="modal-overlay" id="subModal" role="dialog" aria-modal="true" aria-labelledby="subTitle">
     <div class="modal-box">
       <span class="pill-tag tag-pro">HANDIVIE+ CONFORT</span>
-      <h2 id="subTitle" style="margin:10px 0 8px;">Abonnement HandiVie+ — 3,00 € / mois</h2>
+      <h2 id="subTitle" style="margin:10px 0 8px;">Abonnement HandiVie+ — 2,00 € / mois</h2>
       <p style="margin:0 0 12px;color:var(--muted);">
-        Inclut <strong>7 jours d'essai gratuit</strong>, puis <strong>3,00 €/mois</strong>. La <strong>Fiche Urgence ICE</strong> reste toujours 100 % gratuite.
+        Inclut <strong>7 jours d'essai gratuit</strong>, puis <strong>2,00 €/mois</strong>. La <strong>Fiche Urgence ICE</strong> reste toujours 100 % gratuite.
       </p>
       <ul style="margin:0 0 18px;padding-inline-start:20px;">
         <li>Communication CAA multilingue (6 langues dont l'arabe RTL) + sous-titrage vocal</li>
         <li>Pass Prioritaire CMI visuel et sonore</li>
-        <li>Pilulier horodaté avec bilan & Lecteur FALC / DYS</li>
-        <li>Recherche GPS d'endroits, carnet PMR, minuteur et respiration</li>
+        <li>Pilulier horodaté, hydratation & bilan + Lecteur FALC / DYS</li>
+        <li>Recherche GPS d'endroits avec distance, carnet PMR, minuteur et respiration</li>
       </ul>
       <div class="row-flex" style="margin-bottom:0;">
-        <button type="button" class="btn-blue" id="btnActivateSub">Activer l'essai / 3,00 €/mois</button>
+        <button type="button" class="btn-blue" id="btnActivateSub">Activer l'essai / 2,00 €/mois</button>
         <button type="button" class="btn-soft" id="btnCloseSub">Fermer</button>
       </div>
     </div>
   </div>
 
   <script>
-    const LANGS = {
-      fr: {
-        dir: 'ltr', voice: 'fr-FR',
-        title: 'HandiVie+',
-        sub: "Suite complète d'autonomie, communication, suivi santé et accès prioritaire",
-        free: 'Urgence ICE 100 % gratuite',
-        subOff: 'Essai 7 jours • Option Confort 3,00 €/mois',
-        subOn: 'HandiVie+ actif (3,00 €/mois) • ICE toujours gratuit',
-        nav: ['Parler & Écouter', 'Pass Prioritaire', 'Pilulier & Jour', 'Lecteur FALC', 'Calme & Temps', 'GPS & Lieux PMR', 'Urgence ICE'],
-        defaultMsg: "Bonjour, j'ai besoin d'aide s'il vous plaît.",
-        iceVoice: "Urgence médicale. Merci de consulter ma fiche ICE sur l'écran et d'appeler mon contact.",
-        caa: [
-          { e: '1', t: "J'ai besoin d'aide" },
-          { e: '2', t: "J'ai soif, un verre d'eau s'il vous plaît" },
-          { e: '3', t: "J'ai faim" },
-          { e: '4', t: 'Où sont les toilettes accessibles ?' },
-          { e: '5', t: 'Je ressens une douleur' },
-          { e: '6', t: "J'ai besoin de m'asseoir" },
-          { e: '7', t: 'Trop de bruit, cherchons un endroit calme' },
-          { e: '8', t: 'Parlez lentement et clairement' }
-        ]
-      },
-      ar: {
-        dir: 'rtl', voice: 'ar-SA',
-        title: 'HandiVie+ — هاندي في بلس',
-        sub: 'منظومة متكاملة للاستقلالية والتواصل والمتابعة الصحية والأولوية',
-        free: 'طوارئ ICE مجانية 100٪',
-        subOff: 'تجربة 7 أيام • خيار الراحة 3,00 € / شهر',
-        subOn: 'اشتراك HandiVie+ مفعّل (3,00 € / شهر) • طوارئ ICE مجانية',
-        nav: ['تحدث واستمع', 'بطاقة الأولوية', 'الأدوية ويومي', 'القارئ السهل', 'الهدوء والوقت', 'GPS وأماكن PMR', 'طوارئ ICE'],
-        defaultMsg: 'مرحبًا، أحتاج إلى مساعدة من فضلك.',
-        iceVoice: 'حالة طوارئ. يرجى قراءة بطاقة الطوارئ على الشاشة والاتصال بجهة الاتصال.',
-        caa: [
-          { e: '1', t: 'أحتاج إلى مساعدة' },
-          { e: '2', t: 'أنا عطشان، أريد كوب ماء من فضلك' },
-          { e: '3', t: 'أنا جائع' },
-          { e: '4', t: 'أين توجد دورات المياه الميسرة؟' },
-          { e: '5', t: 'أشعر بألم' },
-          { e: '6', t: 'أحتاج إلى الجلوس' },
-          { e: '7', t: 'الضوضاء مرتفعة جدًا، لنذهب لمكان هادئ' },
-          { e: '8', t: 'يرجى التحدث ببطء ووضوح' }
-        ]
-      },
-      en: {
-        dir: 'ltr', voice: 'en-US',
-        title: 'HandiVie+',
-        sub: 'Complete autonomy, communication, health tracking, and priority access suite',
-        free: 'ICE Emergency 100% free',
-        subOff: '7-day trial • Comfort Option €3.00 / month',
-        subOn: 'HandiVie+ active (€3.00/mo) • ICE always free',
-        nav: ['Speak & Listen', 'Priority Pass', 'Meds & Day', 'Easy Reader', 'Calm & Time', 'GPS & Places', 'ICE Emergency'],
-        defaultMsg: 'Hello, I need help please.',
-        iceVoice: 'Medical emergency. Please read my ICE card on screen and call my emergency contact.',
-        caa: [
-          { e: '1', t: 'I need help' },
-          { e: '2', t: 'I am thirsty, a glass of water please' },
-          { e: '3', t: 'I am hungry' },
-          { e: '4', t: 'Where is the accessible restroom?' },
-          { e: '5', t: 'I am in pain' },
-          { e: '6', t: 'I need to sit down' },
-          { e: '7', t: 'Too noisy, please move to a quiet spot' },
-          { e: '8', t: 'Please speak slowly and clearly' }
-        ]
-      },
-      es: {
-        dir: 'ltr', voice: 'es-ES',
-        title: 'HandiVie+',
-        sub: 'Suite completa de autonomía, comunicación, salud y acceso prioritario',
-        free: 'Emergencia ICE 100 % gratuita',
-        subOff: 'Prueba 7 días • Opción Confort 3,00 € / mes',
-        subOn: 'HandiVie+ activo (3,00 €/mes) • ICE siempre gratis',
-        nav: ['Hablar y Escuchar', 'Pase Prioritario', 'Medicación y Día', 'Lector Fácil', 'Calma y Tiempo', 'GPS y Lugares', 'Emergencia ICE'],
-        defaultMsg: 'Hola, necesito ayuda por favor.',
-        iceVoice: 'Emergencia médica. Por favor lea mi ficha ICE en pantalla y llame a mi contacto.',
-        caa: [
-          { e: '1', t: 'Necesito ayuda' },
-          { e: '2', t: 'Tengo sed, un vaso de agua por favor' },
-          { e: '3', t: 'Tengo hambre' },
-          { e: '4', t: '¿Dónde está el baño accesible?' },
-          { e: '5', t: 'Siento dolor' },
-          { e: '6', t: 'Necesito sentarme' },
-          { e: '7', t: 'Demasiado ruido, busquemos un lugar tranquilo' },
-          { e: '8', t: 'Por favor hable despacio y con claridad' }
-        ]
-      },
-      de: {
-        dir: 'ltr', voice: 'de-DE',
-        title: 'HandiVie+',
-        sub: 'Komplette Suite für Selbstständigkeit, Kommunikation, Gesundheit & Vorrang',
-        free: 'ICE-Notfall 100 % kostenlos',
-        subOff: '7 Tage Test • Komfort-Option 3,00 € / Monat',
-        subOn: 'HandiVie+ aktiv (3,00 €/Monat) • ICE kostenlos',
-        nav: ['Sprechen & Hören', 'Vorrang-Pass', 'Medikamente', 'Leichtes Lesen', 'Ruhe & Zeit', 'GPS & Orte', 'ICE-Notfall'],
-        defaultMsg: 'Hallo, ich brauche bitte Hilfe.',
-        iceVoice: 'Medizinischer Notfall. Bitte lesen Sie meine ICE-Karte und rufen Sie meinen Kontakt an.',
-        caa: [
-          { e: '1', t: 'Ich brauche Hilfe' },
-          { e: '2', t: 'Ich habe Durst, bitte ein Glas Wasser' },
-          { e: '3', t: 'Ich habe Hunger' },
-          { e: '4', t: 'Wo ist die barrierefreie Toilette?' },
-          { e: '5', t: 'Ich habe Schmerzen' },
-          { e: '6', t: 'Ich muss mich setzen' },
-          { e: '7', t: 'Zu laut, bitte an einen ruhigen Ort' },
-          { e: '8', t: 'Bitte sprechen Sie langsam und deutlich' }
-        ]
-      },
-      it: {
-        dir: 'ltr', voice: 'it-IT',
-        title: 'HandiVie+',
-        sub: 'Suite completa per autonomia, comunicazione, salute e accesso prioritario',
-        free: 'Emergenza ICE 100% gratuita',
-        subOff: 'Prova 7 giorni • Opzione Comfort 3,00 € / mese',
-        subOn: 'HandiVie+ attivo (3,00 €/mese) • ICE sempre gratuito',
-        nav: ['Parla e Ascolta', 'Pass Prioritario', 'Farmaci e Giorno', 'Lettura Facile', 'Calma e Tempo', 'GPS e Luoghi', 'Emergenza ICE'],
-        defaultMsg: 'Ciao, ho bisogno di aiuto per favore.',
-        iceVoice: 'Emergenza medica. Leggi la mia scheda ICE sullo schermo e chiama il mio contatto.',
-        caa: [
-          { e: '1', t: 'Ho bisogno di aiuto' },
-          { e: '2', t: 'Ho sete, un bicchiere d’acqua per favore' },
-          { e: '3', t: 'Ho fame' },
-          { e: '4', t: 'Dov’è il bagno accessibile?' },
-          { e: '5', t: 'Sento dolore' },
-          { e: '6', t: 'Ho bisogno di sedermi' },
-          { e: '7', t: 'Troppo rumore, cerchiamo un posto calmo' },
-          { e: '8', t: 'Parla lentamente e chiaramente' }
-        ]
-      }
-    };
-
-    const store = {
-      lang: 'fr',
-      fontSize: 18,
-      coords: null,
-      meds: JSON.parse(localStorage.getItem('hv3_meds') || '[{"time":"08:30","name":"Traitement du matin","takenAt":""}]'),
-      places: JSON.parse(localStorage.getItem('hv3_places') || '[{"name":"Mairie & Accueil","note":"Rampe douce + toilettes PMR"}]'),
-      ice: JSON.parse(localStorage.getItem('hv3_ice') || '{"name":"","contact":"","phone":"114","blood":"","needs":""}'),
-      subscribed: localStorage.getItem('hv3_sub') === '1',
-      timerTotal: 300,
-      timerLeft: 300,
-      timerId: null,
-      breathId: null,
-      breathCycles: 0,
-      scanId: null,
-      scanIdx: 0
-    };
-
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toastMsg');
-      document.getElementById('uiActivityLog').textContent = msg;
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(showToast._h);
-      showToast._h = setTimeout(() => t.classList.remove('show'), 2500);
-    }
-
-    function flashScreen() {
-      const f = document.getElementById('screenFlash');
-      f.classList.add('on');
-      setTimeout(() => f.classList.remove('on'), 240);
-    }
-
-    function readConnectionInfo() {
-      if (!navigator.onLine) return { online: false, text: 'Internet : Hors ligne' };
-      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-      const type = conn && conn.type ? conn.type : '';
-      const eff = conn && conn.effectiveType ? conn.effectiveType.toUpperCase() : '';
-      if (type === 'wifi') return { online: true, text: 'Internet : Wi-Fi connecté' };
-      if (type === 'cellular' || eff) return { online: true, text: 'Internet : Données mobiles' + (eff ? ' (' + eff + ')' : '') };
-      return { online: true, text: 'Internet : Connecté' };
-    }
-
-    function refreshConnectionUI() {
-      const info = readConnectionInfo();
-      const el = document.getElementById('uiNetState');
-      el.textContent = info.text;
-      el.style.color = info.online ? 'var(--primary)' : 'var(--danger)';
-    }
-
-    function speak(text) {
-      if (!text) return;
-      document.getElementById('phraseDisplay').textContent = text;
-      if ('speechSynthesis' in window) {
-        try {
-          window.speechSynthesis.cancel();
-          const u = new SpeechSynthesisUtterance(text);
-          u.lang = LANGS[store.lang].voice;
-          u.rate = parseFloat(document.getElementById('speechRate').value || '1');
-          window.speechSynthesis.speak(u);
-        } catch (_) {}
-      }
-      showToast(text);
-    }
-
-    function openTab(key) {
-      document.querySelectorAll('.module-tab').forEach((b) => b.classList.toggle('active', b.dataset.tab === key));
-      document.querySelectorAll('.module-panel').forEach((p) => p.classList.toggle('active', p.id === 'panel-' + key));
-    }
-
-    function renderCaa() {
-      const wrap = document.getElementById('caaContainer');
-      wrap.innerHTML = '';
-      LANGS[store.lang].caa.forEach((c) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'caa-tile';
-        b.innerHTML = '<span style="font-weight:800;color:var(--primary);">#' + c.e + '</span><span>' + escapeHtml(c.t) + '</span>';
-        b.addEventListener('click', () => speak(c.t));
-        wrap.appendChild(b);
-      });
-    }
-
-    function renderMeds() {
-      const list = document.getElementById('medList');
-      list.innerHTML = '';
-      store.meds.forEach((m, idx) => {
-        const row = document.createElement('div');
-        row.className = 'item-strip';
-
-        const left = document.createElement('div');
-        left.innerHTML = '<strong>' + escapeHtml(m.time) + '</strong> — ' + escapeHtml(m.name) +
-          (m.takenAt ? ' <span class="pill-tag tag-free" style="margin-inline-start:6px;">Validé à ' + escapeHtml(m.takenAt) + '</span>' : '');
-
-        const right = document.createElement('div');
-        right.className = 'cluster';
-
-        const bTake = document.createElement('button');
-        bTake.type = 'button';
-        bTake.className = m.takenAt ? 'btn-soft' : 'btn-green';
-        bTake.textContent = m.takenAt ? 'Annuler' : 'Valider';
-        bTake.addEventListener('click', () => {
-          if (m.takenAt) {
-            store.meds[idx].takenAt = '';
-          } else {
-            const now = new Date();
-            store.meds[idx].takenAt = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-          }
-          saveMeds();
-        });
-
-        const bSpeak = document.createElement('button');
-        bSpeak.type = 'button';
-        bSpeak.className = 'btn-soft';
-        bSpeak.textContent = 'Dire';
-        bSpeak.addEventListener('click', () => speak(m.time + ' : ' + m.name));
-
-        const bDel = document.createElement('button');
-        bDel.type = 'button';
-        bDel.className = 'btn-soft';
-        bDel.textContent = 'Suppr.';
-        bDel.addEventListener('click', () => {
-          store.meds.splice(idx, 1);
-          saveMeds();
-        });
-
-        right.append(bTake, bSpeak, bDel);
-        row.append(left, right);
-        list.appendChild(row);
-      });
-    }
-
-    function saveMeds() {
-      localStorage.setItem('hv3_meds', JSON.stringify(store.meds));
-      renderMeds();
-    }
-
-    function renderPlaces() {
-      const box = document.getElementById('placesList');
-      box.innerHTML = '';
-      store.places.forEach((p, idx) => {
-        const row = document.createElement('div');
-        row.className = 'item-strip';
-        row.innerHTML = '<div><strong>' + escapeHtml(p.name) + '</strong><p style="margin:3px 0 0;color:var(--muted);">' + escapeHtml(p.note) + '</p></div>';
-        const del = document.createElement('button');
-        del.type = 'button';
-        del.className = 'btn-soft';
-        del.textContent = 'Suppr.';
-        del.addEventListener('click', () => {
-          store.places.splice(idx, 1);
-          localStorage.setItem('hv3_places', JSON.stringify(store.places));
-          renderPlaces();
-        });
-        row.appendChild(del);
-        box.appendChild(row);
-      });
-    }
-
-    function renderIce() {
-      const phone = store.ice.phone || '114';
-      document.getElementById('iceCallBtn').href = 'tel:' + phone;
-      document.getElementById('iceCallBtn').textContent = 'Appeler le contact ICE (' + phone + ')';
-      document.getElementById('icePreviewText').textContent =
-        'Personne : ' + (store.ice.name || 'Non renseigné') +
-        ' • Contact : ' + (store.ice.contact || 'Non renseigné') +
-        ' • Tél : ' + phone +
-        ' • Médical : ' + (store.ice.blood || 'Aucun') +
-        ' • Consignes : ' + (store.ice.needs || 'Aucune');
-    }
-
-    function setLanguage(lang) {
-      store.lang = LANGS[lang] ? lang : 'fr';
-      const l = LANGS[store.lang];
-      document.documentElement.lang = store.lang;
-      document.documentElement.dir = l.dir;
-
-      document.getElementById('uiAppTitle').textContent = l.title;
-      document.getElementById('uiAppSub').textContent = l.sub;
-      document.getElementById('uiFreeBadge').textContent = l.free;
-      document.getElementById('uiSubStatus').textContent = store.subscribed ? l.subOn : l.subOff;
-
-      const tabIds = ['navSpeak', 'navPriority', 'navHealth', 'navFalc', 'navCalm', 'navPlaces', 'navIce'];
-      tabIds.forEach((id, i) => {
-        document.getElementById(id).innerHTML = '<span>' + l.nav[i] + '</span>';
-      });
-
-      document.getElementById('phraseDisplay').textContent = l.defaultMsg;
-      renderCaa();
-      showToast('Langue : ' + store.lang.toUpperCase());
-    }
-
-    async function runPlaceSearch(queryOverride) {
-      const q = (queryOverride || document.getElementById('gpsSearchInput').value || '').trim();
-      const box = document.getElementById('gpsResultsBox');
-      const mapLink = document.getElementById('gpsMapLink');
-
-      if (!q) {
-        box.textContent = 'Saisissez un endroit à rechercher (ex. : pharmacie, hôpital, parking PMR).';
-        return;
-      }
-
-      mapLink.href = store.coords
-        ? 'https://www.google.com/maps/search/' + encodeURIComponent(q) + '/@' + store.coords.lat + ',' + store.coords.lon + ',15z'
-        : 'https://www.google.com/maps/search/' + encodeURIComponent(q) + '/';
-
-      if (!navigator.onLine) {
-        box.innerHTML = '<span style="color:var(--danger);font-weight:700;">Hors ligne.</span> Activez le Wi-Fi ou les données mobiles pour rechercher des endroits.';
-        return;
-      }
-
-      box.textContent = 'Recherche en cours : ' + q + '...';
-
-      try {
-        let url = 'https://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + encodeURIComponent(q);
-        if (store.coords) {
-          url += '&viewbox=' + (store.coords.lon - 0.08) + ',' + (store.coords.lat + 0.08) + ',' +
-                 (store.coords.lon + 0.08) + ',' + (store.coords.lat - 0.08) + '&bounded=0';
+    (function () {
+      const LANGS = {
+        fr: {
+          dir: 'ltr', voice: 'fr-FR',
+          title: 'HandiVie+',
+          sub: "Suite complète d'autonomie, communication, suivi santé et accès prioritaire",
+          free: 'Urgence ICE 100 % gratuite',
+          subOff: 'Essai 7 jours • Option Confort 2,00 €/mois',
+          subOn: 'HandiVie+ actif (2,00 €/mois) • ICE toujours gratuit',
+          nav: ['Parler & Écouter', 'Pass Prioritaire', 'Pilulier & Jour', 'Lecteur FALC', 'Calme & Temps', 'GPS & Lieux PMR', 'Urgence ICE'],
+          defaultMsg: "Bonjour, j'ai besoin d'aide s'il vous plaît.",
+          iceVoice: "Urgence médicale. Merci de consulter ma fiche ICE sur l'écran et d'appeler mon contact.",
+          caa: [
+            { e: '1', t: "J'ai besoin d'aide" },
+            { e: '2', t: "J'ai soif, un verre d'eau s'il vous plaît" },
+            { e: '3', t: "J'ai faim" },
+            { e: '4', t: 'Où sont les toilettes accessibles ?' },
+            { e: '5', t: 'Je ressens une douleur' },
+            { e: '6', t: "J'ai besoin de m'asseoir" },
+            { e: '7', t: 'Trop de bruit, cherchons un endroit calme' },
+            { e: '8', t: 'Parlez lentement et clairement' }
+          ]
+        },
+        ar: {
+          dir: 'rtl', voice: 'ar-SA',
+          title: 'HandiVie+ — هاندي في بلس',
+          sub: 'منظومة متكاملة للاستقلالية والتواصل والمتابعة الصحية والأولوية',
+          free: 'طوارئ ICE مجانية 100٪',
+          subOff: 'تجربة 7 أيام • خيار الراحة 2,00 € / شهر',
+          subOn: 'اشتراك HandiVie+ مفعّل (2,00 € / شهر) • طوارئ ICE مجانية',
+          nav: ['تحدث واستمع', 'بطاقة الأولوية', 'الأدوية ويومي', 'القارئ السهل', 'الهدوء والوقت', 'GPS وأماكن PMR', 'طوارئ ICE'],
+          defaultMsg: 'مرحبًا، أحتاج إلى مساعدة من فضلك.',
+          iceVoice: 'حالة طوارئ. يرجى قراءة بطاقة الطوارئ على الشاشة والاتصال بجهة الاتصال.',
+          caa: [
+            { e: '1', t: 'أحتاج إلى مساعدة' },
+            { e: '2', t: 'أنا عطشان، أريد كوب ماء من فضلك' },
+            { e: '3', t: 'أنا جائع' },
+            { e: '4', t: 'أين توجد دورات المياه الميسرة؟' },
+            { e: '5', t: 'أشعر بألم' },
+            { e: '6', t: 'أحتاج إلى الجلوس' },
+            { e: '7', t: 'الضوضاء مرتفعة جدًا، لنذهب لمكان هادئ' },
+            { e: '8', t: 'يرجى التحدث ببطء ووضوح' }
+          ]
+        },
+        en: {
+          dir: 'ltr', voice: 'en-US',
+          title: 'HandiVie+',
+          sub: 'Complete autonomy, communication, health tracking, and priority access suite',
+          free: 'ICE Emergency 100% free',
+          subOff: '7-day trial • Comfort Option €2.00 / month',
+          subOn: 'HandiVie+ active (€2.00/mo) • ICE always free',
+          nav: ['Speak & Listen', 'Priority Pass', 'Meds & Day', 'Easy Reader', 'Calm & Time', 'GPS & Places', 'ICE Emergency'],
+          defaultMsg: 'Hello, I need help please.',
+          iceVoice: 'Medical emergency. Please read my ICE card on screen and call my emergency contact.',
+          caa: [
+            { e: '1', t: 'I need help' },
+            { e: '2', t: 'I am thirsty, a glass of water please' },
+            { e: '3', t: 'I am hungry' },
+            { e: '4', t: 'Where is the accessible restroom?' },
+            { e: '5', t: 'I am in pain' },
+            { e: '6', t: 'I need to sit down' },
+            { e: '7', t: 'Too noisy, please move to a quiet spot' },
+            { e: '8', t: 'Please speak slowly and clearly' }
+          ]
+        },
+        es: {
+          dir: 'ltr', voice: 'es-ES',
+          title: 'HandiVie+',
+          sub: 'Suite completa de autonomía, comunicación, salud y acceso prioritario',
+          free: 'Emergencia ICE 100 % gratuita',
+          subOff: 'Prueba 7 días • Opción Confort 2,00 € / mes',
+          subOn: 'HandiVie+ activo (2,00 €/mes) • ICE siempre gratis',
+          nav: ['Hablar y Escuchar', 'Pase Prioritario', 'Medicación y Día', 'Lector Fácil', 'Calma y Tiempo', 'GPS y Lugares', 'Emergencia ICE'],
+          defaultMsg: 'Hola, necesito ayuda por favor.',
+          iceVoice: 'Emergencia médica. Por favor lea mi ficha ICE en pantalla y llame a mi contacto.',
+          caa: [
+            { e: '1', t: 'Necesito ayuda' },
+            { e: '2', t: 'Tengo sed, un vaso de agua por favor' },
+            { e: '3', t: 'Tengo hambre' },
+            { e: '4', t: '¿Dónde está el baño accesible?' },
+            { e: '5', t: 'Siento dolor' },
+            { e: '6', t: 'Necesito sentarme' },
+            { e: '7', t: 'Demasiado ruido, busquemos un lugar tranquilo' },
+            { e: '8', t: 'Por favor hable despacio y con claridad' }
+          ]
+        },
+        de: {
+          dir: 'ltr', voice: 'de-DE',
+          title: 'HandiVie+',
+          sub: 'Komplette Suite für Selbstständigkeit, Kommunikation, Gesundheit & Vorrang',
+          free: 'ICE-Notfall 100 % kostenlos',
+          subOff: '7 Tage Test • Komfort-Option 2,00 € / Monat',
+          subOn: 'HandiVie+ aktiv (2,00 €/Monat) • ICE kostenlos',
+          nav: ['Sprechen & Hören', 'Vorrang-Pass', 'Medikamente', 'Leichtes Lesen', 'Ruhe & Zeit', 'GPS & Orte', 'ICE-Notfall'],
+          defaultMsg: 'Hallo, ich brauche bitte Hilfe.',
+          iceVoice: 'Medizinischer Notfall. Bitte lesen Sie meine ICE-Karte und rufen Sie meinen Kontakt an.',
+          caa: [
+            { e: '1', t: 'Ich brauche Hilfe' },
+            { e: '2', t: 'Ich habe Durst, bitte ein Glas Wasser' },
+            { e: '3', t: 'Ich habe Hunger' },
+            { e: '4', t: 'Wo ist die barrierefreie Toilette?' },
+            { e: '5', t: 'Ich habe Schmerzen' },
+            { e: '6', t: 'Ich muss mich setzen' },
+            { e: '7', t: 'Zu laut, bitte an einen ruhigen Ort' },
+            { e: '8', t: 'Bitte sprechen Sie langsam und deutlich' }
+          ]
+        },
+        it: {
+          dir: 'ltr', voice: 'it-IT',
+          title: 'HandiVie+',
+          sub: 'Suite completa per autonomia, comunicazione, salute e accesso prioritario',
+          free: 'Emergenza ICE 100% gratuita',
+          subOff: 'Prova 7 giorni • Opzione Comfort 2,00 € / mese',
+          subOn: 'HandiVie+ attivo (2,00 €/mese) • ICE sempre gratuito',
+          nav: ['Parla e Ascolta', 'Pass Prioritario', 'Farmaci e Giorno', 'Lettura Facile', 'Calma e Tempo', 'GPS e Luoghi', 'Emergenza ICE'],
+          defaultMsg: 'Ciao, ho bisogno di aiuto per favore.',
+          iceVoice: 'Emergenza medica. Leggi la mia scheda ICE sullo schermo e chiama il mio contatto.',
+          caa: [
+            { e: '1', t: 'Ho bisogno di aiuto' },
+            { e: '2', t: 'Ho sete, un bicchiere d’acqua per favore' },
+            { e: '3', t: 'Ho fame' },
+            { e: '4', t: 'Dov’è il bagno accessibile?' },
+            { e: '5', t: 'Sento dolore' },
+            { e: '6', t: 'Ho bisogno di sedermi' },
+            { e: '7', t: 'Troppo rumore, cerchiamo un posto calmo' },
+            { e: '8', t: 'Parla lentamente e chiaramente' }
+          ]
         }
-        const resp = await fetch(url, { headers: { Accept: 'application/json' } });
-        const list = await resp.json();
+      };
 
-        if (!Array.isArray(list) || list.length === 0) {
-          box.innerHTML = 'Aucun résultat direct pour « ' + escapeHtml(q) + ' ». Touchez <strong>Ouvrir sur la carte</strong>.';
+      function safeGet(key, fallback) {
+        try {
+          const v = localStorage.getItem(key);
+          return v === null ? fallback : JSON.parse(v);
+        } catch (_) {
+          return fallback;
+        }
+      }
+
+      function safeSet(key, val) {
+        try { localStorage.setItem(key, JSON.stringify(val)); } catch (_) {}
+      }
+
+      const store = {
+        lang: 'fr',
+        fontSize: 18,
+        coords: null,
+        water: safeGet('hv4_water', 0),
+        meds: safeGet('hv4_meds', [{ time: '08:30', name: 'Traitement du matin', takenAt: '' }]),
+        places: safeGet('hv4_places', [{ name: 'Mairie & Accueil', note: 'Rampe douce + toilettes PMR' }]),
+        ice: safeGet('hv4_ice', { name: '', contact: '', phone: '114', blood: '', needs: '' }),
+        subscribed: safeGet('hv4_sub', false) === true,
+        timerTotal: 300,
+        timerLeft: 300,
+        timerId: null,
+        breathId: null,
+        breathCycles: 0,
+        scanId: null,
+        scanIdx: 0
+      };
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, function (m) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+        });
+      }
+
+      function showToast(msg) {
+        const t = document.getElementById('toastMsg');
+        const log = document.getElementById('uiActivityLog');
+        if (log) log.textContent = msg;
+        if (t) {
+          t.textContent = msg;
+          t.classList.add('show');
+          clearTimeout(showToast._h);
+          showToast._h = setTimeout(function () { t.classList.remove('show'); }, 2500);
+        }
+      }
+
+      function flashScreen() {
+        const f = document.getElementById('screenFlash');
+        if (!f) return;
+        f.classList.add('on');
+        setTimeout(function () { f.classList.remove('on'); }, 240);
+      }
+
+      function copyText(text, label) {
+        if (!text) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(function () {});
+        }
+        showToast(label || 'Copié');
+      }
+
+      function readConnectionInfo() {
+        if (!navigator.onLine) return { online: false, text: 'Internet : Hors ligne' };
+        const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const type = conn && conn.type ? conn.type : '';
+        const eff = conn && conn.effectiveType ? conn.effectiveType.toUpperCase() : '';
+        if (type === 'wifi') return { online: true, text: 'Internet : Wi-Fi connecté' };
+        if (type === 'cellular' || eff) return { online: true, text: 'Internet : Données mobiles' + (eff ? ' (' + eff + ')' : '') };
+        return { online: true, text: 'Internet : Connecté' };
+      }
+
+      function refreshConnectionUI() {
+        const info = readConnectionInfo();
+        const el = document.getElementById('uiNetState');
+        if (el) {
+          el.textContent = info.text;
+          el.style.color = info.online ? 'var(--primary)' : 'var(--danger)';
+        }
+      }
+
+      function speak(text) {
+        if (!text) return;
+        const disp = document.getElementById('phraseDisplay');
+        if (disp) disp.textContent = text;
+        if ('speechSynthesis' in window) {
+          try {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = LANGS[store.lang].voice;
+            const rateEl = document.getElementById('speechRate');
+            u.rate = rateEl ? parseFloat(rateEl.value || '1') : 1;
+            window.speechSynthesis.speak(u);
+          } catch (_) {}
+        }
+        showToast(text);
+      }
+
+      function openTab(key) {
+        document.querySelectorAll('.module-tab').forEach(function (b) {
+          b.classList.toggle('active', b.dataset.tab === key);
+        });
+        document.querySelectorAll('.module-panel').forEach(function (p) {
+          p.classList.toggle('active', p.id === 'panel-' + key);
+        });
+      }
+
+      function renderCaa() {
+        const wrap = document.getElementById('caaContainer');
+        if (!wrap) return;
+        wrap.innerHTML = '';
+        LANGS[store.lang].caa.forEach(function (c) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'caa-tile';
+          b.innerHTML = '<span style="font-weight:800;color:var(--primary);">#' + escapeHtml(c.e) + '</span><span>' + escapeHtml(c.t) + '</span>';
+          b.addEventListener('click', function () { speak(c.t); });
+          wrap.appendChild(b);
+        });
+      }
+
+      function renderWater() {
+        const el = document.getElementById('waterCountText');
+        if (el) el.textContent = store.water + ' verre(s)';
+      }
+
+      function renderMeds() {
+        const list = document.getElementById('medList');
+        if (!list) return;
+        list.innerHTML = '';
+        store.meds.forEach(function (m, idx) {
+          const row = document.createElement('div');
+          row.className = 'item-strip';
+
+          const left = document.createElement('div');
+          left.innerHTML = '<strong>' + escapeHtml(m.time) + '</strong> — ' + escapeHtml(m.name) +
+            (m.takenAt ? ' <span class="pill-tag tag-free" style="margin-inline-start:6px;">Validé à ' + escapeHtml(m.takenAt) + '</span>' : '');
+
+          const right = document.createElement('div');
+          right.className = 'cluster';
+
+          const bTake = document.createElement('button');
+          bTake.type = 'button';
+          bTake.className = m.takenAt ? 'btn-soft' : 'btn-green';
+          bTake.textContent = m.takenAt ? 'Annuler' : 'Valider';
+          bTake.addEventListener('click', function () {
+            if (m.takenAt) {
+              store.meds[idx].takenAt = '';
+            } else {
+              const now = new Date();
+              store.meds[idx].takenAt = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            }
+            saveMeds();
+          });
+
+          const bSpeak = document.createElement('button');
+          bSpeak.type = 'button';
+          bSpeak.className = 'btn-soft';
+          bSpeak.textContent = 'Dire';
+          bSpeak.addEventListener('click', function () { speak(m.time + ' : ' + m.name); });
+
+          const bDel = document.createElement('button');
+          bDel.type = 'button';
+          bDel.className = 'btn-soft';
+          bDel.textContent = 'Suppr.';
+          bDel.addEventListener('click', function () {
+            store.meds.splice(idx, 1);
+            saveMeds();
+          });
+
+          right.append(bTake, bSpeak, bDel);
+          row.append(left, right);
+          list.appendChild(row);
+        });
+      }
+
+      function saveMeds() {
+        safeSet('hv4_meds', store.meds);
+        renderMeds();
+      }
+
+      function renderPlaces() {
+        const box = document.getElementById('placesList');
+        if (!box) return;
+        box.innerHTML = '';
+        store.places.forEach(function (p, idx) {
+          const row = document.createElement('div');
+          row.className = 'item-strip';
+          row.innerHTML = '<div><strong>' + escapeHtml(p.name) + '</strong><p style="margin:3px 0 0;color:var(--muted);">' + escapeHtml(p.note) + '</p></div>';
+          const del = document.createElement('button');
+          del.type = 'button';
+          del.className = 'btn-soft';
+          del.textContent = 'Suppr.';
+          del.addEventListener('click', function () {
+            store.places.splice(idx, 1);
+            safeSet('hv4_places', store.places);
+            renderPlaces();
+          });
+          row.appendChild(del);
+          box.appendChild(row);
+        });
+      }
+
+      function buildIceSummary() {
+        const phone = store.ice.phone || '114';
+        return 'Personne : ' + (store.ice.name || 'Non renseigné') +
+          ' • Contact : ' + (store.ice.contact || 'Non renseigné') +
+          ' • Tél : ' + phone +
+          ' • Médical : ' + (store.ice.blood || 'Aucun') +
+          ' • Consignes : ' + (store.ice.needs || 'Aucune');
+      }
+
+      function renderIce() {
+        const phone = store.ice.phone || '114';
+        const btn = document.getElementById('iceCallBtn');
+        const txt = document.getElementById('icePreviewText');
+        if (btn) {
+          btn.href = 'tel:' + phone;
+          btn.textContent = 'Appeler le contact ICE (' + phone + ')';
+        }
+        if (txt) txt.textContent = buildIceSummary();
+      }
+
+      function setLanguage(code) {
+        store.lang = LANGS[code] ? code : 'fr';
+        const l = LANGS[store.lang];
+        document.documentElement.lang = store.lang;
+        document.documentElement.dir = l.dir;
+
+        document.getElementById('uiAppTitle').textContent = l.title;
+        document.getElementById('uiAppSub').textContent = l.sub;
+        document.getElementById('uiFreeBadge').textContent = l.free;
+        document.getElementById('uiSubStatus').textContent = store.subscribed ? l.subOn : l.subOff;
+
+        const tabIds = ['navSpeak', 'navPriority', 'navHealth', 'navFalc', 'navCalm', 'navPlaces', 'navIce'];
+        tabIds.forEach(function (id, i) {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = '<span>' + l.nav[i] + '</span>';
+        });
+
+        document.getElementById('phraseDisplay').textContent = l.defaultMsg;
+        renderCaa();
+        showToast('Langue : ' + store.lang.toUpperCase());
+      }
+
+      function distanceKm(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        return (R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))).toFixed(1);
+      }
+
+      async function runPlaceSearch(queryOverride) {
+        const q = (queryOverride || document.getElementById('gpsSearchInput').value || '').trim();
+        const box = document.getElementById('gpsResultsBox');
+        const mapLink = document.getElementById('gpsMapLink');
+
+        if (!q) {
+          box.textContent = 'Saisissez un endroit à rechercher (ex. : pharmacie, hôpital, parking PMR).';
           return;
         }
 
-        box.innerHTML = list.map((place) => {
-          const lat = Number(place.lat).toFixed(5);
-          const lon = Number(place.lon).toFixed(5);
-          const urlPlace = 'https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lon;
-          return '<div style="padding:8px 0;border-bottom:1px solid var(--border);">' +
-            '<div><strong>' + escapeHtml(place.display_name) + '</strong></div>' +
-            '<div style="margin-top:6px;"><a class="ext-link btn-blue" href="' + urlPlace + '" target="_blank" rel="noopener">Voir sur la carte</a></div>' +
-            '</div>';
-        }).join('');
-      } catch (_) {
-        box.innerHTML = 'Recherche directe indisponible. Touchez <strong>Ouvrir sur la carte</strong> pour chercher « ' + escapeHtml(q) + ' ».';
-      }
-    }
+        mapLink.href = store.coords
+          ? 'https://www.google.com/maps/search/' + encodeURIComponent(q) + '/@' + store.coords.lat + ',' + store.coords.lon + ',15z'
+          : 'https://www.google.com/maps/search/' + encodeURIComponent(q) + '/';
 
-    document.querySelectorAll('.module-tab').forEach((b) => b.addEventListener('click', () => openTab(b.dataset.tab)));
-    document.getElementById('langSelect').addEventListener('change', (e) => setLanguage(e.target.value));
-
-    document.getElementById('btnFontUp').addEventListener('click', () => {
-      store.fontSize = Math.min(28, store.fontSize + 2);
-      document.body.style.fontSize = store.fontSize + 'px';
-      showToast('Taille : ' + store.fontSize + 'px');
-    });
-    document.getElementById('btnFontDown').addEventListener('click', () => {
-      store.fontSize = Math.max(15, store.fontSize - 2);
-      document.body.style.fontSize = store.fontSize + 'px';
-      showToast('Taille : ' + store.fontSize + 'px');
-    });
-    document.getElementById('btnContrast').addEventListener('click', function () {
-      document.body.classList.toggle('mode-contrast');
-      this.classList.toggle('on');
-    });
-    document.getElementById('btnDys').addEventListener('click', function () {
-      document.body.classList.toggle('mode-dys');
-      this.classList.toggle('on');
-    });
-    document.getElementById('btnRuler').addEventListener('click', function () {
-      document.body.classList.toggle('ruler-on');
-      this.classList.toggle('on');
-    });
-    document.addEventListener('pointermove', (e) => {
-      if (document.body.classList.contains('ruler-on')) {
-        document.getElementById('readingRuler').style.top = (e.clientY - 27) + 'px';
-      }
-    });
-
-    document.getElementById('btnScan').addEventListener('click', function () {
-      this.classList.toggle('on');
-      if (this.classList.contains('on')) {
-        const targets = Array.from(document.querySelectorAll('button:not(#btnScan), a.ext-link'));
-        store.scanIdx = 0;
-        store.scanId = setInterval(() => {
-          targets.forEach((el) => el.classList.remove('scan-active'));
-          if (targets.length) {
-            targets[store.scanIdx % targets.length].classList.add('scan-active');
-            store.scanIdx++;
-          }
-        }, 1500);
-        showToast('Balayage actif');
-      } else {
-        clearInterval(store.scanId);
-        document.querySelectorAll('.scan-active').forEach((el) => el.classList.remove('scan-active'));
-      }
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && document.getElementById('btnScan').classList.contains('on')) {
-        const cur = document.querySelector('.scan-active');
-        if (cur) { e.preventDefault(); cur.click(); }
-      }
-    });
-
-    document.getElementById('btnReadScreen').addEventListener('click', () => {
-      const active = document.querySelector('.module-panel.active');
-      if (active) speak(active.innerText.slice(0, 260));
-    });
-
-    document.querySelectorAll('.profile-pill').forEach((p) => {
-      p.addEventListener('click', () => {
-        document.querySelectorAll('.profile-pill').forEach((x) => x.classList.remove('active'));
-        p.classList.add('active');
-        const mode = p.dataset.prof;
-        document.body.classList.remove('mode-contrast', 'mode-dys', 'ruler-on');
-        document.getElementById('btnContrast').classList.remove('on');
-        document.getElementById('btnDys').classList.remove('on');
-        document.getElementById('btnRuler').classList.remove('on');
-
-        if (mode === 'vision') {
-          document.body.classList.add('mode-contrast');
-          document.getElementById('btnContrast').classList.add('on');
-          store.fontSize = 24;
-        } else if (mode === 'motor') {
-          store.fontSize = 22;
-        } else if (mode === 'hearing') {
-          flashScreen();
-          openTab('speak');
-        } else if (mode === 'cognitive') {
-          document.body.classList.add('mode-dys', 'ruler-on');
-          document.getElementById('btnDys').classList.add('on');
-          document.getElementById('btnRuler').classList.add('on');
-          store.fontSize = 20;
-        } else {
-          store.fontSize = 18;
+        if (!navigator.onLine) {
+          box.innerHTML = '<span style="color:var(--danger);font-weight:700;">Hors ligne.</span> Activez le Wi-Fi ou les données mobiles pour rechercher des endroits.';
+          return;
         }
-        document.body.style.fontSize = store.fontSize + 'px';
-        showToast('Profil appliqué');
-      });
-    });
 
-    document.getElementById('btnSpeakNow').addEventListener('click', () => speak(document.getElementById('phraseDisplay').textContent));
-    document.getElementById('btnClearText').addEventListener('click', () => {
-      document.getElementById('phraseDisplay').textContent = '';
-    });
-    document.getElementById('btnAddSpeak').addEventListener('click', () => {
-      const inp = document.getElementById('customInput');
-      if (!inp.value.trim()) return;
-      speak(inp.value.trim());
-      inp.value = '';
-    });
-    document.getElementById('btnFullscreenText').addEventListener('click', () => {
-      document.getElementById('fullModalContent').textContent = document.getElementById('phraseDisplay').textContent || LANGS[store.lang].defaultMsg;
-      document.getElementById('fullModal').classList.add('open');
-    });
-    document.getElementById('btnCloseFull').addEventListener('click', () => document.getElementById('fullModal').classList.remove('open'));
+        box.textContent = 'Recherche en cours : ' + q + '...';
 
-    document.getElementById('btnLiveCaptions').addEventListener('click', () => {
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) {
-        showToast('Sous-titrage micro non disponible sur ce navigateur');
-        return;
+        try {
+          let url = 'https://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + encodeURIComponent(q);
+          if (store.coords) {
+            url += '&viewbox=' + (store.coords.lon - 0.08) + ',' + (store.coords.lat + 0.08) + ',' +
+                   (store.coords.lon + 0.08) + ',' + (store.coords.lat - 0.08) + '&bounded=0';
+          }
+          const resp = await fetch(url, { headers: { Accept: 'application/json' } });
+          const list = await resp.json();
+
+          if (!Array.isArray(list) || list.length === 0) {
+            box.innerHTML = 'Aucun résultat direct pour « ' + escapeHtml(q) + ' ». Touchez <strong>Ouvrir sur la carte</strong>.';
+            return;
+          }
+
+          box.innerHTML = list.map(function (place) {
+            const lat = Number(place.lat);
+            const lon = Number(place.lon);
+            const distText = store.coords ? ' • ~' + distanceKm(store.coords.lat, store.coords.lon, lat, lon) + ' km' : '';
+            const urlPlace = 'https://www.google.com/maps/search/?api=1&query=' + lat.toFixed(5) + ',' + lon.toFixed(5);
+            return '<div style="padding:8px 0;border-bottom:1px solid var(--border);">' +
+              '<div><strong>' + escapeHtml(place.display_name) + '</strong><span style="color:var(--muted);font-size:0.9em;">' + escapeHtml(distText) + '</span></div>' +
+              '<div style="margin-top:6px;"><a class="ext-link btn-blue" href="' + urlPlace + '" target="_blank" rel="noopener">Voir sur la carte</a></div>' +
+              '</div>';
+          }).join('');
+        } catch (_) {
+          box.innerHTML = 'Recherche directe indisponible. Touchez <strong>Ouvrir sur la carte</strong> pour chercher « ' + escapeHtml(q) + ' ».';
+        }
       }
-      const rec = new SR();
-      rec.lang = LANGS[store.lang].voice;
-      rec.onresult = (ev) => {
-        document.getElementById('phraseDisplay').textContent = ev.results[0][0].transcript;
-      };
-      rec.start();
-      showToast('Écoute active...');
-    });
 
-    document.getElementById('prioPresetSelect').addEventListener('change', (e) => {
-      document.getElementById('prioCardBody').textContent = e.target.value;
-    });
-    document.getElementById('btnTriggerSignal').addEventListener('click', () => {
-      flashScreen();
-      speak(document.getElementById('prioCardBody').textContent);
-    });
-    document.getElementById('btnShowPrioFull').addEventListener('click', () => {
-      document.getElementById('fullModalContent').textContent = document.getElementById('prioCardBody').textContent;
-      document.getElementById('fullModal').classList.add('open');
-    });
+      // Navigation & Langue
+      document.querySelectorAll('.module-tab').forEach(function (b) {
+        b.addEventListener('click', function () { openTab(b.dataset.tab); });
+      });
+      document.getElementById('langSelect').addEventListener('change', function (e) {
+        setLanguage(e.target.value);
+      });
 
-    document.getElementById('btnAddMed').addEventListener('click', () => {
-      const time = document.getElementById('medTime').value || '09:00';
-      const name = document.getElementById('medName').value.trim();
-      if (!name) return;
-      store.meds.push({ time, name, takenAt: '' });
-      document.getElementById('medName').value = '';
-      saveMeds();
-    });
-    document.getElementById('btnShareLog').addEventListener('click', () => {
-      const summary = 'Bilan HandiVie+ :\n' + store.meds.map((m) =>
-        '- ' + m.time + ' : ' + m.name + (m.takenAt ? ' (Validé à ' + m.takenAt + ')' : ' (À faire)')
-      ).join('\n');
-      if (navigator.clipboard) navigator.clipboard.writeText(summary).catch(() => {});
-      showToast('Bilan copié');
-    });
+      // Barre accessibilité
+      document.getElementById('btnFontUp').addEventListener('click', function () {
+        store.fontSize = Math.min(28, store.fontSize + 2);
+        document.body.style.fontSize = store.fontSize + 'px';
+        showToast('Taille : ' + store.fontSize + 'px');
+      });
+      document.getElementById('btnFontDown').addEventListener('click', function () {
+        store.fontSize = Math.max(15, store.fontSize - 2);
+        document.body.style.fontSize = store.fontSize + 'px';
+        showToast('Taille : ' + store.fontSize + 'px');
+      });
+      document.getElementById('btnContrast').addEventListener('click', function () {
+        document.body.classList.toggle('mode-contrast');
+        this.classList.toggle('on');
+        showToast('Contraste mis à jour');
+      });
+      document.getElementById('btnDys').addEventListener('click', function () {
+        document.body.classList.toggle('mode-dys');
+        this.classList.toggle('on');
+        showToast('Mode DYS mis à jour');
+      });
+      document.getElementById('btnRuler').addEventListener('click', function () {
+        document.body.classList.toggle('ruler-on');
+        this.classList.toggle('on');
+        showToast('Règle de lecture mise à jour');
+      });
+      document.addEventListener('pointermove', function (e) {
+        if (document.body.classList.contains('ruler-on')) {
+          document.getElementById('readingRuler').style.top = (e.clientY - 27) + 'px';
+        }
+      });
 
-    document.getElementById('btnProcessFalc').addEventListener('click', () => {
-      const raw = document.getElementById('falcInput').value.trim();
-      if (!raw) return;
-      const syll = raw.split(/\s+/).map((w) =>
-        w.replace(/([aeiouyàâéèêëîïôùûü])([^aeiouyàâéèêëîïôùûü\s])/gi, '$1·$2')
-      ).join('   ');
-      document.getElementById('falcOutput').textContent = syll;
-      speak(raw);
-    });
-    document.getElementById('btnReadFalcOnly').addEventListener('click', () => {
-      const raw = document.getElementById('falcInput').value.trim();
-      document.getElementById('falcOutput').textContent = raw;
-      speak(raw);
-    });
+      document.getElementById('btnScan').addEventListener('click', function () {
+        this.classList.toggle('on');
+        if (this.classList.contains('on')) {
+          const targets = Array.from(document.querySelectorAll('button:not(#btnScan), a.ext-link'));
+          store.scanIdx = 0;
+          store.scanId = setInterval(function () {
+            targets.forEach(function (el) { el.classList.remove('scan-active'); });
+            if (targets.length) {
+              targets[store.scanIdx % targets.length].classList.add('scan-active');
+              store.scanIdx++;
+            }
+          }, 1500);
+          showToast('Balayage actif');
+        } else {
+          clearInterval(store.scanId);
+          document.querySelectorAll('.scan-active').forEach(function (el) { el.classList.remove('scan-active'); });
+          showToast('Balayage arrêté');
+        }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && document.getElementById('btnScan').classList.contains('on')) {
+          const cur = document.querySelector('.scan-active');
+          if (cur) { e.preventDefault(); cur.click(); }
+        }
+      });
 
-    function updateClockUI() {
-      const m = String(Math.floor(store.timerLeft / 60)).padStart(2, '0');
-      const s = String(store.timerLeft % 60).padStart(2, '0');
-      document.getElementById('timerText').textContent = m + ':' + s
+      document.getElementById('btnReadScreen').addEventListener('click', function () {
+        const active = document.querySelector('.module-panel.active');
+        if (active) speak(active.innerText.slice(0, 260));
+      });
+
+      // Profils
+      document.querySelectorAll('.profile-pill').forEach(function (p) {
+        p.addEventListener('click', function () {
+          document.querySelectorAll('.profile-pill').forEach(function (x) { x.classList.remove('active'); });
+          p.classList.add('active');
+          const mode = p.dataset.prof;
+          document.body.classList.remove('mode-contrast', 'mode-dys', 'ruler-on');
+          document.getElementById('btnContrast').classList.remove('on');
+          document.getElementById('btnDys').classList.remove('on');
+          document.getElementById('btnRuler').classList.remove('on');
+
+          if (mode === 'vision') {
+            document.body.classList.add('mode-contrast');
+            document.getElementById('btnContrast').classList.add('on');
+            store.fontSize = 24;
+          } else if (mode === 'motor') {
+            store.fontSize = 22;
+          } else if (mode === 'hearing') {
+            flashScreen();
+            openTab('speak');
+          } else if (mode === 'cognitive') {
+            document.body.classList.add('mode-dys', 'ruler-on');
+            document.getElementById('btnDys').classList.add('on');
+            document.getElementById('btnRuler').classList.add('on');
+            store.fontSize = 20;
+          } else {
+            store.fontSize = 18;
+          }
+          document.body.style.fontSize = store.fontSize + 'px';
+          showToast('Profil appliqué');
+        });
+      });
+
+      // Parler & Écouter
+      document.getElementById('btnSpeakNow').addEventListener('click', function () {
+        speak(document.getElementById('phraseDisplay').textContent);
+      });
+      document.getElementById('btnCopyPhrase').addEventListener('click', function () {
+        copyText(document.getElementById('phraseDisplay').textContent, 'Phrase copiée');
+      });
+      document.getElementById('btnClearText').addEventListener('click', function () {
+        document.getElementById('phraseDisplay').textContent = '';
+        showToast('Message effacé');
+      });
+      document.getElementById('btnAddSpeak').addEventListener('click', function () {
+        const inp = document.getElementById('customInput');
+        if (!inp.value.trim()) return;
+        speak(inp.value.trim());
+        inp.value = '';
+      });
+      document.getElementById('btnFullscreenText').addEventListener('click', function () {
+        document.getElementById('fullModalContent').textContent = document.getElementById('phraseDisplay').textContent || LANGS[store.lang].defaultMsg;
+        document.getElementById('fullModal').classList.add('open');
+      });
+      document.getElementById('btnCloseFull').addEventListener('click', function () {
+        document.getElementById('fullModal').classList.remove('open');
+      });
+
+      document.getElementById('btnLiveCaptions').addEventListener('click', function () {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) {
+          showToast('Sous-titrage micro non disponible sur ce navigateur');
+          return;
+        }
+        try {
+          const rec = new SR();
+          rec.lang = LANGS[store.lang].voice;
+          rec.onresult = function (ev) {
+            document.getElementById('phraseDisplay').textContent = ev.results[0][0].transcript;
+          };
+          rec.start();
+          showToast('Écoute active...');
+        } catch (_) {
+          showToast('Micro indisponible');
+        }
+      });
+
+      // Pass Prioritaire
+      document.getElementById('prioPresetSelect').addEventListener('change', function (e) {
+        document.getElementById('prioCardBody').textContent = e.target.value;
+      });
+      document.getElementById('btnTriggerSignal').addEventListener('click', function () {
+        flashScreen();
+        speak(document.getElementById('prioCardBody').textContent);
+      });
+      document.getElementById('btnQuickAlarm').addEventListener('click', function () {
+        flashScreen();
+        showToast('Signal visuel déclenché');
+      });
+      document.getElementById('btnShowPrioFull').addEventListener('click', function () {
+        document.getElementById('fullModalContent').textContent = document.getElementById('prioCardBody').textContent;
+        document.getElementById('fullModal').classList.add('open');
+      });
+
+      // Pilulier & Hydratation
+      document.getElementById('btnAddWater').addEventListener('click', function () {
+        store.water++;
+        safeSet('hv4_water', store.water);
+        renderWater();
+        showToast('Hydratation : ' + store.water + ' verre(s)');
+      });
+      document.getElementById('btnResetWater').addEventListener('click', function () {
+        store.water = 0;
+        safeSet('hv4_water', store.water);
+        renderWater();
+        showToast('Hydratation réinitialisée');
+      });
+
+      document.getElementById('btnAddMed').addEventListener('click', function () {
+        const time = document.getElementById('medTime').value || '09:00';
+        const name = document.getElementById('medName').value.trim();
+        if (!name) return;
+        store.meds.push({ time: time, name: name, takenAt: '' });
+        document.getElementById('medName').value = '';
+        saveMeds();
+        showToast('Élément ajouté');
+      });
+      document.getElementById('btnShareLog').addEventListener('click', function () {
+        const summary = 'Bilan HandiVie+ (Hydratation : ' + store.water + ' verre(s)) :\n' +
+          store.meds.map(function (m) {
+            return '- ' + m.time + ' : ' + m.name + (m.takenAt ? ' (Validé à ' + m.takenAt + ')' : ' (À faire)');
+          }).join('\n');
+        copyText(summary, 'Bilan copié');
+      });
+
+      // Lecteur FALC
+      function updateFalcStats(text) {
+        const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+        const st = document.getElementById('falcStats');
+        if (st) st.textContent = 'Mots : ' + words;
+      }
+
+      document.getElementById('btnProcessFalc').addEventListener('click', function () {
+        const raw = document.getElementById('falcInput').value.trim();
+        if (!raw) return;
+        updateFalcStats(raw);
+        const syll = raw.split(/\s+/).map(function (w) {
+          return w.replace(/([aeiouyàâéèêëîïôùûü])([^aeiouyàâéèêëîïôùûü\s])/gi, '$1·$2');
+        }).join('   ');
+        document.getElementById('falcOutput').textContent = syll;
+        speak(raw);
+      });
+      document.getElementById('btnReadFalcOnly').addEventListener('click', function () {
+        const raw = document.getElementById('falcInput').value.trim();
+        if (!raw) return;
+        updateFalcStats(raw);
+        document.getElementById('falcOutput').textContent = raw;
+        speak(raw);
+      });
+      document.getElementById('btnClearFalc').addEventListener('click', function () {
+        document.getElementById('falcInput').value = '';
+        document.getElementById('falcOutput').textContent = '';
+        updateFalcStats('');
+      });
+
+      // Calme & Temps
+      function updateClockUI() {
+        const m = String(Math.floor(store.timerLeft / 60)).padStart(2, '0');
+        const s = String(store.timerLeft % 60).padStart(2, '0');
+        document.getElementById('timerText').textContent = m + ':' + s;
+        document.getElementById('timerBar').style.width = Math.max(0, (store.timerLeft / store.timerTotal) * 100) + '%';
+      }
+      document.querySelectorAll('[data-min]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          clearInterval(store.timerId);
+          store.timerId = null;
+          store.timerTotal = Number(b.dataset.min) * 60;
+          store.timerLeft = store.timerTotal;
+          updateClockUI();
+          showToast('Minuteur : ' + b.dataset.min + ' min');
+        });
+      });
+      document.getElementById('btnTimerRun').addEventListener('click', function () {
+        if (store.timerId) {
+          clearInterval(store.timerId);
+          store.timerId = null;
+          showToast('Minuteur en pause');
+          return;
+        }
+        showToast('Minuteur démarré');
+        store.timerId = setInterval(function () {
+          if (store.timerLeft > 0) {
+            store.timerLeft--;
+            updateClockUI();
+          } else {
+            clearInterval(store.timerId);
+            store.timerId = null;
+            store.timerLeft = store.timerTotal;
+            updateClockUI();
+            flashScreen();
+            speak('Le temps est écoulé');
+          }
+        }, 1000);
+      });
+      document.getElementById('btnTimerZero').addEventListener('click', function () {
+        clearInterval(store.timerId);
+        store.timerId = null;
+        store.timerLeft = store.timerTotal;
+        updateClockUI();
+        showToast('Minuteur réinitialisé');
+      });
+
+      document.getElementById('btnBreathStart').addEventListener('click', function () {
+        const orb = document.getElementById('breathCircle');
+        if (store.breathId) {
+          clearInterval(store.breathId);
+          store.breathId = null;
+          orb.style.transform = 'scale(1)';
+          orb.textContent = 'Repos';
+          showToast('Respiration arrêtée');
+          return;
+        }
+        let step = 0;
+        const tick = function () {
+          const inhale = step % 2 === 0;
+          orb.textContent = inhale ? 'Inspirez' : 'Expirez';
+          orb.style.transform = inhale ? 'scale(1.22)' : 'scale(0.92)';
+          if (!inhale) {
+            store.breathCycles++;
+            document.getElementById('breathCycles').textContent = 'Cycles complétés : ' + store.breathCycles;
+          }
+          step++;
+        };
+        tick();
+        store.breathId = setInterval(tick, 4000);
+        showToast('Respiration démarrée');
+      });
+
+      // GPS & Lieux
+      document.getElementById('btnCheckConn').addEventListener('click', function () {
+        refreshConnectionUI();
+        const info = readConnectionInfo();
+        document.getElementById('gpsResultsBox').innerHTML = '<strong>' + escapeHtml(info.text) + '</strong>';
+        showToast(info.text);
+      });
+
+      document.getElementById('btnGpsHere').addEventListener('click', function () {
+        const box = document.getElementById('gpsResultsBox');
+        if (!navigator.geolocation) {
+          box.textContent = 'GPS non disponible sur cet appareil.';
+          return;
+        }
+        box.textContent = 'Recherche de la position GPS...';
+        navigator.geolocation.getCurrentPosition(
+          function (pos) {
+            store.coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+            document.getElementById('gpsMapLink').href =
+              'https://www.google.com/maps/search/?api=1&query=' + store.coords.lat + ',' + store.coords.lon;
+            box.innerHTML = '<strong>Position GPS :</strong> ' + store.coords.lat.toFixed(5) + ', ' + store.coords.lon.toFixed(5);
+            showToast('Position GPS trouvée');
+          },
+          function (err) {
+            box.textContent = 'GPS indisponible ou refusé (' + (err.message || 'autorisation nécessaire') + ').';
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      });
+
+      document.getElementById('btnCopyCoords').addEventListener('click', function () {
+        if (!store.coords) {
+          showToast('Appuyez d’abord sur Ma position GPS');
+          return;
+        }
+        copyText(store.coords.lat.toFixed(5) + ', ' + store.coords.lon.toFixed(5), 'Coordonnées copiées');
+      });
+
+      document.getElementById('btnDoGpsSearch').addEventListener('click', function () { runPlaceSearch(); });
+      document.getElementById('gpsSearchInput').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') runPlaceSearch();
+      });
+      document.querySelectorAll('.gps-quick').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.getElementById('gpsSearchInput').value = b.dataset.q;
+          runPlaceSearch(b.dataset.q);
+        });
+      });
+
+      document.getElementById('btnAddPlace').addEventListener('click', function () {
+        const name = document.getElementById('placeName').value.trim();
+        const note = document.getElementById('placeNote').value.trim();
+        if (!name) return;
+        store.places.push({ name: name, note: note || 'Accessible PMR' });
+        safeSet('hv4_places', store.places);
+        document.getElementById('placeName').value = '';
+        document.getElementById('placeNote').value = '';
+        renderPlaces();
+        showToast('Lieu enregistré');
+      });
+
+      // Urgence ICE
+      document.getElementById('btnTopIce').addEventListener('click', function () { openTab('ice'); });
+      document.getElementById('btnIceSpeak').addEventListener('click', function () {
+        flashScreen();
+        speak(LANGS[store.lang].iceVoice);
+      });
+      document.getElementById('btnCopyIce').addEventListener('click', function () {
+        copyText(buildIceSummary(), 'Fiche ICE copiée');
+      });
+      document.getElementById('btnSaveIce').addEventListener('click', function () {
+        store.ice = {
+          name: document.getElementById('iceName').value.trim(),
+          contact: document.getElementById('iceContact').value.trim(),
+          phone: document.getElementById('icePhone').value.trim() || '114',
+          blood: document.getElementById('iceBlood').value.trim(),
+          needs: document.getElementById('iceNeeds').value.trim()
+        };
+        safeSet('hv4_ice', store.ice);
+        renderIce();
+        showToast('Fiche ICE enregistrée');
+      });
+
+      // Abonnement 2,00 EUR / mois
+      document.getElementById('btnOpenSub').addEventListener('click', function () {
+        document.getElementById('subModal').classList.add('open');
+      });
+      document.getElementById('btnCloseSub').addEventListener('click', function () {
+        document.getElementById('subModal').classList.remove('open');
+      });
+      document.getElementById('btnActivateSub').addEventListener('click', function () {
+        store.subscribed = true;
+        safeSet('hv4_sub', true);
+        document.getElementById('uiSubStatus').textContent = LANGS[store.lang].subOn;
+        document.getElementById('subModal').classList.remove('open');
+        showToast('Option 2,00 €/mois activée');
+      });
+
+      window.addEventListener('online', refreshConnectionUI);
+      window.addEventListener('offline', refreshConnectionUI);
+
+      document.getElementById('iceName').value = store.ice.name || '';
+      document.getElementById('iceContact').value = store.ice.contact || '';
+      document.getElementById('icePhone').value = store.ice.phone || '114';
+      document.getElementById('iceBlood').value = store.ice.blood || '';
+      document.getElementById('iceNeeds').value = store.ice.needs || '';
+
+      refreshConnectionUI();
+      setLanguage('fr');
+      renderWater();
+      renderMeds();
+      renderPlaces();
+      renderIce();
+      updateClockUI();
+      updateFalcStats(document.getElementById('falcInput').value);
+    })();
+  </script>
+</body>
+</html>
